@@ -8,6 +8,10 @@ Frontend: React
 > npm install bootstrap 
 > npm install semantic-ui-react
 > npm install react-scripts
+> npm install @fortawesome/react-fontawesome@latest
+> npm install @fortawesome/free-solid-svg-icons
+> npm install --save @fortawesome/fontawesome-svg-core
+
 ----------------------------------------------------------------------
 
 ----------------------------------------------------------------------

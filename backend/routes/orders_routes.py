@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from util.file_utils import FileUtils
 
 orders_routes = Blueprint('orders_routes', __name__, url_prefix='/api/orders')
@@ -6,13 +6,19 @@ orders_routes = Blueprint('orders_routes', __name__, url_prefix='/api/orders')
 
 @orders_routes.route('/')
 def orders():
-    orders_list = get_orders()
-    data = {
-        'order_id': orders_list[0],
-        'orders': orders_list,
-        'jobs': get_jobs(orders_list[0]),
+    orders = [{"id": index, "name": valor}
+              for index, valor in enumerate(get_orders())]
+    response = {
+        "button_add": True,
+        "data": orders,
+        "columns": [
+            {"dataField": "name", "text": ""},
+            {"dataField": "button_edit",  "text": "", "editable": True},
+            {"dataField": "button_delete", "text": "", "editable": True},
+        ],
     }
-    return render_template('orders/index.html',  data=data)
+
+    return jsonify(response)
 
 
 @orders_routes.route('/selected')
@@ -50,17 +56,23 @@ def show_modal():
         return render_template('orders/index.html',  data=data)
 
 
-@orders_routes.route('/delete', methods=['POST'])
-def delete_order():
-    order_id = request.form['order_id']
-    FileUtils.delete_folder("JobScheduler/orders/"+order_id)
-    orders = get_orders()
-    data = {
-        'order_id': orders[0],
-        'orders': orders,
-        'jobs': get_jobs(orders[0]),
+@orders_routes.route('/delete/<string:order_id>', methods=['POST'])
+def delete_order(order_id):
+    print(1111, order_id)
+    #FileUtils.delete_folder("JobScheduler/orders/"+order_id)
+    orders = [{"id": index, "name": valor}
+              for index, valor in enumerate(get_orders())]
+    response = {
+        "button_add": True,
+        "data": orders,
+        "columns": [
+            {"dataField": "name", "text": ""},
+            {"dataField": "button_edit",  "text": "", "editable": True},
+            {"dataField": "button_delete", "text": "", "editable": True},
+        ],
     }
-    return render_template('orders/index.html',  data=data)
+
+    return jsonify(response)
 
 
 @orders_routes.route('/process', methods=['POST'])
@@ -100,8 +112,8 @@ def process_order():
 
 
 def get_orders():
-    return FileUtils.get_folders("JobScheduler/orders")
+    return FileUtils.get_folders("JobScheduler/backend/orders")
 
 
 def get_jobs(order_id):
-    return FileUtils.get_folders("JobScheduler/orders/" + order_id + "/jobs")
+    return FileUtils.get_folders("JobScheduler/backend/orders/" + order_id + "/jobs")

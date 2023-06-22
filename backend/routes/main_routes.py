@@ -7,7 +7,6 @@ main_routes = Blueprint('main_routes', __name__, url_prefix='/api')
 @main_routes.route('/data')
 def get_data():
     data = {'message': 'Hola desde el backend de Flask'}
-    print(1111, data)
     return jsonify(data)
 
 
