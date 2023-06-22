@@ -1,0 +1,23 @@
+[
+    {
+        "name": "job1",
+        "package": "processFile.process_file",
+        "class": "ProcessFile",
+        "next": "job2",
+        "error": "error"
+    },
+    {
+        "name": "job2",
+        "package": "processFile.process_file",
+        "class": "ProcessFile",
+        "next": "job3",
+        "error": "error"
+    },
+    {
+        "name": "job3",
+        "package": "sendEmail.send_email",
+        "class": "SendEmail",
+        "next": "success",
+        "error": "error"
+    }
+]

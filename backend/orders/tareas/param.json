@@ -1,0 +1,23 @@
+[
+    {
+        "name": "task1",
+        "package": "com.wlopera.package",
+        "class": "clase-init",
+        "next": "task2",
+        "error": "error"
+    },
+    {
+        "name": "task2",
+        "package": "processFile.process_file",
+        "class": "ProcessFile",
+        "next": "task3",
+        "error": "error"
+    },
+    {
+        "name": "task3",
+        "package": "processFile.process_file222",
+        "class": "CLASE",
+        "next": "success",
+        "error": "error"
+    }
+]
