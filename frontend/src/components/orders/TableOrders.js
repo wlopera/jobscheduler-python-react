@@ -28,66 +28,68 @@ const TableOrders = () => {
     getData();
   }, []);
 
-  // const handleEditRow = (row) => {
-  //   // Lógica para editar la fila
-  //   console.log("Edit row:", row);
-  // };
+  const handleEditRow = (row) => {
+    // Lógica para editar la fila
+    console.log("Edit row:", row);
+  };
 
-  // const handleDeleteRow = async (row) => {
-  //   // Lógica para eliminar la fila
-  //   console.log("Delete row:", row);
-  //   axios
-  //     .post(`http://localhost:5000/api/orders/delete/${row}`)
-  //     .then((response) => {
-  //       // Manejar la respuesta del servidor si es necesario
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       // Manejar errores en caso de que ocurra algún problema con la solicitud
-  //       console.error(error);
-  //     });
-  // };
+  const handleDeleteRow = async (row) => {
+    // Lógica para eliminar la fila
+    console.log("Delete row:", row);
+    axios
+      .post(`http://localhost:5000/api/orders/delete/${row}`)
+      .then((response) => {
+        // Manejar la respuesta del servidor si es necesario
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // Manejar errores en caso de que ocurra algún problema con la solicitud
+        console.error(error);
+      });
+  };
 
-  // const columns_context =
-  //   columns && columns.length > 0
-  //     ? columns.map((column) => {
-  //         if (column.dataField === "button_edit" && column.editable) {
-  //           return {
-  //             ...column,
-  //             headerClasses: "text-center",
-  //             formatter: (cell, row) => (
-  //               <div className="d-flex justify-content-center">
-  //                 <button
-  //                   className="btn btn-primary btn-sm"
-  //                   onClick={() => handleEditRow(row.name)}
-  //                 >
-  //                   <FontAwesomeIcon icon={faEdit} />
-  //                 </button>
-  //               </div>
-  //             ),
-  //           };
-  //         } else if (column.dataField === "button_delete" && column.editable) {
-  //           return {
-  //             ...column,
-  //             headerClasses: "text-center",
-  //             formatter: (cell, row) => (
-  //               <div className="d-flex justify-content-center">
-  //                 <button
-  //                   className="btn btn-primary btn-sm"
-  //                   onClick={() => handleDeleteRow(row.name)}
-  //                 >
-  //                   <FontAwesomeIcon icon={faTrash} />
-  //                 </button>
-  //               </div>
-  //             ),
-  //           };
-  //         } else {
-  //           return { ...column, headerClasses: "text-center" };
-  //         }
-  //       })
-  //     : [];
+  console.log(1111, data, columns);
 
-  console.log(12345, data, columns);
+  const columns_context =
+    columns && columns.length > 0
+      ? columns.map((column) => {
+          if (column.dataField === "button_edit" && column.editable) {
+            return {
+              ...column,
+              headerClasses: "text-center",
+              formatter: (cell, row) => (
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => handleEditRow(row.name)}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                </div>
+              ),
+            };
+          } else if (column.dataField === "button_delete" && column.editable) {
+            return {
+              ...column,
+              headerClasses: "text-center",
+              formatter: (cell, row) => (
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => handleDeleteRow(row.name)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </div>
+              ),
+            };
+          } else {
+            return { ...column, headerClasses: "text-center" };
+          }
+        })
+      : [];
+
+  console.log(12345, data, columns, columns_context);
   return (
     <div className="card">
       <div className="card-header">
@@ -95,25 +97,25 @@ const TableOrders = () => {
           <div className="row">
             <div className="col-md-4">Ordenes</div>
             <div className="col-md-8 d-flex justify-content-end">
-              {/* <button
+              <button
                 className="btn btn-primary btn-sm"
                 onClick={() => handleDeleteRow(row.name)}
               >
                 <FontAwesomeIcon icon={faPlus} />
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div className="card-body">
-        {/* {data.length > 0 && (
+        {data.length > 0 && (
           <BootstrapTable
             keyField="id"
             data={data}
             columns={columns_context}
             classes="table table-striped table-hover"
           />
-        )} */}
+        )}
       </div>
       <div className="card-footer text-muted"></div>
     </div>
