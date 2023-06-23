@@ -1,15 +1,13 @@
 import React from "react";
-import TableOrders from "../orders/TableOrders";
+import ComponentTable from '../table/ComponentTable'
 
 const TemplateOrders = () => {
   return (
-    <div className="container">
-      <div className="row">
-        <div className="row">
-          <div className="col-md-4"><TableOrders /></div>
-          <div className="col-md-4">Tabla de Jobs</div>
-        </div>
+    <div className="row">
+      <div className="col-md-4">
+        <ComponentTable />
       </div>
+      <div className="col-md-4">Tabla de Jobs</div>
     </div>
   );
 };

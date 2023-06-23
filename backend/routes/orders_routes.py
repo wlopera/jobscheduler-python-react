@@ -21,6 +21,44 @@ def orders():
     return jsonify(response)
 
 
+@orders_routes.route('/add/<string:name>', methods=['POST'])
+def add_order(name):
+    FileUtils.create_folder("JobScheduler/backend/orders", name)
+    FileUtils.create_file_json(
+        "JobScheduler/backend/orders/" + name + "/param.json")
+    orders = [{"id": index, "name": valor}
+              for index, valor in enumerate(get_orders())]
+    response = {
+        "data": orders,
+    }
+    return jsonify(response)
+
+
+@orders_routes.route('/modify', methods=['POST'])
+def modify_order():
+    param= request.get_json()
+    print(111, param)
+    print(2222, param['old_value'], param['new_value'])
+    FileUtils.rename_folder("JobScheduler/backend/orders", param['old_value'], param['new_value'])
+    orders = [{"id": index, "name": valor}
+              for index, valor in enumerate(get_orders())]
+    response = {
+        "data": orders,
+    }
+    return jsonify(response)
+
+
+@orders_routes.route('/delete/<string:name>', methods=['POST'])
+def delete_order(name):
+    FileUtils.delete_folder("JobScheduler/backend/orders/"+name)
+    orders = [{"id": index, "name": valor}
+              for index, valor in enumerate(get_orders())]
+    response = {
+        "data": orders,
+    }
+    return jsonify(response)
+
+
 @orders_routes.route('/selected')
 def selected_order():
     order_id = request.args.get('order_id')
@@ -30,78 +68,6 @@ def selected_order():
         'jobs': get_jobs(order_id),
     }
     return render_template('orders/index.html',  data=data)
-
-
-@orders_routes.route('/showModal', methods=['POST'])
-def show_modal():
-    if 'order_id' in request.form:
-        order_id = request.form['order_id']
-        data = {
-            'order_id': order_id,
-            'orders': get_orders(),
-            'jobs': get_jobs(order_id),
-            'show_modal_order': True,
-            'type': 'MODIFY'
-        }
-        return render_template('orders/index.html', data=data)
-    else:
-        orders = get_orders()
-        data = {
-            'order_id': "",
-            'orders': orders,
-            'jobs': get_jobs(orders[0]),
-            'show_modal_order': True,
-            'type': 'ADD'
-        }
-        return render_template('orders/index.html',  data=data)
-
-
-@orders_routes.route('/delete/<string:order_id>', methods=['POST'])
-def delete_order(order_id):
-    FileUtils.delete_folder("JobScheduler/backend/orders/"+order_id)
-    orders = [{"id": index, "name": valor}
-              for index, valor in enumerate(get_orders())]
-    response = {
-        "data": orders,        
-    }
-
-    return jsonify(response)
-
-
-@orders_routes.route('/process', methods=['POST'])
-def process_order():
-    action = request.form['action']
-    type = request.form['txtType']
-    order_id = request.form['txtName']
-    old_order = request.form['old_order']
-
-    print("action: ", action)
-    print("type: ", type)
-    print("order_id: ", order_id)
-    if action == "CANCEL":
-        if order_id:
-            data = {
-                'order_id': order_id,
-                'orders': get_orders(),
-                'jobs': get_jobs(order_id),
-            }
-            return render_template('orders/index.html',  data=data)
-        else:
-            return orders()
-    else:
-        if type == "ADD":
-            FileUtils.create_folder("JobScheduler/orders", order_id)
-            FileUtils.create_file_json(
-                "JobScheduler/orders/" + order_id + "/param.json")
-        else:
-            FileUtils.rename_folder("JobScheduler/orders", old_order, order_id)
-
-        data = {
-            'order_id': order_id,
-            'orders': get_orders(),
-            'jobs': get_jobs(order_id),
-        }
-        return render_template('orders/index.html',  data=data)
 
 
 def get_orders():
