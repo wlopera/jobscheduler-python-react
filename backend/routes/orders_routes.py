@@ -58,18 +58,11 @@ def show_modal():
 
 @orders_routes.route('/delete/<string:order_id>', methods=['POST'])
 def delete_order(order_id):
-    print(1111, order_id)
-    #FileUtils.delete_folder("JobScheduler/orders/"+order_id)
+    FileUtils.delete_folder("JobScheduler/backend/orders/"+order_id)
     orders = [{"id": index, "name": valor}
               for index, valor in enumerate(get_orders())]
     response = {
-        "button_add": True,
-        "data": orders,
-        "columns": [
-            {"dataField": "name", "text": ""},
-            {"dataField": "button_edit",  "text": "", "editable": True},
-            {"dataField": "button_delete", "text": "", "editable": True},
-        ],
+        "data": orders,        
     }
 
     return jsonify(response)

@@ -5,21 +5,14 @@ import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const TableOrders = () => {
-  const [data, setData] = useState([]);
-  const [columns, setColumns] = useState([]);
+  const [dataTable, setDataTable] = useState({});
 
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/orders");
         const jsonData = await response.json();
-
-        console.log("Data: ", jsonData.data);
-        console.log("Columns: ", jsonData.columns);
-        console.log(123, jsonData.columns)
-        setColumns(jsonData.columns);
-        setData(jsonData.data);
-        console.log(678, jsonData.columns)
+        setDataTable(jsonData);
       } catch (error) {
         console.log(error);
       }
@@ -39,8 +32,7 @@ const TableOrders = () => {
     axios
       .post(`http://localhost:5000/api/orders/delete/${row}`)
       .then((response) => {
-        // Manejar la respuesta del servidor si es necesario
-        console.log(response.data);
+        setDataTable(prevData=> ({ ...prevData, ...response.data }))
       })
       .catch((error) => {
         // Manejar errores en caso de que ocurra algún problema con la solicitud
@@ -48,11 +40,11 @@ const TableOrders = () => {
       });
   };
 
-  console.log(1111, data, columns);
+  console.log(1111, dataTable);
 
   const columns_context =
-    columns && columns.length > 0
-      ? columns.map((column) => {
+      dataTable.columns && dataTable.columns.length > 0
+      ? dataTable.columns.map((column) => {
           if (column.dataField === "button_edit" && column.editable) {
             return {
               ...column,
@@ -89,7 +81,7 @@ const TableOrders = () => {
         })
       : [];
 
-  console.log(12345, data, columns, columns_context);
+  console.log(12345, dataTable, columns_context);
   return (
     <div className="card">
       <div className="card-header">
@@ -108,10 +100,10 @@ const TableOrders = () => {
         </div>
       </div>
       <div className="card-body">
-        {data.length > 0 && (
+        {dataTable.data && dataTable.data.length > 0 && (
           <BootstrapTable
             keyField="id"
-            data={data}
+            data={dataTable.data}
             columns={columns_context}
             classes="table table-striped table-hover"
           />
