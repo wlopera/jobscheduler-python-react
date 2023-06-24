@@ -28,6 +28,9 @@ def add_order(name):
         "JobScheduler/backend/orders/" + name + "/param.json")
     orders = [{"id": index, "name": valor}
               for index, valor in enumerate(get_orders())]
+    data = list(filter(
+        lambda item: "name" in item and item["name"] == name, orders))
+    orders[data[0]['id']]["active"] = True
     response = {
         "data": orders,
     }
@@ -36,12 +39,15 @@ def add_order(name):
 
 @orders_routes.route('/modify', methods=['POST'])
 def modify_order():
-    param= request.get_json()
-    print(111, param)
-    print(2222, param['old_value'], param['new_value'])
-    FileUtils.rename_folder("JobScheduler/backend/orders", param['old_value'], param['new_value'])
+    param = request.get_json()
+    FileUtils.rename_folder("JobScheduler/backend/orders",
+                            param['old_value'], param['new_value'])
     orders = [{"id": index, "name": valor}
               for index, valor in enumerate(get_orders())]
+    data = list(filter(
+        lambda item: "name" in item and item["name"] == param['new_value'], orders))
+    orders[data[0]['id']]["active"] = True
+
     response = {
         "data": orders,
     }

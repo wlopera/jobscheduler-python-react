@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import BootstrapTable from "react-bootstrap-table-next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./ComponentTable.css";
 
 import ModalComponent from "../modal/ModalComponent";
 
-const TableOrders = () => {
+const ComponentTable = () => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
   const [show, setShow] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -54,6 +54,15 @@ const TableOrders = () => {
     axios
       .post(`http://localhost:5000/api/orders/add/${input}`)
       .then((response) => {
+        const arr = Object.entries(response.data.data).map(([key, value]) => {
+          return { key, value };
+        });
+
+        arr.forEach((item) => {
+          if (item.value.active) {
+            setSelectedRow(item.value.id);
+          }
+        });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
       })
       .catch((error) => {
@@ -81,6 +90,7 @@ const TableOrders = () => {
     axios
       .post(`http://localhost:5000/api/orders/delete/${row}`)
       .then((response) => {
+        setSelectedRow(null);
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
       })
       .catch((error) => {
@@ -89,51 +99,11 @@ const TableOrders = () => {
       });
   };
 
-  const selectRow = {
-    mode: 'checkbox',
-    clickToSelect: true,
-    style: { backgroundColor: '#c8e6c9' }
+  const handleClick = (id) => {
+    setSelectedRow(id);
   };
-  
-  const columns_context =
-    dataTable.columns && dataTable.columns.length > 0
-      ? dataTable.columns.map((column) => {
-          if (column.dataField === "button_edit" && column.editable) {
-            return {
-              ...column,
-              headerClasses: "text-center",
-              formatter: (cell, row) => (
-                <div className="d-flex justify-content-center">
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => modifyRow(row.name)}
-                  >
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
-                </div>
-              ),
-            };
-          } else if (column.dataField === "button_delete" && column.editable) {
-            return {
-              ...column,
-              headerClasses: "text-center",
-              formatter: (cell, row) => (
-                <div className="d-flex justify-content-center">
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={() => handleDeleteRow(row.name)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </div>
-              ),
-            };
-          } else {
-            return { ...column, headerClasses: "text-center" };
-          }
-        })
-      : [];
 
+  console.log(1111, dataTable);
   return (
     <div>
       <div className="card">
@@ -144,10 +114,10 @@ const TableOrders = () => {
               {dataTable.button_add && (
                 <div className="col-md-8 d-flex justify-content-end">
                   <button
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-light btn-sm ml-2 "
                     onClick={() => addRow()}
                   >
-                    <FontAwesomeIcon icon={faPlus} />
+                    <i className="bi bi-plus-square-fill icon_table"></i>
                   </button>
                 </div>
               )}
@@ -155,15 +125,44 @@ const TableOrders = () => {
           </div>
         </div>
         <div className="card-body">
-          {dataTable.data && dataTable.data.length > 0 && (
-            <BootstrapTable
-              keyField="id"
-              data={dataTable.data}
-              columns={columns_context}
-              classes="table table-striped table-hover"
-              selectRow={ selectRow }
-            />
-          )}
+          <table id="myTable" className="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataTable.data &&
+                dataTable.data.map((item) => (
+                  <tr
+                    key={item.id}
+                    className={
+                      selectedRow === item.id
+                        ? "table-primary"
+                        : ""
+                    }
+                    onClick={() => handleClick(item.id)}
+                  >
+                    <td>{item.name}</td>
+                    <td>
+                      <button
+                        className="btn btn-light btn-sm"
+                        onClick={() => modifyRow(item.name)}
+                      >
+                        <i className="bi bi-pencil-square icon_table"></i>
+                      </button>{" "}
+                      <button
+                        className="btn btn-light btn-sm ml-2"
+                        onClick={() => handleDeleteRow(item.name)}
+                      >
+                        <i className="bi bi-trash-fill icon_table"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
         <div className="card-footer text-muted"></div>
       </div>
@@ -179,4 +178,4 @@ const TableOrders = () => {
   );
 };
 
-export default TableOrders;
+export default ComponentTable;
