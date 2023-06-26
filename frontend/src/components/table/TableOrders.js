@@ -13,7 +13,12 @@ import {
   API_ORDER,
 } from "../utils/Constants";
 
-const TableOrders = ({onOrderId}) => {
+const TableOrders = ({
+  onOrderId,
+  addButton = false,
+  editButton = false,
+  deleteButton = false,
+}) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
   const [show, setShow] = useState(false);
@@ -47,7 +52,6 @@ const TableOrders = ({onOrderId}) => {
   };
 
   const handleProcessRow = async (newRow, type) => {
-    console.log("Add row:", newRow, type);
     handleSetShow();
 
     if (type === "ADD") {
@@ -71,7 +75,7 @@ const TableOrders = ({onOrderId}) => {
           }
         });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        onOrderId("")
+        onOrderId(input)
       })
       .catch((error) => {
         console.error(error);
@@ -85,7 +89,17 @@ const TableOrders = ({onOrderId}) => {
         new_value,
       })
       .then((response) => {
+        const arr = Object.entries(response.data.data).map(([key, value]) => {
+          return { key, value };
+        });
+
+        arr.forEach((item) => {
+          if (item.value.active) {
+            setSelectedRow(item.value.id);
+          }
+        });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
+        onOrderId(new_value)
       })
       .catch((error) => {
         console.error(error);
@@ -93,14 +107,12 @@ const TableOrders = ({onOrderId}) => {
   };
 
   const handleDeleteRow = async (row) => {
-    // Lógica para eliminar la fila
-    console.log("Delete row:", row);
     axios
       .post(`${URL_BASE}/${API_ORDER}/delete/${row}`)
       .then((response) => {
         setSelectedRow(null);
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        onOrderId("")
+        onOrderId("");
       })
       .catch((error) => {
         // Manejar errores en caso de que ocurra algún problema con la solicitud
@@ -109,7 +121,7 @@ const TableOrders = ({onOrderId}) => {
   };
 
   const handleClick = (id, name) => {
-    onOrderId(name)
+    onOrderId(name);
     setSelectedRow(id);
   };
 
@@ -120,7 +132,7 @@ const TableOrders = ({onOrderId}) => {
           <div className="row">
             <div className="row">
               <div className="col-md-4">{TITLE_ORDER}</div>
-              {dataTable.button_add && (
+              {addButton && (
                 <div className="col-md-8 d-flex justify-content-end">
                   <button
                     className="btn btn-light btn-sm ml-2 "
@@ -151,18 +163,22 @@ const TableOrders = ({onOrderId}) => {
                   >
                     <td>{item.name}</td>
                     <td>
-                      <button
-                        className="btn btn-light btn-sm"
-                        onClick={() => modifyRow(item.name)}
-                      >
-                        <i className="bi bi-pencil-square icon_table"></i>
-                      </button>{" "}
-                      <button
-                        className="btn btn-light btn-sm ml-2"
-                        onClick={() => handleDeleteRow(item.name)}
-                      >
-                        <i className="bi bi-trash-fill icon_table"></i>
-                      </button>
+                      {editButton && (
+                        <button
+                          className="btn btn-light btn-sm"
+                          onClick={() => modifyRow(item.name)}
+                        >
+                          <i className="bi bi-pencil-square icon_table"></i>
+                        </button>
+                      )}{" "}
+                      {deleteButton && (
+                        <button
+                          className="btn btn-light btn-sm ml-2"
+                          onClick={() => handleDeleteRow(item.name)}
+                        >
+                          <i className="bi bi-trash-fill icon_table"></i>
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

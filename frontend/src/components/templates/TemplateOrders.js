@@ -8,10 +8,20 @@ const TemplateOrders = () => {
   return (
     <div className="row">
       <div className="col-md-4">
-        <TableOrders onOrderId={setOrderId} />
+        <TableOrders
+          onOrderId={setOrderId}
+          addButton={true}
+          editButton={true}
+          deleteButton={true}
+        />
       </div>
       <div className="col-md-4">
-        <TableJobs orderId={orderId} />
+        <TableJobs
+          orderId={orderId}
+          addButton={true}
+          editButton={true}
+          deleteButton={true}
+        />
       </div>
     </div>
   );

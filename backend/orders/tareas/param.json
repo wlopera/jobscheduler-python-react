@@ -1,9 +1,16 @@
 [
     {
-        "name": "Prueba",
-        "package": "",
-        "class": "",
-        "next": "success",
+        "name": "job1",
+        "package": "processFile.process_file",
+        "class": "ProcessFile",
+        "next": "job2",
+        "error": "error"
+    },
+    {
+        "name": "job2",
+        "package": "processFile.process_file",
+        "class": "ProcessFile",
+        "next": "job3",
         "error": "error"
     }
 ]

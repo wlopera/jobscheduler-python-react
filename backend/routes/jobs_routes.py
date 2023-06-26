@@ -6,15 +6,16 @@ jobs_routes = Blueprint('jobs_routes', __name__, url_prefix='/api/jobs')
 
 @jobs_routes.route('/<string:name>', methods=['POST'])
 def jobs(name):
-    jobs = [{"id": index, "name": valor}
-            for index, valor in enumerate(get_jobs(name))]
+    print(11111, name)
+    jobs = []
+    
+    if name != '':
+        jobs = [{"id": index, "name": valor}
+                for index, valor in enumerate(get_jobs(name))]
     response = {
-        "button_add": True,
         "data": jobs,
         "columns": [
-            {"dataField": "name", "text": ""},
-            {"dataField": "button_edit",  "text": "", "editable": True},
-            {"dataField": "button_delete", "text": "", "editable": True},
+            {"dataField": "name", "text": ""}
         ],
     }
     return jsonify(response)

@@ -13,13 +13,19 @@ import {
   API_JOBS,
 } from "../utils/Constants";
 
-const TableJobs = ({ orderId }) => {
+const TableJobs = ({
+  orderId,
+  addButton = false,
+  editButton = false,
+  deleteButton = false,
+}) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
   const [show, setShow] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
+    console.log(111111111111111, orderId, dataTable);
     const getData = async () => {
       axios
         .post(`${URL_BASE}/${API_JOBS}/${orderId}`)
@@ -32,7 +38,9 @@ const TableJobs = ({ orderId }) => {
           console.error(error);
         });
     };
-
+    if (orderId === "") {
+      setDataTable((prevData) => ({ ...prevData, data: [] }));
+    }
     if (orderId) {
       getData();
     }
@@ -127,7 +135,7 @@ const TableJobs = ({ orderId }) => {
           <div className="row">
             <div className="row">
               <div className="col-md-4">{TITLE_JOB}</div>
-              {dataTable.button_add && (
+              {addButton && (
                 <div className="col-md-8 d-flex justify-content-end">
                   <button
                     className="btn btn-light btn-sm ml-2 "
@@ -158,18 +166,22 @@ const TableJobs = ({ orderId }) => {
                   >
                     <td>{item.name}</td>
                     <td>
-                      <button
-                        className="btn btn-light btn-sm"
-                        onClick={() => modifyRow(item.name)}
-                      >
-                        <i className="bi bi-pencil-square icon_table"></i>
-                      </button>{" "}
-                      <button
-                        className="btn btn-light btn-sm ml-2"
-                        onClick={() => handleDeleteRow(item.name)}
-                      >
-                        <i className="bi bi-trash-fill icon_table"></i>
-                      </button>
+                      {editButton && (
+                        <button
+                          className="btn btn-light btn-sm"
+                          onClick={() => modifyRow(item.name)}
+                        >
+                          <i className="bi bi-pencil-square icon_table"></i>
+                        </button>
+                      )} {" "}
+                      {deleteButton && (
+                        <button
+                          className="btn btn-light btn-sm ml-2"
+                          onClick={() => handleDeleteRow(item.name)}
+                        >
+                          <i className="bi bi-trash-fill icon_table"></i>
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

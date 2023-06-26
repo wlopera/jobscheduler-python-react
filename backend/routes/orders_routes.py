@@ -9,12 +9,9 @@ def orders():
     orders = [{"id": index, "name": valor}
               for index, valor in enumerate(get_orders())]
     response = {
-        "button_add": True,
         "data": orders,
         "columns": [
             {"dataField": "name", "text": ""},
-            {"dataField": "button_edit",  "text": "", "editable": True},
-            {"dataField": "button_delete", "text": "", "editable": True},
         ],
     }
 
@@ -63,6 +60,7 @@ def delete_order(name):
         "data": orders,
     }
     return jsonify(response)
+
 
 def get_orders():
     return FileUtils.get_folders("JobScheduler/backend/orders")
