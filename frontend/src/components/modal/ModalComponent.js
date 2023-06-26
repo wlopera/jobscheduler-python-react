@@ -14,7 +14,8 @@ const ModalComponent = ({
 
   useEffect(() => {
     setInputValue(value);
-  }, [value]);
+  }, [value, show]);
+  
 
   const handleValue = (input) => {
     setDisabled(input.trim().length > 0 ? false : true);
@@ -23,6 +24,15 @@ const ModalComponent = ({
 
   const handleProcess = () => {
     processModal(inputValue, type);
+  };
+
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !disabled) {
+      handleProcess();
+    } else if (e.key === "Escape") {
+      showModal();
+    }
   };
 
   const type = value ? "MODIFY" : "ADD";
@@ -42,6 +52,8 @@ const ModalComponent = ({
               placeholder={placeHolder}
               value={inputValue || ""}
               onChange={(e) => handleValue(e.target.value)}
+              autoFocus
+              onKeyDown={handleKeyPress}
             />
           </div>
         </Modal.Body>

@@ -18,6 +18,7 @@ const TableJobs = ({
   addButton = false,
   editButton = false,
   deleteButton = false,
+  setMessage
 }) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
@@ -46,15 +47,18 @@ const TableJobs = ({
   }, [orderId]);
 
   const handleSetShow = () => {
-    setShow((previusShow) => !previusShow);
+    setRow("");
+    setShow(false);
   };
 
   const addRow = () => {
+    setMessage({type:""})
     setRow("");
     setShow(true);
   };
 
   const modifyRow = (input) => {
+    setMessage({type:""})
     setRow(input);
     setShow(true);
   };
@@ -70,6 +74,7 @@ const TableJobs = ({
   };
 
   const processAddRow = async (input) => {
+    setMessage({type:"LOADING", text:"Procesando..."})
     axios
       .post(`${URL_BASE}/${API_JOBS}/add`, {
         order_id: orderId,
@@ -86,29 +91,16 @@ const TableJobs = ({
           }
         });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
+        setMessage({type:"SUCCESS", text:"Tarea agregada satisfactoriamente."})
       })
       .catch((error) => {
         console.error(error);
-      });
-  };
-
-  const handleDeleteRow = async (row) => {
-    axios
-      .post(`${URL_BASE}/${API_JOBS}/delete`, {
-        order_id: orderId,
-        job_id: row,
-      })
-      .then((response) => {
-        setSelectedRow(null);
-        setDataTable((prevData) => ({ ...prevData, ...response.data }));
-      })
-      .catch((error) => {
-        // Manejar errores en caso de que ocurra algún problema con la solicitud
-        console.error(error);
+        setMessage({type:"ERROR", text:"Error tratando de crear una tarea."})
       });
   };
 
   const processModifyRow = async (old_value, new_value) => {
+    setMessage({type:"LOADING", text:"Procesando..."})
     axios
       .post(`${URL_BASE}/${API_JOBS}/modify`, {
         order_id: orderId,
@@ -126,9 +118,31 @@ const TableJobs = ({
           }
         });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
+        setMessage({type:"SUCCESS", text:"Tarea modificada satisfactoriamente."})
       })
       .catch((error) => {
         console.error(error);
+        setMessage({type:"ERROR", text:"Error tratando de modificar la tarea."})
+      });
+  };
+
+
+  const handleDeleteRow = async (row) => {
+    setMessage({type:"LOADING", text:"Procesando..."})
+    axios
+      .post(`${URL_BASE}/${API_JOBS}/delete`, {
+        order_id: orderId,
+        job_id: row,
+      })
+      .then((response) => {
+        setSelectedRow(null);
+        setDataTable((prevData) => ({ ...prevData, ...response.data }));
+        setMessage({type:"SUCCESS", text:"Tarea eliminada satisfactoriamente."})
+      })
+      .catch((error) => {
+        // Manejar errores en caso de que ocurra algún problema con la solicitud
+        console.error(error);
+        setMessage({type:"ERROR", text:"Error tratando de eliminar la tarea."})
       });
   };
 
@@ -157,44 +171,46 @@ const TableJobs = ({
           </div>
         </div>
         <div className="card-body">
-          <table id="myTable" className="table table-hover">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataTable.data &&
-                dataTable.data.map((item) => (
-                  <tr
-                    key={item.id}
-                    className={selectedRow === item.id ? "table-primary" : ""}
-                    onClick={() => handleClick(item.id, item.name)}
-                  >
-                    <td>{item.name}</td>
-                    <td>
-                      {editButton && (
-                        <button
-                          className="btn btn-light btn-sm"
-                          onClick={() => modifyRow(item.name)}
-                        >
-                          <i className="bi bi-pencil-square icon_table"></i>
-                        </button>
-                      )} {" "}
-                      {deleteButton && (
-                        <button
-                          className="btn btn-light btn-sm ml-2"
-                          onClick={() => handleDeleteRow(item.name)}
-                        >
-                          <i className="bi bi-trash-fill icon_table"></i>
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <div className="widthClass">
+            <table id="myTable" className="table table-hover">
+              <thead>
+                <tr>
+                  <th style={{ width: "100px" }}>ID</th>
+                  <th style={{ width: "100px" }}>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dataTable.data &&
+                  dataTable.data.map((item) => (
+                    <tr
+                      key={item.id}
+                      className={selectedRow === item.id ? "table-primary" : ""}
+                      onClick={() => handleClick(item.id, item.name)}
+                    >
+                      <td>{item.name}</td>
+                      <td>
+                        {editButton && (
+                          <button
+                            className="btn btn-light btn-sm"
+                            onClick={() => modifyRow(item.name)}
+                          >
+                            <i className="bi bi-pencil-square icon_table"></i>
+                          </button>
+                        )}{" "}
+                        {deleteButton && (
+                          <button
+                            className="btn btn-light btn-sm ml-2"
+                            onClick={() => handleDeleteRow(item.name)}
+                          >
+                            <i className="bi bi-trash-fill icon_table"></i>
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="card-footer text-muted"></div>
       </div>

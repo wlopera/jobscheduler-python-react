@@ -6,3 +6,8 @@
 #myTable .selected-row {
     background-color: #c10d0d !important; /* Color de fondo del row seleccionado */
   }
+
+  .widthClass{
+    max-height: 400px;
+    overflow-y: auto
+}
