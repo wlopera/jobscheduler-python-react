@@ -25,7 +25,6 @@ const TableJobs = ({
   const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
-    console.log(111111111111111, orderId, dataTable);
     const getData = async () => {
       axios
         .post(`${URL_BASE}/${API_JOBS}/${orderId}`)
@@ -117,6 +116,15 @@ const TableJobs = ({
         new_value,
       })
       .then((response) => {
+        const arr = Object.entries(response.data.data).map(([key, value]) => {
+          return { key, value };
+        });
+
+        arr.forEach((item) => {
+          if (item.value.active) {
+            setSelectedRow(item.value.id);
+          }
+        });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
       })
       .catch((error) => {

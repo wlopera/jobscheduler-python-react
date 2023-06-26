@@ -70,6 +70,11 @@ def modify_job():
 
     jobs = [{"id": index, "name": valor}
             for index, valor in enumerate(get_jobs(order_id))]
+    
+    data = list(filter(
+        lambda item: "name" in item and item["name"] == new_job, jobs))
+
+    jobs[data[0]['id']]["active"] = True
 
     response = {
         "data": jobs,
