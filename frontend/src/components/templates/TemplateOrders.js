@@ -1,13 +1,18 @@
-import React from "react";
-import ComponentTable from '../table/ComponentTable'
+import React, { useState } from "react";
+import TableOrders from "../table/TableOrders";
+import TableJobs from "../table/TableJobs";
 
 const TemplateOrders = () => {
+  const [orderId, setOrderId] = useState(null);
+
   return (
     <div className="row">
       <div className="col-md-4">
-        <ComponentTable />
+        <TableOrders onOrderId={setOrderId} />
       </div>
-      <div className="col-md-4">Tabla de Jobs</div>
+      <div className="col-md-4">
+        <TableJobs orderId={orderId} />
+      </div>
     </div>
   );
 };

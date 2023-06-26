@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, request, jsonify
 from util.file_utils import FileUtils
 
 orders_routes = Blueprint('orders_routes', __name__, url_prefix='/api/orders')
@@ -63,18 +63,6 @@ def delete_order(name):
         "data": orders,
     }
     return jsonify(response)
-
-
-@orders_routes.route('/selected')
-def selected_order():
-    order_id = request.args.get('order_id')
-    data = {
-        'order_id': order_id,
-        'orders': get_orders(),
-        'jobs': get_jobs(order_id),
-    }
-    return render_template('orders/index.html',  data=data)
-
 
 def get_orders():
     return FileUtils.get_folders("JobScheduler/backend/orders")

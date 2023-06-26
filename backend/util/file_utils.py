@@ -45,14 +45,11 @@ class FileUtils:
 
     # ------------- Operar sobre archivos Json
     @staticmethod
-    def remove_job_by_position(path, position):
-        with open(path, 'r+') as file:
-            data = json.load(file)
-            if position < len(data):
-                del data[position]
-                file.seek(0)
-                json.dump(data, file, indent=4)
-                file.truncate()
+    def create_file_json(path_file):
+        # Crear un archivo de configuracion
+        with open(path_file, 'w') as file:
+            # Escribir el diccionario vacío en el archivo como JSON
+            json.dump([], file)
 
     @staticmethod
     def add_job_at_position(path, obj, position):
@@ -72,7 +69,30 @@ class FileUtils:
             file.seek(0)
             json.dump(data, file, indent=4)
             file.truncate()
-            
+
+    @staticmethod
+    def modify_job(path, old_name, new_name):
+        print(1111, path, old_name, new_name)
+        with open(path, 'r+') as file:
+            data = json.load(file)
+            for job in data:
+                if job.get('name') == old_name:
+                    job['name'] = new_name
+                    break
+            file.seek(0)
+            json.dump(data, file, indent=4)
+            file.truncate()
+
+    @staticmethod
+    def remove_job_by_position(path, position):
+        with open(path, 'r+') as file:
+            data = json.load(file)
+            if position < len(data):
+                del data[position]
+                file.seek(0)
+                json.dump(data, file, indent=4)
+                file.truncate()
+
     @staticmethod
     def remove_jobs_by_name(path, name):
         with open(path, 'r+') as file:
@@ -81,10 +101,3 @@ class FileUtils:
             file.seek(0)
             json.dump(data, file, indent=4)
             file.truncate()
-        
-    @staticmethod
-    def create_file_json(path_file):
-        # Crear un archivo de configuracion
-        with open(path_file, 'w') as file:
-            # Escribir el diccionario vacío en el archivo como JSON
-            json.dump([], file)

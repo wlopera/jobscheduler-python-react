@@ -1,0 +1,8 @@
+.icon_table{
+    font-size: 1.5rem;
+    color : #2436F2
+}
+
+#myTable .selected-row {
+    background-color: #c10d0d !important; /* Color de fondo del row seleccionado */
+  }

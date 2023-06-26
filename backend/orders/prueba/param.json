@@ -1,0 +1,16 @@
+[
+    {
+        "name": "data1",
+        "package": "",
+        "class": "",
+        "next": "success",
+        "error": "error"
+    },
+    {
+        "name": "data2",
+        "package": "",
+        "class": "",
+        "next": "success",
+        "error": "error"
+    }
+]

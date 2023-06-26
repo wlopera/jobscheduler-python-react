@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./ComponentTable.css";
+import "./TableOrders.css";
 
 import ModalComponent from "../modal/ModalComponent";
+import {
+  URL_BASE,
+  TITLE_ORDER,
+  ADD_TITLE_ORDER,
+  MODIFY_TITLE_ORDER,
+  PLACEHOLDER_ORDER,
+  API_ORDER,
+} from "../utils/Constants";
 
-const ComponentTable = () => {
+const TableOrders = ({onOrderId}) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
   const [show, setShow] = useState(false);
@@ -14,14 +22,13 @@ const ComponentTable = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/orders");
+        const response = await fetch(`${URL_BASE}/${API_ORDER}`);
         const jsonData = await response.json();
         setDataTable(jsonData);
       } catch (error) {
         console.log(error);
       }
     };
-
     getData();
   }, []);
 
@@ -52,7 +59,7 @@ const ComponentTable = () => {
 
   const processAddRow = async (input) => {
     axios
-      .post(`http://localhost:5000/api/orders/add/${input}`)
+      .post(`${URL_BASE}/${API_ORDER}/add/${input}`)
       .then((response) => {
         const arr = Object.entries(response.data.data).map(([key, value]) => {
           return { key, value };
@@ -64,6 +71,7 @@ const ComponentTable = () => {
           }
         });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
+        onOrderId("")
       })
       .catch((error) => {
         console.error(error);
@@ -72,7 +80,7 @@ const ComponentTable = () => {
 
   const processModifyRow = async (old_value, new_value) => {
     axios
-      .post("http://localhost:5000/api/orders/modify", {
+      .post(`${URL_BASE}/${API_ORDER}/modify`, {
         old_value,
         new_value,
       })
@@ -88,10 +96,11 @@ const ComponentTable = () => {
     // Lógica para eliminar la fila
     console.log("Delete row:", row);
     axios
-      .post(`http://localhost:5000/api/orders/delete/${row}`)
+      .post(`${URL_BASE}/${API_ORDER}/delete/${row}`)
       .then((response) => {
         setSelectedRow(null);
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
+        onOrderId("")
       })
       .catch((error) => {
         // Manejar errores en caso de que ocurra algún problema con la solicitud
@@ -99,18 +108,18 @@ const ComponentTable = () => {
       });
   };
 
-  const handleClick = (id) => {
+  const handleClick = (id, name) => {
+    onOrderId(name)
     setSelectedRow(id);
   };
 
-  console.log(1111, dataTable);
   return (
     <div>
       <div className="card">
         <div className="card-header">
           <div className="row">
             <div className="row">
-              <div className="col-md-4">Ordenes</div>
+              <div className="col-md-4">{TITLE_ORDER}</div>
               {dataTable.button_add && (
                 <div className="col-md-8 d-flex justify-content-end">
                   <button
@@ -129,7 +138,7 @@ const ComponentTable = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Actions</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -137,12 +146,8 @@ const ComponentTable = () => {
                 dataTable.data.map((item) => (
                   <tr
                     key={item.id}
-                    className={
-                      selectedRow === item.id
-                        ? "table-primary"
-                        : ""
-                    }
-                    onClick={() => handleClick(item.id)}
+                    className={selectedRow === item.id ? "table-primary" : ""}
+                    onClick={() => handleClick(item.id, item.name)}
                   >
                     <td>{item.name}</td>
                     <td>
@@ -167,8 +172,8 @@ const ComponentTable = () => {
         <div className="card-footer text-muted"></div>
       </div>
       <ModalComponent
-        title={row.length === 0 ? "Agregar Orden" : "Modificar Orden"}
-        placeHolder="Introducir la orden"
+        title={row.length === 0 ? ADD_TITLE_ORDER : MODIFY_TITLE_ORDER}
+        placeHolder={PLACEHOLDER_ORDER}
         show={show}
         showModal={handleSetShow}
         processModal={handleProcessRow}
@@ -178,4 +183,4 @@ const ComponentTable = () => {
   );
 };
 
-export default ComponentTable;
+export default TableOrders;
