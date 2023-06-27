@@ -27,6 +27,7 @@ def jobs(name):
 @jobs_routes.route('/add', methods=['POST'])
 def add_job():
     try:
+        resul = 1/0
         param = request.get_json()
         order_id = param['order_id']
         job_id = param['job_id']

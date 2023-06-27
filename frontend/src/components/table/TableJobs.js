@@ -17,8 +17,9 @@ const TableJobs = ({
   addButton = false,
   editButton = false,
   deleteButton = false,
-  setMessage,
+  setMessageJob,
   onLoading,
+  textFooter,
 }) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
@@ -26,19 +27,19 @@ const TableJobs = ({
   const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
-    setMessage({ type: "LOADING", text: "Cargando..." });
-    onLoading(true);
     const getData = async () => {
-      const response = await service.get(orderId, "Tareas");
+      setMessageJob({ type: "LOADING", text: "Cargando Tareas..." });
+      onLoading(true);
+      const response = await service.get(orderId);
       console.log("Consultar Tareas:", response);
       if (response.code === 200) {
         setDataTable({ columns: response.columns, data: response.data });
       }
-      setMessage(response.alert);
+      setMessageJob(response.alert);
       onLoading(false);
     };
     if (orderId === "") {
-      onLoading(false);
+      setMessageJob(null);
       setDataTable((prevData) => ({ ...prevData, data: [] }));
     } else if (orderId) {
       getData();
@@ -46,15 +47,12 @@ const TableJobs = ({
   }, [orderId]);
 
   const processAddRow = async (input) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
+    setMessageJob({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.create(
-      {
-        order_id: orderId,
-        job_id: input,
-      },
-      "Tarea"
-    );
+    const response = await service.create({
+      order_id: orderId,
+      job_id: input,
+    });
     console.log("Agregar tarea:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
@@ -68,21 +66,18 @@ const TableJobs = ({
       });
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
     }
-    setMessage(response.alert);
+    setMessageJob(response.alert);
     onLoading(false);
   };
 
   const processModifyRow = async (old_value, new_value) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
+    setMessageJob({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.update(
-      {
-        order_id: orderId,
-        old_value,
-        new_value,
-      },
-      "Tarea"
-    );
+    const response = await service.update({
+      order_id: orderId,
+      old_value,
+      new_value,
+    });
     console.log("Modificar Tarea:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
@@ -96,26 +91,23 @@ const TableJobs = ({
       });
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
     }
-    setMessage(response.alert);
+    setMessageJob(response.alert);
     onLoading(false);
   };
 
   const handleDeleteRow = async (row) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
+    setMessageJob({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.delete(
-      {
-        order_id: orderId,
-        job_id: row,
-      },
-      "Tarea"
-    );
+    const response = await service.delete({
+      order_id: orderId,
+      job_id: row,
+    });
     console.log("Eliminar tarea:", response);
     if (response.code === 200) {
       setSelectedRow(null);
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
     }
-    setMessage(response.alert);
+    setMessageJob(response.alert);
     onLoading(false);
   };
 
@@ -125,13 +117,13 @@ const TableJobs = ({
   };
 
   const addRow = () => {
-    setMessage({ type: "" });
+    setMessageJob({ type: "" });
     setRow("");
     setShow(true);
   };
 
   const modifyRow = (input) => {
-    setMessage({ type: "" });
+    setMessageJob({ type: "" });
     setRow(input);
     setShow(true);
   };
@@ -147,6 +139,7 @@ const TableJobs = ({
   };
 
   const handleClick = (id, name) => {
+    setMessageJob(null);
     setSelectedRow(id);
   };
 
@@ -212,7 +205,17 @@ const TableJobs = ({
             </table>
           </div>
         </div>
-        <div className="card-footer text-muted"></div>
+        <div className="card-footer">
+          <p
+            className={
+              textFooter && textFooter.type === "ERROR"
+                ? "text-danger fs-6"
+                : "text-primary fs-6"
+            }
+          >
+            {textFooter ? textFooter.text : ""}
+          </p>
+        </div>
       </div>
       <ModalComponent
         title={row.length === 0 ? ADD_TITLE_JOB : MODIFY_TITLE_JOB}

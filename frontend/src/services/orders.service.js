@@ -3,7 +3,7 @@ import http from "./axios/http-common";
 const PATH_API = "/orders";
 
 class OrdersService {
-  get(text) {
+  get() {
     try {
       return http.get(PATH_API).then((response) => {
         if (response.data.code === 200) {
@@ -12,7 +12,7 @@ class OrdersService {
               ...response.data,
               alert: {
                 type: "SUCCESS",
-                text: `${text} cargadas satisfactoriamente.`,
+                text: `Ordenes cargadas satisfactoriamente.`,
               },
             };
           } else {
@@ -29,7 +29,7 @@ class OrdersService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error cargando ${text} [${response.data.code}]: ${response.data.message}`,
+              text: `Error cargando órdenes [${response.data.code}]: ${response.data.message}`,
             },
           };
         }
@@ -40,13 +40,13 @@ class OrdersService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error cargando las ${text}: ${errorMessage}`,
+          text: `Error cargando órdenes: ${errorMessage}`,
         },
       };
     }
   }
 
-  create(data, text) {
+  create(data) {
     try {
       return http.post(`${PATH_API}/add/${data}`).then((response) => {
         if (response.data.code === 200) {
@@ -54,7 +54,7 @@ class OrdersService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `${text} ${data} creada satisfactoriamente.`,
+              text: `Orden "${data}" creada satisfactoriamente.`,
             },
           };
         } else {
@@ -62,7 +62,7 @@ class OrdersService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error cargando ${text} [${response.data.code}]: ${response.data.message}`,
+              text: `Error creando  orden "${data}: "[${response.data.code}] - ${response.data.message}`,
             },
           };
         }
@@ -73,13 +73,13 @@ class OrdersService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error cargando la ${text}: ${errorMessage}`,
+          text: `Error creando orden "${data}": ${errorMessage}`,
         },
       };
     }
   }
 
-  update(data, text) {
+  update(data) {
     try {
       return http.post(`${PATH_API}/modify`, data).then((response) => {
         if (response.data.code === 200) {
@@ -87,7 +87,7 @@ class OrdersService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `${text} ${data.old_value} modificada satisfactoriamente => ${data.new_value}.`,
+              text: `Modificar orden "${data.old_value}" => "${data.new_value}".`,
             },
           };
         } else {
@@ -95,7 +95,7 @@ class OrdersService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error modificando la ${text} [${response.data.code}]: ${response.data.message}`,
+              text: `Error modificando orden "${data.old_value}": [${response.data.code}] - ${response.data.message}`,
             },
           };
         }
@@ -106,13 +106,13 @@ class OrdersService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error modificando la ${text}: ${errorMessage}`,
+          text: `Error modificando orden "${data.old_value}": ${errorMessage}`,
         },
       };
     }
   }
 
-  delete(row, text) {
+  delete(row) {
     try {
       return http.post(`${PATH_API}/delete/${row}`).then((response) => {
         if (response.data.code === 200) {
@@ -120,7 +120,7 @@ class OrdersService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `${text} "${row}" eliminada satisfactoriamente.`,
+              text: `Orden "${row}" eliminada satisfactoriamente.`,
             },
           };
         } else {
@@ -128,7 +128,7 @@ class OrdersService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error eliminando la ${text} "${row}" [${response.data.code}]: ${response.data.message}`,
+              text: `Error eliminando orden "${row}" [${response.data.code}]: ${response.data.message}`,
             },
           };
         }
@@ -139,7 +139,7 @@ class OrdersService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error eliminando la ${text} "${row}": ${errorMessage}`,
+          text: `Error eliminando orden "${row}": ${errorMessage}`,
         },
       };
     }

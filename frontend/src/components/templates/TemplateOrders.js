@@ -1,29 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TableOrders from "../table/TableOrders";
 import TableJobs from "../table/TableJobs";
 
 const TemplateOrders = () => {
   const [orderId, setOrderId] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [messageOrder, setMessageOrder] = useState(null);
+  const [messageJob, setMessageJob] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const contextMessage =
-    message && message.type === "LOADING"
-      ? "alert alert-primary col-md-8"
-      : message && message.type === "SUCCESS"
-      ? "alert alert-success col-md-8"
-      : message && message.type === "ERROR"
-      ? "alert alert-danger col-md-8"
-      : "";
 
   return (
     <div className="row">
       <div className="row">
-        {message && (
-          <div className={contextMessage} role="alert">
-            {message.text}
-          </div>
-        )}
         {loading && (
           <div className="overlay">
             <div className="spinner-border" role="status">
@@ -41,9 +28,10 @@ const TemplateOrders = () => {
               addButton={!loading} // Deshabilita el botón durante el loading
               editButton={!loading} // Deshabilita el botón durante el loading
               deleteButton={!loading} // Deshabilita el botón durante el loading
-              setMessage={setMessage}
+              setMessageOrder={setMessageOrder}
               loading={loading}
               onLoading={setLoading}
+              textFooter={messageOrder ? messageOrder : null}
             />
           </div>
           <div className="col-md-4">
@@ -52,9 +40,10 @@ const TemplateOrders = () => {
               addButton={!loading} // Deshabilita el botón durante el loading
               editButton={!loading} // Deshabilita el botón durante el loading
               deleteButton={!loading} // Deshabilita el botón durante el loading
-              setMessage={setMessage}
+              setMessageJob={setMessageJob}
               loading={loading}
               onLoading={setLoading}
+              textFooter={messageJob ? messageJob : null}
             />
           </div>
         </div>

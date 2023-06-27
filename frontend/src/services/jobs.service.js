@@ -3,7 +3,7 @@ import http from "./axios/http-common";
 const PATH_API = "/jobs";
 
 class JobsService {
-  get(data, text) {
+  get(data) {
     try {
       return http.post(`${PATH_API}/${data}`).then((response) => {
         if (response.data.code === 200) {
@@ -12,7 +12,7 @@ class JobsService {
               ...response.data,
               alert: {
                 type: "SUCCESS",
-                text: `${text} cargadas satisfactoriamente.`,
+                text: `Tareas cargadas satisfactoriamente.`,
               },
             };
           } else {
@@ -29,7 +29,7 @@ class JobsService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error cargando ${text} [${response.data.code}]: ${response.data.message}`,
+              text: `Error cargando tareas [${response.data.code}]: ${response.data.message}`,
             },
           };
         }
@@ -40,13 +40,13 @@ class JobsService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error cargando las ${text}: ${errorMessage}`,
+          text: `Error cargando $tareas: ${errorMessage}`,
         },
       };
     }
   }
 
-  create(data, text) {
+  create(data) {
     try {
       return http.post(`${PATH_API}/add`, data).then((response) => {
         if (response.data.code === 200) {
@@ -54,7 +54,7 @@ class JobsService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `${text} ${data} creada satisfactoriamente.`,
+              text: `Tarea "${data.job_id}" creada satisfactoriamente.`,
             },
           };
         } else {
@@ -62,7 +62,7 @@ class JobsService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error cargando ${text} [${response.data.code}]: ${response.data.message}`,
+              text: `Error creando tarea "${data.job_id}": [${response.data.code}] - ${response.data.message}`,
             },
           };
         }
@@ -73,13 +73,13 @@ class JobsService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error cargando la ${text}: ${errorMessage}`,
+          text: `Error creando tarea "${data.job_id}": ${errorMessage}`,
         },
       };
     }
   }
 
-  update(data, text) {
+  update(data) {
     try {
       return http.post(`${PATH_API}/modify`, data).then((response) => {
         if (response.data.code === 200) {
@@ -87,7 +87,7 @@ class JobsService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `${text} ${data.old_value} modificada satisfactoriamente => ${data.new_value}.`,
+              text: `Modificar tarea "${data.old_value}" => "${data.new_value}".`,
             },
           };
         } else {
@@ -95,7 +95,7 @@ class JobsService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error modificando la ${text} [${response.data.code}]: ${response.data.message}`,
+              text: `Error modificando tarea "${data.old_value}": [${response.data.code}] - ${response.data.message}`,
             },
           };
         }
@@ -106,13 +106,13 @@ class JobsService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error modificando la ${text}: ${errorMessage}`,
+          text: `Error modificando tarea "${data.old_value}": ${errorMessage}`,
         },
       };
     }
   }
 
-  delete(data, text) {
+  delete(data) {
     try {
       return http.post(`${PATH_API}/delete`, data).then((response) => {
         if (response.data.code === 200) {
@@ -120,7 +120,7 @@ class JobsService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `${text} "${data.order_id}" eliminada satisfactoriamente.`,
+              text: `Tarea "${data.job_id}" eliminada satisfactoriamente.`,
             },
           };
         } else {
@@ -128,7 +128,7 @@ class JobsService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error eliminando la ${text} "${data.order_id}" [${response.data.code}]: ${response.data.message}`,
+              text: `Error eliminando tarea "${data.job_id}": [${response.data.code}] - ${response.data.message}`,
             },
           };
         }
@@ -139,7 +139,7 @@ class JobsService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error eliminando la ${text} "$${data.order_id}": ${errorMessage}`,
+          text: `Error eliminando tarea "$${data.job_id}": ${errorMessage}`,
         },
       };
     }

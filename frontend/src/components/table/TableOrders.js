@@ -17,9 +17,10 @@ const TableOrders = ({
   addButton = false,
   editButton = false,
   deleteButton = false,
-  setMessage,
+  setMessageOrder,
   loading,
   onLoading,
+  textFooter,
 }) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
@@ -27,24 +28,24 @@ const TableOrders = ({
   const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
-    setMessage({ type: "LOADING", text: "Cargando..." });
-    onLoading(true);
     const getData = async () => {
-      const response = await service.get("Ordenes");
+      setMessageOrder({ type: "LOADING", text: "Cargando Ordenes..." });
+      onLoading(true);
+      const response = await service.get();
       console.log("Consultar Ordenes:", response);
       if (response.code === 200) {
         setDataTable({ columns: response.columns, data: response.data });
       }
-      setMessage(response.alert);
+      setMessageOrder(response.alert);
       onLoading(false);
     };
     getData();
   }, []);
 
   const processAddRow = async (input) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
+    setMessageOrder({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.create(input, "Orden");
+    const response = await service.create(input);
     console.log("Agregar Orden:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
@@ -59,20 +60,17 @@ const TableOrders = ({
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
       onOrderId(input);
     }
-    setMessage(response.alert);
+    setMessageOrder(response.alert);
     onLoading(false);
   };
 
   const processModifyRow = async (old_value, new_value) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
+    setMessageOrder({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.update(
-      {
-        old_value,
-        new_value,
-      },
-      "Orden"
-    );
+    const response = await service.update({
+      old_value,
+      new_value,
+    });
     console.log("Modificar orden:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
@@ -87,14 +85,14 @@ const TableOrders = ({
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
       onOrderId(new_value);
     }
-    setMessage(response.alert);
+    setMessageOrder(response.alert);
     onLoading(false);
   };
 
   const handleDeleteRow = async (row) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
+    setMessageOrder({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.delete(row, "Orden");
+    const response = await service.delete(row);
     console.log("Eliminar orden:", response);
     if (response.code === 200) {
       console.log("Eliminar orden 222:", response);
@@ -102,7 +100,7 @@ const TableOrders = ({
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
       onOrderId("");
     }
-    setMessage(response.alert);
+    setMessageOrder(response.alert);
     console.log("Eliminar orden 3333:", response);
     onLoading(false);
   };
@@ -113,13 +111,13 @@ const TableOrders = ({
   };
 
   const addRow = () => {
-    setMessage({ type: "" });
+    setMessageOrder({ type: "" });
     setRow("");
     setShow(true);
   };
 
   const modifyRow = (input) => {
-    setMessage({ type: "" });
+    setMessageOrder({ type: "" });
     setRow(input);
     setShow(true);
   };
@@ -137,6 +135,7 @@ const TableOrders = ({
     if (!loading) {
       onOrderId(name);
       setSelectedRow(id);
+      setMessageOrder(null);
     }
   };
 
@@ -202,7 +201,17 @@ const TableOrders = ({
             </table>
           </div>
         </div>
-        <div className="card-footer text-muted"></div>
+        <div className="card-footer">
+          <p
+            className={
+              textFooter && textFooter.type === "ERROR"
+                ? "text-danger fs-6"
+                : "text-primary fs-6"
+            }
+          >
+            {textFooter ? textFooter.text : ""}
+          </p>
+        </div>
       </div>
       <ModalComponent
         title={row.length === 0 ? ADD_TITLE_ORDER : MODIFY_TITLE_ORDER}
