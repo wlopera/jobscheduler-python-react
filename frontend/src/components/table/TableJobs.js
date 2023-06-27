@@ -18,7 +18,7 @@ const TableJobs = ({
   addButton = false,
   editButton = false,
   deleteButton = false,
-  setMessage
+  setMessage,
 }) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
@@ -27,7 +27,7 @@ const TableJobs = ({
 
   useEffect(() => {
     const getData = async () => {
-      axios
+      await axios
         .post(`${URL_BASE}/${API_JOBS}/${orderId}`)
         .then((response) => {
           setSelectedRow(null);
@@ -35,13 +35,12 @@ const TableJobs = ({
         })
         .catch((error) => {
           // Manejar errores en caso de que ocurra algún problema con la solicitud
-          console.error(error);
+          console.error("No hay data: ", error);
         });
     };
     if (orderId === "") {
       setDataTable((prevData) => ({ ...prevData, data: [] }));
-    }
-    if (orderId) {
+    } else if (orderId) {
       getData();
     }
   }, [orderId]);
@@ -52,13 +51,13 @@ const TableJobs = ({
   };
 
   const addRow = () => {
-    setMessage({type:""})
+    setMessage({ type: "" });
     setRow("");
     setShow(true);
   };
 
   const modifyRow = (input) => {
-    setMessage({type:""})
+    setMessage({ type: "" });
     setRow(input);
     setShow(true);
   };
@@ -74,7 +73,7 @@ const TableJobs = ({
   };
 
   const processAddRow = async (input) => {
-    setMessage({type:"LOADING", text:"Procesando..."})
+    setMessage({ type: "LOADING", text: "Procesando..." });
     axios
       .post(`${URL_BASE}/${API_JOBS}/add`, {
         order_id: orderId,
@@ -91,16 +90,22 @@ const TableJobs = ({
           }
         });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        setMessage({type:"SUCCESS", text:"Tarea agregada satisfactoriamente."})
+        setMessage({
+          type: "SUCCESS",
+          text: "Tarea agregada satisfactoriamente.",
+        });
       })
       .catch((error) => {
         console.error(error);
-        setMessage({type:"ERROR", text:"Error tratando de crear una tarea."})
+        setMessage({
+          type: "ERROR",
+          text: "Error tratando de crear una tarea.",
+        });
       });
   };
 
   const processModifyRow = async (old_value, new_value) => {
-    setMessage({type:"LOADING", text:"Procesando..."})
+    setMessage({ type: "LOADING", text: "Procesando..." });
     axios
       .post(`${URL_BASE}/${API_JOBS}/modify`, {
         order_id: orderId,
@@ -118,17 +123,22 @@ const TableJobs = ({
           }
         });
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        setMessage({type:"SUCCESS", text:"Tarea modificada satisfactoriamente."})
+        setMessage({
+          type: "SUCCESS",
+          text: "Tarea modificada satisfactoriamente.",
+        });
       })
       .catch((error) => {
         console.error(error);
-        setMessage({type:"ERROR", text:"Error tratando de modificar la tarea."})
+        setMessage({
+          type: "ERROR",
+          text: "Error tratando de modificar la tarea.",
+        });
       });
   };
 
-
   const handleDeleteRow = async (row) => {
-    setMessage({type:"LOADING", text:"Procesando..."})
+    setMessage({ type: "LOADING", text: "Procesando..." });
     axios
       .post(`${URL_BASE}/${API_JOBS}/delete`, {
         order_id: orderId,
@@ -137,12 +147,18 @@ const TableJobs = ({
       .then((response) => {
         setSelectedRow(null);
         setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        setMessage({type:"SUCCESS", text:"Tarea eliminada satisfactoriamente."})
+        setMessage({
+          type: "SUCCESS",
+          text: "Tarea eliminada satisfactoriamente.",
+        });
       })
       .catch((error) => {
         // Manejar errores en caso de que ocurra algún problema con la solicitud
         console.error(error);
-        setMessage({type:"ERROR", text:"Error tratando de eliminar la tarea."})
+        setMessage({
+          type: "ERROR",
+          text: "Error tratando de eliminar la tarea.",
+        });
       });
   };
 

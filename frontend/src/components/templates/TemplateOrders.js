@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TableOrders from "../table/TableOrders";
 import TableJobs from "../table/TableJobs";
 
 const TemplateOrders = () => {
   const [orderId, setOrderId] = useState(null);
   const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const contextMessage =
     message && message.type === "LOADING"
@@ -23,23 +24,37 @@ const TemplateOrders = () => {
             {message.text}
           </div>
         )}
-        <div className="row">
+        {loading && (
+          <div className="overlay">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        )}
+        <div
+          className={loading ? "row content content-loading" : "row content"}
+          style={{ opacity: loading ? 0.5 : 1 }} // Establece la opacidad reducida durante el loading
+        >
           <div className="col-md-4">
             <TableOrders
               onOrderId={setOrderId}
-              addButton={true}
-              editButton={true}
-              deleteButton={true}
+              addButton={!loading} // Deshabilita el botón durante el loading
+              editButton={!loading} // Deshabilita el botón durante el loading
+              deleteButton={!loading} // Deshabilita el botón durante el loading
               setMessage={setMessage}
+              loading={loading}
+              onLoading={setLoading}
             />
           </div>
           <div className="col-md-4">
             <TableJobs
               orderId={orderId}
-              addButton={true}
-              editButton={true}
-              deleteButton={true}
+              addButton={!loading} // Deshabilita el botón durante el loading
+              editButton={!loading} // Deshabilita el botón durante el loading
+              deleteButton={!loading} // Deshabilita el botón durante el loading
               setMessage={setMessage}
+              loading={loading}
+              onLoading={setLoading}
             />
           </div>
         </div>

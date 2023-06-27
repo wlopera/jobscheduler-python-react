@@ -9,10 +9,13 @@ class FileUtils:
     @staticmethod
     def get_folders(path):
         # Lee los directorios de la carpeta
-        folders = [name for name in os.listdir(
-            path) if os.path.isdir(os.path.join(path, name))]
-        return folders
-
+        if os.path.exists(path) and os.path.isdir(path):
+            folders = [name for name in os.listdir(
+                path) if os.path.isdir(os.path.join(path, name))]           
+            return folders
+        else:
+            return []
+            
     @staticmethod
     def delete_folder(path):
         # Elimina la carpeta y su contenido

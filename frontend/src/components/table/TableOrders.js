@@ -7,12 +7,10 @@ import ModalComponent from "../modal/ModalComponent";
 import service from "../../services/orders.service";
 
 import {
-  URL_BASE,
   TITLE_ORDER,
   ADD_TITLE_ORDER,
   MODIFY_TITLE_ORDER,
   PLACEHOLDER_ORDER,
-  API_ORDER,
 } from "../utils/Constants";
 
 const TableOrders = ({
@@ -21,6 +19,8 @@ const TableOrders = ({
   editButton = false,
   deleteButton = false,
   setMessage,
+  loading,
+  onLoading,
 }) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
@@ -29,146 +29,81 @@ const TableOrders = ({
 
   useEffect(() => {
     setMessage({ type: "LOADING", text: "Cargando..." });
-    // const getData = async () => {
-    //   try {
-    //     const result = await fetch(`${URL_BASE}/${API_ORDER}`);
-    //     const response = await result.json();
-    //     if (response.code === 200) {
-    //       setDataTable(response);
-    //       setMessage({
-    //         type: "SUCCESS",
-    //         text: "Ordenes cargadas satisfactoriamente.",
-    //       });
-    //     } else {
-    //       console.log("Error cargando ordenes: ", response);
-    //       setMessage({
-    //         type: "ERROR",
-    //         text: `Error cargando ordenes [${response.code}]: ${response.message}`,
-    //       });
-    //     }
-    //   } catch (error) {
-    //     const errorMessage = error.response;
-    //     console.log("Error cargando las ordenes:", errorMessage);
-    //     setMessage({ type: "ERROR", text: "Error cargando las ordenes." });
-    //   }
-    // };
+    onLoading(true);
     const getData = async () => {
       const response = await service.get("Ordenes");
       console.log(12345, response);
       if (response.code === 200) {
         setDataTable({ columns: response.columns, data: response.data });
-      } 
+      }
       setMessage(response.alert);
+      onLoading(false);
     };
     getData();
   }, []);
 
   const processAddRow = async (input) => {
     setMessage({ type: "LOADING", text: "Procesando..." });
-    service.create(input).then((res) => {
-      console.log(12345, res);
-    });
+    onLoading(true);
+    const response = await service.create((input, "Orden"));
+    console.log(12345, response);
+    if (response.code === 200) {
+      const arr = Object.entries(response.data).map(([key, value]) => {
+        return { key, value };
+      });
+
+      arr.forEach((item) => {
+        if (item.value.active) {
+          setSelectedRow(item.value.id);
+        }
+      });
+      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+      onOrderId(input);
+    }
+    setMessage(response.alert);
+    onLoading(false);
   };
-
-  // const processAddRow = async (input) => {
-  //   setMessage({ type: "LOADING", text: "Procesando..." });
-  //   axios
-  //     .post(`${URL_BASE}/${API_ORDER}/add/${input}`)
-  //     .then((response) => {
-  //       if (response.data.code === 200) {
-  //         const arr = Object.entries(response.data.data).map(([key, value]) => {
-  //           return { key, value };
-  //         });
-
-  //         arr.forEach((item) => {
-  //           if (item.value.active) {
-  //             setSelectedRow(item.value.id);
-  //           }
-  //         });
-  //         setDataTable((prevData) => ({ ...prevData, ...response.data }));
-  //         onOrderId(input);
-  //         setMessage({
-  //           type: "SUCCESS",
-  //           text: "Orden agregada satisfactoriamente.",
-  //         });
-  //       } else {
-  //         console.log("Error creando una orden: ", response.data);
-  //         setMessage({
-  //           type: "ERROR",
-  //           text: `Error creando una orden [${response.data.code}]: ${response.data.message}`,
-  //         });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       setMessage({ type: "ERROR", text: "Error creando una orden." });
-  //     });
-  // };
 
   const processModifyRow = async (old_value, new_value) => {
     setMessage({ type: "LOADING", text: "Procesando..." });
-    axios
-      .post(`${URL_BASE}/${API_ORDER}/modify`, {
+    onLoading(true);
+    const response = await service.update(
+      {
         old_value,
         new_value,
-      })
-      .then((response) => {
-        if (response.data.code === 200) {
-          const arr = Object.entries(response.data.data).map(([key, value]) => {
-            return { key, value };
-          });
-
-          arr.forEach((item) => {
-            if (item.value.active) {
-              setSelectedRow(item.value.id);
-            }
-          });
-          setDataTable((prevData) => ({ ...prevData, ...response.data }));
-          onOrderId(new_value);
-          setMessage({
-            type: "SUCCESS",
-            text: "Orden modificada satisfactoriamente.",
-          });
-        } else {
-          console.log("Error modificando la orden: ", response.data);
-          setMessage({
-            type: "ERROR",
-            text: `Error modificando la orden [${response.data.code}]: ${response.data.message}`,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setMessage({ type: "ERROR", text: "Error modificando una orden." });
+      },
+      "Orden"
+    );
+    console.log(12345, response);
+    if (response.code === 200) {
+      const arr = Object.entries(response.data).map(([key, value]) => {
+        return { key, value };
       });
+
+      arr.forEach((item) => {
+        if (item.value.active) {
+          setSelectedRow(item.value.id);
+        }
+      });
+      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+      onOrderId(new_value);
+    }
+    setMessage(response.alert);
+    onLoading(false);
   };
 
   const handleDeleteRow = async (row) => {
     setMessage({ type: "LOADING", text: "Procesando..." });
-    axios
-      .post(`${URL_BASE}/${API_ORDER}/delete/${row}`)
-      .then((response) => {
-        if (response.data.code === 200) {
-          setSelectedRow(null);
-          setDataTable((prevData) => ({ ...prevData, ...response.data }));
-          onOrderId("");
-          setMessage({
-            type: "SUCCESS",
-            text: "Orden eliminada satisfactoriamente.",
-          });
-        } else {
-          console.log("Error elimnando la orden: ", response.data);
-          setMessage({
-            type: "ERROR",
-            text: `Error elimnando la orden [${response.data.code}]: ${response.data.message}`,
-          });
-        }
-      })
-      .catch((error) => {
-        // Manejar errores en caso de que ocurra algún problema con la solicitud
-        console.error(error);
-        setMessage({ type: "ERROR", text: "Error eliminando una orden." });
-      });
+    onLoading(true);
+    const response = await service.delete(row, "Orden");
+    console.log(12345, response);
+    if (response.code === 200) {
+      setSelectedRow(null);
+      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+      onOrderId("");
+    }
+    setMessage(response.alert);
+    onLoading(false);
   };
 
   const handleSetShow = () => {
@@ -198,8 +133,10 @@ const TableOrders = ({
   };
 
   const handleClick = (id, name) => {
-    onOrderId(name);
-    setSelectedRow(id);
+    if (!loading) {
+      onOrderId(name);
+      setSelectedRow(id);
+    }
   };
 
   return (

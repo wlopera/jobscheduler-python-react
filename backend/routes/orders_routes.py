@@ -8,7 +8,6 @@ orders_routes = Blueprint('orders_routes', __name__, url_prefix='/api/orders')
 @orders_routes.route('/')
 def orders():
     try:
-        result=1/0
         orders = [{"id": index, "name": valor}
                   for index, valor in enumerate(get_orders())]
         response = {
@@ -79,7 +78,3 @@ def delete_order(name):
 
 def get_orders():
     return FileUtils.get_folders("JobScheduler/backend/orders")
-
-
-def get_jobs(order_id):
-    return FileUtils.get_folders("JobScheduler/backend/orders/" + order_id + "/jobs")
