@@ -6,7 +6,6 @@ jobs_routes = Blueprint('jobs_routes', __name__, url_prefix='/api/jobs')
 
 @jobs_routes.route('/<string:name>', methods=['POST'])
 def jobs(name):
-    print(11111, name)
     jobs = []
     
     if name != '':

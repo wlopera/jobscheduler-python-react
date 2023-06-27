@@ -11,7 +11,7 @@ const TemplateOrders = () => {
       ? "alert alert-primary col-md-8"
       : message && message.type === "SUCCESS"
       ? "alert alert-success col-md-8"
-      : message && message.type === "SUCCESS"
+      : message && message.type === "ERROR"
       ? "alert alert-danger col-md-8"
       : "";
 
