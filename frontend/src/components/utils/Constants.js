@@ -1,6 +1,6 @@
 export const URL_BASE = "http://localhost:5000/api";
 
-export const TITLE_ORDER = "ÓRDENES";
+export const TITLE_ORDER = "ORDENES";
 export const ADD_TITLE_ORDER = "Agregar Orden";
 export const MODIFY_TITLE_ORDER = "Agregar Orden";
 export const PLACEHOLDER_ORDER = "Introducir orden";

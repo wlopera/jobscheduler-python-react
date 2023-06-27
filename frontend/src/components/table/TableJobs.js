@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./TableJobs.css";
+import service from "../../services/jobs.service";
 
 import ModalComponent from "../modal/ModalComponent";
 import {
-  URL_BASE,
   TITLE_JOB,
   ADD_TITLE_JOB,
   MODIFY_TITLE_JOB,
   PLACEHOLDER_JOB,
-  API_JOBS,
 } from "../utils/Constants";
 
 const TableJobs = ({
@@ -19,6 +18,7 @@ const TableJobs = ({
   editButton = false,
   deleteButton = false,
   setMessage,
+  onLoading,
 }) => {
   const [dataTable, setDataTable] = useState({});
   const [row, setRow] = useState("");
@@ -26,24 +26,98 @@ const TableJobs = ({
   const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
+    setMessage({ type: "LOADING", text: "Cargando..." });
+    onLoading(true);
     const getData = async () => {
-      await axios
-        .post(`${URL_BASE}/${API_JOBS}/${orderId}`)
-        .then((response) => {
-          setSelectedRow(null);
-          setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        })
-        .catch((error) => {
-          // Manejar errores en caso de que ocurra algún problema con la solicitud
-          console.error("No hay data: ", error);
-        });
+      const response = await service.get(orderId, "Tareas");
+      console.log("Consultar Tareas:", response);
+      if (response.code === 200) {
+        setDataTable({ columns: response.columns, data: response.data });
+      }
+      setMessage(response.alert);
+      onLoading(false);
     };
     if (orderId === "") {
+      onLoading(false);
       setDataTable((prevData) => ({ ...prevData, data: [] }));
     } else if (orderId) {
       getData();
     }
   }, [orderId]);
+
+  const processAddRow = async (input) => {
+    setMessage({ type: "LOADING", text: "Procesando..." });
+    onLoading(true);
+    const response = await service.create(
+      {
+        order_id: orderId,
+        job_id: input,
+      },
+      "Tarea"
+    );
+    console.log("Agregar tarea:", response);
+    if (response.code === 200) {
+      const arr = Object.entries(response.data).map(([key, value]) => {
+        return { key, value };
+      });
+
+      arr.forEach((item) => {
+        if (item.value.active) {
+          setSelectedRow(item.value.id);
+        }
+      });
+      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+    }
+    setMessage(response.alert);
+    onLoading(false);
+  };
+
+  const processModifyRow = async (old_value, new_value) => {
+    setMessage({ type: "LOADING", text: "Procesando..." });
+    onLoading(true);
+    const response = await service.update(
+      {
+        order_id: orderId,
+        old_value,
+        new_value,
+      },
+      "Tarea"
+    );
+    console.log("Modificar Tarea:", response);
+    if (response.code === 200) {
+      const arr = Object.entries(response.data).map(([key, value]) => {
+        return { key, value };
+      });
+
+      arr.forEach((item) => {
+        if (item.value.active) {
+          setSelectedRow(item.value.id);
+        }
+      });
+      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+    }
+    setMessage(response.alert);
+    onLoading(false);
+  };
+
+  const handleDeleteRow = async (row) => {
+    setMessage({ type: "LOADING", text: "Procesando..." });
+    onLoading(true);
+    const response = await service.delete(
+      {
+        order_id: orderId,
+        job_id: row,
+      },
+      "Tarea"
+    );
+    console.log("Eliminar tarea:", response);
+    if (response.code === 200) {
+      setSelectedRow(null);
+      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+    }
+    setMessage(response.alert);
+    onLoading(false);
+  };
 
   const handleSetShow = () => {
     setRow("");
@@ -72,96 +146,6 @@ const TableJobs = ({
     }
   };
 
-  const processAddRow = async (input) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
-    axios
-      .post(`${URL_BASE}/${API_JOBS}/add`, {
-        order_id: orderId,
-        job_id: input,
-      })
-      .then((response) => {
-        const arr = Object.entries(response.data.data).map(([key, value]) => {
-          return { key, value };
-        });
-
-        arr.forEach((item) => {
-          if (item.value.active) {
-            setSelectedRow(item.value.id);
-          }
-        });
-        setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        setMessage({
-          type: "SUCCESS",
-          text: "Tarea agregada satisfactoriamente.",
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        setMessage({
-          type: "ERROR",
-          text: "Error tratando de crear una tarea.",
-        });
-      });
-  };
-
-  const processModifyRow = async (old_value, new_value) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
-    axios
-      .post(`${URL_BASE}/${API_JOBS}/modify`, {
-        order_id: orderId,
-        old_value,
-        new_value,
-      })
-      .then((response) => {
-        const arr = Object.entries(response.data.data).map(([key, value]) => {
-          return { key, value };
-        });
-
-        arr.forEach((item) => {
-          if (item.value.active) {
-            setSelectedRow(item.value.id);
-          }
-        });
-        setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        setMessage({
-          type: "SUCCESS",
-          text: "Tarea modificada satisfactoriamente.",
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        setMessage({
-          type: "ERROR",
-          text: "Error tratando de modificar la tarea.",
-        });
-      });
-  };
-
-  const handleDeleteRow = async (row) => {
-    setMessage({ type: "LOADING", text: "Procesando..." });
-    axios
-      .post(`${URL_BASE}/${API_JOBS}/delete`, {
-        order_id: orderId,
-        job_id: row,
-      })
-      .then((response) => {
-        setSelectedRow(null);
-        setDataTable((prevData) => ({ ...prevData, ...response.data }));
-        setMessage({
-          type: "SUCCESS",
-          text: "Tarea eliminada satisfactoriamente.",
-        });
-      })
-      .catch((error) => {
-        // Manejar errores en caso de que ocurra algún problema con la solicitud
-        console.error(error);
-        setMessage({
-          type: "ERROR",
-          text: "Error tratando de eliminar la tarea.",
-        });
-      });
-  };
-
   const handleClick = (id, name) => {
     setSelectedRow(id);
   };
@@ -173,7 +157,7 @@ const TableJobs = ({
           <div className="row">
             <div className="row">
               <div className="col-md-4">{TITLE_JOB}</div>
-              {addButton && (
+              {addButton && orderId && orderId !== "" && (
                 <div className="col-md-8 d-flex justify-content-end">
                   <button
                     className="btn btn-light btn-sm ml-2 "

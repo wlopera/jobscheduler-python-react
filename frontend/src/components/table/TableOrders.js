@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./TableOrders.css";
 
@@ -32,7 +31,7 @@ const TableOrders = ({
     onLoading(true);
     const getData = async () => {
       const response = await service.get("Ordenes");
-      console.log(12345, response);
+      console.log("Consultar Ordenes:", response);
       if (response.code === 200) {
         setDataTable({ columns: response.columns, data: response.data });
       }
@@ -45,8 +44,8 @@ const TableOrders = ({
   const processAddRow = async (input) => {
     setMessage({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.create((input, "Orden"));
-    console.log(12345, response);
+    const response = await service.create(input, "Orden");
+    console.log("Agregar Orden:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
         return { key, value };
@@ -74,7 +73,7 @@ const TableOrders = ({
       },
       "Orden"
     );
-    console.log(12345, response);
+    console.log("Modificar orden:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
         return { key, value };
@@ -96,13 +95,15 @@ const TableOrders = ({
     setMessage({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
     const response = await service.delete(row, "Orden");
-    console.log(12345, response);
+    console.log("Eliminar orden:", response);
     if (response.code === 200) {
+      console.log("Eliminar orden 222:", response);
       setSelectedRow(null);
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
       onOrderId("");
     }
     setMessage(response.alert);
+    console.log("Eliminar orden 3333:", response);
     onLoading(false);
   };
 

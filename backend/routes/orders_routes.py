@@ -11,13 +11,11 @@ def orders():
         orders = [{"id": index, "name": valor}
                   for index, valor in enumerate(get_orders())]
         response = {
-            "code": 200,
             "data": orders,
             "columns": [
                 {"dataField": "name", "text": ""},
             ],
         }        
-
         return ServiceUtils.success(response)
     except Exception as e:
         return ServiceUtils.error(e)
