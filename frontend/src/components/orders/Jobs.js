@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./TableOrders.css";
+import "./Jobs.css";
+import service from "../../services/jobs.service";
 
 import ModalComponent from "../modal/ModalComponent";
-import service from "../../services/orders.service";
-
 import {
-  TITLE_ORDER,
-  ADD_TITLE_ORDER,
-  MODIFY_TITLE_ORDER,
-  PLACEHOLDER_ORDER,
+  TITLE_JOB,
+  ADD_TITLE_JOB,
+  MODIFY_TITLE_JOB,
+  PLACEHOLDER_JOB,
 } from "../utils/Constants";
 
-const TableOrders = ({
-  onOrderId,
+const Jobs = ({
+  orderId,
   addButton = false,
   editButton = false,
   deleteButton = false,
-  setMessageOrder,
-  loading,
+  setMessageJob,
   onLoading,
   textFooter,
 }) => {
@@ -29,24 +27,32 @@ const TableOrders = ({
 
   useEffect(() => {
     const getData = async () => {
-      setMessageOrder({ type: "LOADING", text: "Cargando Ordenes..." });
+      setMessageJob({ type: "LOADING", text: "Cargando Tareas..." });
       onLoading(true);
-      const response = await service.get();
-      console.log("Consultar Ordenes:", response);
+      const response = await service.get(orderId);
+      console.log("Consultar Tareas:", response);
       if (response.code === 200) {
         setDataTable({ columns: response.columns, data: response.data });
       }
-      setMessageOrder(response.alert);
+      setMessageJob(response.alert);
       onLoading(false);
     };
-    getData();
-  }, []);
+    if (orderId === "") {
+      setMessageJob(null);
+      setDataTable((prevData) => ({ ...prevData, data: [] }));
+    } else if (orderId) {
+      getData();
+    }
+  }, [orderId]);
 
   const processAddRow = async (input) => {
-    setMessageOrder({ type: "LOADING", text: "Procesando..." });
+    setMessageJob({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.create(input);
-    console.log("Agregar Orden:", response);
+    const response = await service.create({
+      order_id: orderId,
+      job_id: input,
+    });
+    console.log("Agregar tarea:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
         return { key, value };
@@ -58,20 +64,20 @@ const TableOrders = ({
         }
       });
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
-      onOrderId(input);
     }
-    setMessageOrder(response.alert);
+    setMessageJob(response.alert);
     onLoading(false);
   };
 
   const processModifyRow = async (old_value, new_value) => {
-    setMessageOrder({ type: "LOADING", text: "Procesando..." });
+    setMessageJob({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
     const response = await service.update({
+      order_id: orderId,
       old_value,
       new_value,
     });
-    console.log("Modificar orden:", response);
+    console.log("Modificar Tarea:", response);
     if (response.code === 200) {
       const arr = Object.entries(response.data).map(([key, value]) => {
         return { key, value };
@@ -83,25 +89,24 @@ const TableOrders = ({
         }
       });
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
-      onOrderId(new_value);
     }
-    setMessageOrder(response.alert);
+    setMessageJob(response.alert);
     onLoading(false);
   };
 
   const handleDeleteRow = async (row) => {
-    setMessageOrder({ type: "LOADING", text: "Procesando..." });
+    setMessageJob({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
-    const response = await service.delete(row);
-    console.log("Eliminar orden:", response);
+    const response = await service.delete({
+      order_id: orderId,
+      job_id: row,
+    });
+    console.log("Eliminar tarea:", response);
     if (response.code === 200) {
-      console.log("Eliminar orden 222:", response);
       setSelectedRow(null);
       setDataTable((prevData) => ({ ...prevData, data: response.data }));
-      onOrderId("");
     }
-    setMessageOrder(response.alert);
-    console.log("Eliminar orden 3333:", response);
+    setMessageJob(response.alert);
     onLoading(false);
   };
 
@@ -111,32 +116,30 @@ const TableOrders = ({
   };
 
   const addRow = () => {
-    setMessageOrder({ type: "" });
+    setMessageJob({ type: "" });
     setRow("");
     setShow(true);
   };
 
   const modifyRow = (input) => {
-    setMessageOrder({ type: "" });
+    setMessageJob({ type: "" });
     setRow(input);
     setShow(true);
   };
 
   const handleProcessRow = async (newRow, type) => {
+    handleSetShow();
+
     if (type === "ADD") {
       processAddRow(newRow);
     } else {
       processModifyRow(row, newRow);
     }
-    handleSetShow();
   };
 
   const handleClick = (id, name) => {
-    if (!loading) {
-      onOrderId(name);
-      setSelectedRow(id);
-      setMessageOrder(null);
-    }
+    setMessageJob(null);
+    setSelectedRow(id);
   };
 
   return (
@@ -145,8 +148,8 @@ const TableOrders = ({
         <div className="card-header">
           <div className="row">
             <div className="row">
-              <div className="col-md-4">{TITLE_ORDER}</div>
-              {addButton && (
+              <div className="col-md-4">{TITLE_JOB}</div>
+              {addButton && orderId && orderId !== "" && (
                 <div className="col-md-8 d-flex justify-content-end">
                   <button
                     className="btn btn-light btn-sm ml-2 "
@@ -164,8 +167,8 @@ const TableOrders = ({
             <table id="myTable" className="table table-hover">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Acciones</th>
+                  <th style={{ width: "100px" }}>ID</th>
+                  <th style={{ width: "100px" }}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -214,8 +217,8 @@ const TableOrders = ({
         </div>
       </div>
       <ModalComponent
-        title={row.length === 0 ? ADD_TITLE_ORDER : MODIFY_TITLE_ORDER}
-        placeHolder={PLACEHOLDER_ORDER}
+        title={row.length === 0 ? ADD_TITLE_JOB : MODIFY_TITLE_JOB}
+        placeHolder={PLACEHOLDER_JOB}
         show={show}
         showModal={handleSetShow}
         processModal={handleProcessRow}
@@ -225,4 +228,4 @@ const TableOrders = ({
   );
 };
 
-export default TableOrders;
+export default Jobs;

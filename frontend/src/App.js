@@ -3,7 +3,7 @@ import TemplateOrders from "./components/templates/TemplateOrders";
 
 function App() {
   return (
-    <div  className="container">
+    <div className="container">
       <TemplateOrders />
     </div>
   );

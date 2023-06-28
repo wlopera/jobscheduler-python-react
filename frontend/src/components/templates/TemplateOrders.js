@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TableOrders from "../table/TableOrders";
-import TableJobs from "../table/TableJobs";
+import Orders from "../orders/Orders";
+import Jobs from "../orders/Jobs";
 
 const TemplateOrders = () => {
   const [orderId, setOrderId] = useState(null);
@@ -23,7 +23,7 @@ const TemplateOrders = () => {
           style={{ opacity: loading ? 0.5 : 1 }} // Establece la opacidad reducida durante el loading
         >
           <div className="col-md-4">
-            <TableOrders
+            <Orders
               onOrderId={setOrderId}
               addButton={!loading} // Deshabilita el botón durante el loading
               editButton={!loading} // Deshabilita el botón durante el loading
@@ -35,7 +35,7 @@ const TemplateOrders = () => {
             />
           </div>
           <div className="col-md-4">
-            <TableJobs
+            <Jobs
               orderId={orderId}
               addButton={!loading} // Deshabilita el botón durante el loading
               editButton={!loading} // Deshabilita el botón durante el loading
