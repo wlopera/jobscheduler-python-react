@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import { TITLE_CHAIN } from "../../../utils/Constants";
 import service from "../../../../services/chains.service";
+import ModalChains from "../../../modal/ModalChains";
 
 const Chains = ({ orderId, editButton, loading, onLoading }) => {
   const [dataTable, setDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [selectedRow, setSelectedRow] = useState(null);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -30,9 +32,29 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
 
   const handleClick = (id, name) => {
     if (!loading) {
+      setRow("");
+      setShow(true);  
       setSelectedRow(id);
     }
   };
+
+  const modifyRow = (input) => {
+    setRow(input);
+    setShow(true);
+  };
+
+
+  const handleSetShow = () => {
+    setRow("");
+    setShow(false);
+  };
+
+  const handleProcessRow = async (newRow, type) => {
+    handleSetShow();
+
+    console.log("Procesar modal")
+  };
+
 
   return (
     <div>
@@ -64,7 +86,7 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
                     <tr
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
-                      onClick={() => handleClick(item.id, item.name)}
+                      //onClick={() => handleClick(item.id, item.name)}
                     >
                       <td>{item.name}</td>
                       <td>{item.package}</td>
@@ -89,6 +111,14 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
         </div>
         <div className="card-footer"></div>
       </div>
+      <ModalChains
+        title="Definir cadena de trabajo"
+        placeHolder=""
+        show={show}
+        showModal={handleSetShow}
+        processModal={handleProcessRow}
+        value={row}
+      />
     </div>
   );
 };

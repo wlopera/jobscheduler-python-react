@@ -5,8 +5,9 @@ import TemplateOrders from "./components/templates/templateOrders/TemplateOrders
 function App() {
   return (
     <div className="container">
-      {/* <TemplateOrders /> */}
       <TemplateChains />
+      <br />
+      <TemplateOrders />
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./Jobs.css";
 import service from "../../../../services/jobs.service";
