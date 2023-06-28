@@ -9,7 +9,6 @@ jobs_routes = Blueprint('jobs_routes', __name__, url_prefix='/api/jobs')
 def jobs(name):
     try:
         jobs = []
-
         if name != '':
             jobs = [{"id": index, "name": valor}
                     for index, valor in enumerate(get_jobs(name))]
@@ -27,13 +26,15 @@ def jobs(name):
 @jobs_routes.route('/add', methods=['POST'])
 def add_job():
     try:
-        resul = 1/0
         param = request.get_json()
         order_id = param['order_id']
         job_id = param['job_id']
 
         FileUtils.create_folder(
             "JobScheduler/backend/orders/" + order_id + "/jobs/", job_id)
+        
+        FileUtils.create_file_json(
+           "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json")
 
         values = {
             "name": job_id,

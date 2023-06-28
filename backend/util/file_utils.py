@@ -27,7 +27,6 @@ class FileUtils:
         # Crea una nueva carpeta en la ruta especificada
         new_folder_path = os.path.join(path, folder_name)
         os.mkdir(new_folder_path)
-        os.mkdir(new_folder_path + "/jobs")
         return new_folder_path
 
     @staticmethod
