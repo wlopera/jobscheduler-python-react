@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import Orders from "./chains/Orders";
+import Orders from "./orders/Orders";
+import Chains from "./chains/Chains";
 
 const TemplateChains = () => {
   const [orderId, setOrderId] = useState(null);
   const [messageOrder, setMessageOrder] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  console.log(1111, orderId);
   return (
     <div className="row">
       <div className="row">
@@ -27,7 +29,13 @@ const TemplateChains = () => {
               onLoading={setLoading}
             />
           </div>
-          <div className="col-md-4">            
+          <div className="col-md-8">
+            <Chains
+              orderId={orderId}
+              loading={loading}
+              onLoading={setLoading}
+              editButton={!loading}
+            />
           </div>
         </div>
       </div>

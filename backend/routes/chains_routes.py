@@ -5,15 +5,22 @@ from util.service_utils import ServiceUtils
 chains_routes = Blueprint('chains_routes', __name__, url_prefix='/api/chains')
 
 
-@chains_routes.route('/')
-def orders():
+@chains_routes.route('/<string:name>', methods=['POST'])
+def chains(name):
     try:
-        orders = [{"id": index, "name": valor}
-                  for index, valor in enumerate(get_orders())]
-        response = {"data": orders}
+        print(1111, name)
+        chains = get_chains(name)
+        for i, obj in enumerate(chains):
+            obj["id"] = i + 1
+        print("CHAIN:", chains)
+        response = {"data": chains}
         return ServiceUtils.success(response)
     except Exception as e:
         return ServiceUtils.error(e)
 
-def get_orders():
-    return FileUtils.get_folders("JobScheduler/backend/orders")
+
+def get_chains(name):
+    return FileUtils.get_param_json("JobScheduler/backend/orders/" + name + "/param.json")
+
+# def get_chains_by_name(name):
+#     return FileUtils.get_chains_by_name("JobScheduler/backend/orders/" + name + "param.json")

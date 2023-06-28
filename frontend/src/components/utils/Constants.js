@@ -11,3 +11,5 @@ export const ADD_TITLE_JOB = "Agregar Tarea";
 export const MODIFY_TITLE_JOB = "Agregar Tarea";
 export const PLACEHOLDER_JOB = "Introducir tarea";
 export const API_JOBS = "jobs";
+
+export const TITLE_CHAIN = "CADENA DE TAREAS";

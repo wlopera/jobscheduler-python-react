@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import service from "../../../../services/chains.service";
+import service from "../../../../services/orders.service";
 
 import { TITLE_ORDER } from "../../../utils/Constants";
 
@@ -27,6 +27,7 @@ const Orders = ({ onOrderId, loading, onLoading }) => {
   const handleClick = (id, name) => {
     if (!loading) {
       setSelectedRow(id);
+      onOrderId(name)
     }
   };
 

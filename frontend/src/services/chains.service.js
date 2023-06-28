@@ -3,9 +3,9 @@ import http from "./axios/http-common";
 const PATH_API = "/chains";
 
 class ChainsService {
-  get() {
+  get(data) {
     try {
-      return http.get(PATH_API).then((response) => {
+      return http.post(`${PATH_API}/${data}`).then((response) => {
         if (response.data.code === 200) {
           if (response.data.data.length > 0) {
             return {
