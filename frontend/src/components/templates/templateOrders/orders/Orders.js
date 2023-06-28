@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./Orders.css";
 
-import ModalComponent from "../modal/ModalComponent";
-import service from "../../services/orders.service";
+import ModalComponent from "../../../modal/ModalComponent";
+import service from "../../../../services/orders.service";
 
 import {
   TITLE_ORDER,
   ADD_TITLE_ORDER,
   MODIFY_TITLE_ORDER,
   PLACEHOLDER_ORDER,
-} from "../utils/Constants";
+} from "../../../utils/Constants";
 
 const Orders = ({
   onOrderId,

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./Jobs.css";
-import service from "../../services/jobs.service";
+import service from "../../../../services/jobs.service";
 
-import ModalComponent from "../modal/ModalComponent";
+import ModalComponent from "../../../modal/ModalComponent";
 import {
   TITLE_JOB,
   ADD_TITLE_JOB,
   MODIFY_TITLE_JOB,
   PLACEHOLDER_JOB,
-} from "../utils/Constants";
+} from "../../../utils/Constants";
 
 const Jobs = ({
   orderId,

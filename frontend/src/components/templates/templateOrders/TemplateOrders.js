@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Orders from "../orders/Orders";
-import Jobs from "../jobs/Jobs";
+import Orders from "./orders/Orders";
+import Jobs from "./jobs/Jobs";
 
 const TemplateOrders = () => {
   const [orderId, setOrderId] = useState(null);

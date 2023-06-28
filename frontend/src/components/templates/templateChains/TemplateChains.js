@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ListOrders from "../chains/ListOrders";
+import Orders from "./chains/Orders";
 
 const TemplateChains = () => {
   const [orderId, setOrderId] = useState(null);
@@ -21,7 +21,7 @@ const TemplateChains = () => {
           style={{ opacity: loading ? 0.5 : 1 }} // Establece la opacidad reducida durante el loading
         >
           <div className="col-md-4">
-            <ListOrders
+            <Orders
               onOrderId={setOrderId}
               loading={loading}
               onLoading={setLoading}

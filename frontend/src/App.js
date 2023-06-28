@@ -1,6 +1,6 @@
 import React from "react";
-import TemplateOrders from "./components/templates/TemplateOrders";
-import TemplateChains from "./components/templates/TemplateChains";
+import TemplateChains from "./components/templates/templateChains/TemplateChains";
+import TemplateOrders from "./components/templates/templateOrders/TemplateOrders";
 
 function App() {
   return (

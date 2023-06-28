@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import service from "../../services/chains.service";
+import service from "../../../../services/chains.service";
 
-import { TITLE_ORDER } from "../utils/Constants";
+import { TITLE_ORDER } from "../../../utils/Constants";
 
-const ListOrders = ({ onOrderId, loading, onLoading }) => {
+const Orders = ({ onOrderId, loading, onLoading }) => {
   const [dataTable, seDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [selectedRow, setSelectedRow] = useState(null);
@@ -69,4 +69,4 @@ const ListOrders = ({ onOrderId, loading, onLoading }) => {
   );
 };
 
-export default ListOrders;
+export default Orders;
