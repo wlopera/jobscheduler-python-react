@@ -7,7 +7,6 @@ const TemplateChains = () => {
   const [messageOrder, setMessageOrder] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  console.log(1111, orderId);
   return (
     <div className="row">
       <div className="row">

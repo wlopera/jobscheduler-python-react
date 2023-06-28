@@ -17,7 +17,11 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
       const response = await service.get(orderId);
       console.log("Consultar Tareas:", response);
       if (response.code === 200) {
-        setDataTable(response.data);
+        setDataTable({
+          data: response.data,
+          options: response.options,
+          positions: response.positions,
+        });
       }
       // setMessageJob(response.alert);
       onLoading(false);
@@ -33,7 +37,7 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
   const handleClick = (id, name) => {
     if (!loading) {
       setRow("");
-      setShow(true);  
+      setShow(true);
       setSelectedRow(id);
     }
   };
@@ -43,7 +47,6 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
     setShow(true);
   };
 
-
   const handleSetShow = () => {
     setRow("");
     setShow(false);
@@ -52,10 +55,10 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
   const handleProcessRow = async (newRow, type) => {
     handleSetShow();
 
-    console.log("Procesar modal")
+    console.log("Procesar modal");
   };
 
-
+  console.log(444444444, dataTable);
   return (
     <div>
       <div className="card">
@@ -81,8 +84,8 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
                 </tr>
               </thead>
               <tbody>
-                {dataTable &&
-                  dataTable.map((item) => (
+                {dataTable && dataTable.data &&
+                  dataTable.data.map((item) => (
                     <tr
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
@@ -117,7 +120,9 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
         show={show}
         showModal={handleSetShow}
         processModal={handleProcessRow}
-        value={row}
+        data={{}}
+        options={dataTable.options}
+        positions={dataTable.positions}
       />
     </div>
   );
