@@ -12,12 +12,7 @@ def jobs(name):
         if name != '':
             jobs = [{"id": index, "name": valor}
                     for index, valor in enumerate(get_jobs(name))]
-        response = {
-            "data": jobs,
-            "columns": [
-                {"dataField": "name", "text": ""}
-            ],
-        }
+        response = {"data": jobs}
         return ServiceUtils.success(response)
     except Exception as e:
         return ServiceUtils.error(e)
@@ -32,9 +27,9 @@ def add_job():
 
         FileUtils.create_folder(
             "JobScheduler/backend/orders/" + order_id + "/jobs/", job_id)
-        
+
         FileUtils.create_file_json(
-           "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json")
+            "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json")
 
         values = {
             "name": job_id,
@@ -75,7 +70,7 @@ def modify_job():
             "JobScheduler/backend/orders/"+order_id+"/jobs/", old_job, new_job)
 
         FileUtils.modify_job("JobScheduler/backend/orders/" +
-                            order_id + "/param.json", old_job, new_job)
+                             order_id + "/param.json", old_job, new_job)
 
         jobs = [{"id": index, "name": valor}
                 for index, valor in enumerate(get_jobs(order_id))]

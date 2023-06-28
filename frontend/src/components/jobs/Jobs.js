@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./TableJobs.css";
+import "./Jobs.css";
 import service from "../../services/jobs.service";
 
 import ModalComponent from "../modal/ModalComponent";
@@ -12,7 +12,7 @@ import {
   PLACEHOLDER_JOB,
 } from "../utils/Constants";
 
-const TableJobs = ({
+const Jobs = ({
   orderId,
   addButton = false,
   editButton = false,
@@ -21,7 +21,7 @@ const TableJobs = ({
   onLoading,
   textFooter,
 }) => {
-  const [dataTable, setDataTable] = useState({});
+  const [dataTable, setDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [show, setShow] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -33,14 +33,14 @@ const TableJobs = ({
       const response = await service.get(orderId);
       console.log("Consultar Tareas:", response);
       if (response.code === 200) {
-        setDataTable({ columns: response.columns, data: response.data });
+        setDataTable(response.data);
       }
       setMessageJob(response.alert);
       onLoading(false);
     };
     if (orderId === "") {
       setMessageJob(null);
-      setDataTable((prevData) => ({ ...prevData, data: [] }));
+      setDataTable([]);
     } else if (orderId) {
       getData();
     }
@@ -55,16 +55,13 @@ const TableJobs = ({
     });
     console.log("Agregar tarea:", response);
     if (response.code === 200) {
-      const arr = Object.entries(response.data).map(([key, value]) => {
-        return { key, value };
-      });
-
-      arr.forEach((item) => {
-        if (item.value.active) {
-          setSelectedRow(item.value.id);
+      response.data.forEach((item) => {
+        if (item.active) {
+          setSelectedRow(item.id);
+          return;
         }
       });
-      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+      setDataTable(response.data);
     }
     setMessageJob(response.alert);
     onLoading(false);
@@ -80,16 +77,13 @@ const TableJobs = ({
     });
     console.log("Modificar Tarea:", response);
     if (response.code === 200) {
-      const arr = Object.entries(response.data).map(([key, value]) => {
-        return { key, value };
-      });
-
-      arr.forEach((item) => {
-        if (item.value.active) {
-          setSelectedRow(item.value.id);
+      response.data.forEach((item) => {
+        if (item.active) {
+          setSelectedRow(item.id);
+          return;
         }
       });
-      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+      setDataTable(response.data);
     }
     setMessageJob(response.alert);
     onLoading(false);
@@ -105,7 +99,7 @@ const TableJobs = ({
     console.log("Eliminar tarea:", response);
     if (response.code === 200) {
       setSelectedRow(null);
-      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+      setDataTable(response.data);
     }
     setMessageJob(response.alert);
     onLoading(false);
@@ -173,8 +167,8 @@ const TableJobs = ({
                 </tr>
               </thead>
               <tbody>
-                {dataTable.data &&
-                  dataTable.data.map((item) => (
+                {dataTable &&
+                  dataTable.map((item) => (
                     <tr
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
@@ -229,4 +223,4 @@ const TableJobs = ({
   );
 };
 
-export default TableJobs;
+export default Jobs;

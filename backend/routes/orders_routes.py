@@ -10,12 +10,7 @@ def orders():
     try:
         orders = [{"id": index, "name": valor}
                   for index, valor in enumerate(get_orders())]
-        response = {
-            "data": orders,
-            "columns": [
-                {"dataField": "name", "text": ""},
-            ],
-        }
+        response = {"data": orders}
         return ServiceUtils.success(response)
     except Exception as e:
         return ServiceUtils.error(e)
@@ -25,7 +20,7 @@ def orders():
 def add_order(name):
     try:
         FileUtils.create_folder("JobScheduler/backend/orders", name)
-        
+
         FileUtils.create_folder(
             "JobScheduler/backend/orders/" + name + "/", "jobs")
 

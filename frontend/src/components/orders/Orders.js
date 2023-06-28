@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./TableOrders.css";
+import "./Orders.css";
 
 import ModalComponent from "../modal/ModalComponent";
 import service from "../../services/orders.service";
@@ -12,7 +12,7 @@ import {
   PLACEHOLDER_ORDER,
 } from "../utils/Constants";
 
-const TableOrders = ({
+const Orders = ({
   onOrderId,
   addButton = false,
   editButton = false,
@@ -22,7 +22,7 @@ const TableOrders = ({
   onLoading,
   textFooter,
 }) => {
-  const [dataTable, setDataTable] = useState({});
+  const [dataTable, setDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [show, setShow] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -34,7 +34,7 @@ const TableOrders = ({
       const response = await service.get();
       console.log("Consultar Ordenes:", response);
       if (response.code === 200) {
-        setDataTable({ columns: response.columns, data: response.data });
+        setDataTable(response.data);
       }
       setMessageOrder(response.alert);
       onLoading(false);
@@ -48,16 +48,14 @@ const TableOrders = ({
     const response = await service.create(input);
     console.log("Agregar Orden:", response);
     if (response.code === 200) {
-      const arr = Object.entries(response.data).map(([key, value]) => {
-        return { key, value };
-      });
-
-      arr.forEach((item) => {
-        if (item.value.active) {
-          setSelectedRow(item.value.id);
+      response.data.forEach((item) => {
+        if (item.active) {
+          setSelectedRow(item.id);
+          return;
         }
       });
-      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+
+      setDataTable(response.data);
       onOrderId(input);
     }
     setMessageOrder(response.alert);
@@ -73,16 +71,14 @@ const TableOrders = ({
     });
     console.log("Modificar orden:", response);
     if (response.code === 200) {
-      const arr = Object.entries(response.data).map(([key, value]) => {
-        return { key, value };
-      });
-
-      arr.forEach((item) => {
-        if (item.value.active) {
-          setSelectedRow(item.value.id);
+      response.data.forEach((item) => {
+        if (item.active) {
+          setSelectedRow(item.id);
+          return;
         }
       });
-      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+
+      setDataTable(response.data);
       onOrderId(new_value);
     }
     setMessageOrder(response.alert);
@@ -95,13 +91,11 @@ const TableOrders = ({
     const response = await service.delete(row);
     console.log("Eliminar orden:", response);
     if (response.code === 200) {
-      console.log("Eliminar orden 222:", response);
       setSelectedRow(null);
-      setDataTable((prevData) => ({ ...prevData, data: response.data }));
+      setDataTable(response.data);
       onOrderId("");
     }
     setMessageOrder(response.alert);
-    console.log("Eliminar orden 3333:", response);
     onLoading(false);
   };
 
@@ -169,8 +163,8 @@ const TableOrders = ({
                 </tr>
               </thead>
               <tbody>
-                {dataTable.data &&
-                  dataTable.data.map((item) => (
+                {dataTable &&
+                  dataTable.map((item) => (
                     <tr
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
@@ -225,4 +219,4 @@ const TableOrders = ({
   );
 };
 
-export default TableOrders;
+export default Orders;
