@@ -1,20 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import uuid from "react-uuid";
 
 import "./ModalParams.css";
 
 const ModalParams = ({ show, showModal, processModal, params, row }) => {
   const [data, setData] = useState([]);
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    setData(params);
+    const records = params.map((param) => [
+      { name: "ID-" + uuid(), value: param.name, type: "NAME" },
+      { name: "ID-" + uuid(), value: param.value, type: "VALUE" },
+    ]);
+    setData(records);
   }, [params, show]);
 
   const handleChange = (input) => {
     const { name, value } = input.target;
-    setData((prevData) => ({ ...prevData, [name]: value }));
-    setDisabled(!isValidateData({ ...data, [name]: value }));
+
+    const records = data.map((item) => {
+      if (name === item[0].name) {
+        item[0].value = value;
+      }
+      if (name === item[1].name) {
+        item[1].value = value;
+      }
+      return item;
+    });
+    setData(records);
+  };
+
+  const addRow = () => {
+    setData((prevData) => [
+      ...prevData,
+      [
+        { name: "ID-" + uuid(), value: "", type: "NAME" },
+        { name: "ID-" + uuid(), value: "", type: "VALUE" },
+      ],
+    ]);
+  };
+
+  const removeRow = (id) => {
+    setData((prevData) => {
+      const records = [];
+      prevData.forEach((item) => {
+        if (item[0].name !== id) {
+          records.push(item);
+        }
+      });
+      return records;
+    });
   };
 
   const isValidateData = (input) => {
@@ -38,22 +74,33 @@ const ModalParams = ({ show, showModal, processModal, params, row }) => {
   };
 
   const handleProcess = () => {
-    processModal(data);
-  };
+    const output = [];
+    data.forEach((item) =>
+      output.push({
+        name: item[0].value,
+        value: item[1].value,
+      })
+    );
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleProcess();
-    } else if (e.key === "Escape") {
-      showModal();
-    }
+    const payload = {
+      params: output,
+    };
+    processModal(payload);
   };
 
   return (
     <>
       <Modal centered show={show} onHide={showModal}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>{`Parámetros - ${row.job_id}`}</Modal.Title>
+          <div className="d-flex justify-content-end">
+            <button
+              className="btn btn-light btn-sm ml-2 "
+              onClick={() => addRow()}
+            >
+              <i className="bi bi-plus-square-fill icon_table"></i>
+            </button>
+          </div>
         </Modal.Header>
         <Modal.Body className="heightMaxModalParams">
           <div className="mb-3">
@@ -72,24 +119,26 @@ const ModalParams = ({ show, showModal, processModal, params, row }) => {
                         <input
                           type="text"
                           className="form-control"
-                          id={`${item.name}-${index}`}
-                          value={item.name}
-                          onChange={(e) => handleValue(e.target.value)}
+                          name={item[0].name}
+                          value={item[0].value}
+                          onChange={(e) => handleChange(e)}
                         />
                       </td>
                       <td>
                         <input
                           type="text"
                           className="form-control"
-                          id={`${item.value}-${index}`}
-                          value={item.value}
-                          onChange={(e) => handleValue(e.target.value)}
+                          name={item[1].name}
+                          value={item[1].value}
+                          onChange={(e) => handleChange(e)}
                         />
                       </td>
                       <td>
                         <button
                           className="btn btn-light btn-sm"
-                          onClick={() => {}}
+                          onClick={() => {
+                            removeRow(item[0].name);
+                          }}
                         >
                           <i className="bi bi-trash-fill icon_table"></i>
                         </button>

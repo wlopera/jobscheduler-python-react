@@ -80,7 +80,7 @@ class ChainsService {
     }
   }
 
-  params(data) {
+  getParams(data) {
     try {
       return http.post(`${PATH_API}/params`, data).then((response) => {
         console.log("Parámetros - tarea:", response);
@@ -108,6 +108,51 @@ class ChainsService {
             alert: {
               type: "ERROR",
               text: `Error cargando parámetros de tarea: [${response.data.code}]: ${response.data.message}`,
+            },
+          };
+        }
+      });
+    } catch (error) {
+      const errorMessage = error.response;
+      return {
+        data: response.data,
+        message: {
+          type: "ERROR",
+          text: `Error cargando parámetros de tarea: ${errorMessage}`,
+        },
+      };
+    }
+  }
+
+  updateParams(data) {
+    try {
+      console.log("Update Params:", data)
+      return http.post(`${PATH_API}/update_params`, data).then((response) => {
+        console.log("Parámetros - tarea luego de actualizados:", response);
+        if (response.data.code === 200) {
+          if (response.data.params.length > 0) {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `Parámetros de orden/tarea -> ${data.order_id}/${data.job_id} actualizados satisfactoriamente.`,
+              },
+            };
+          } else {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `No hay registros disponibles`,
+              },
+            };
+          }
+        } else {
+          return {
+            ...response.data,
+            alert: {
+              type: "ERROR",
+              text: `Error cargando parámetros de tarea actualizada: [${response.data.code}]: ${response.data.message}`,
             },
           };
         }

@@ -46,6 +46,15 @@ class FileUtils:
             json.dump([], file)
 
     @staticmethod
+    def update_data_json(path_file, new_data):
+        with open(path_file, 'r+') as file:
+            file.seek(0)  # Colocar el puntero al inicio del archivo
+            file.truncate()  # Vaciar el contenido del archivo
+            # Agregar los nuevos datos a la lista existente
+            json.dump(new_data, file, indent=4)
+        print("Datos eliminados y nuevos datos agregados al archivo JSON correctamente.")
+
+    @staticmethod
     def add_job_at_position(path, obj, position):
         with open(path, 'r+') as file:
             data = json.load(file)

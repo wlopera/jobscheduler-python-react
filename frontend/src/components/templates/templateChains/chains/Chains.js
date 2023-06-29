@@ -40,9 +40,8 @@ const Chains = ({ orderId, editButton, onLoading }) => {
     onLoading(true);
     handleSetShowEdit();
     const data = { order_id: orderId, job_id: input.name };
-    const response = await service.params(data);
+    const response = await service.getParams(data);
     if (response.code === 200) {
-      //setSelectedRow(input.id);
       setParams(response.params);
     }
     onLoading(false);
@@ -85,6 +84,17 @@ const Chains = ({ orderId, editButton, onLoading }) => {
         options: response.options,
         positions: response.positions,
       });
+    }
+    onLoading(false);
+  };
+
+  const handleProcessParams = async (data) => {
+    onLoading(true);
+    handleSetShowParams();
+    const request = { data: data, order_id: row.order_id, job_id: row.job_id };
+    const response = await service.updateParams(request);
+    if (response.code === 200) {
+      setParams(response.params);
     }
     onLoading(false);
   };
@@ -171,7 +181,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
         <ModalParams
           show={showParams}
           showModal={handleSetShowParams}
-          processModal={handleProcessRow}
+          processModal={handleProcessParams}
           params={params}
           row={row}
           options={dataTable.options}

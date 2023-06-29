@@ -68,6 +68,24 @@ def params_job():
         return ServiceUtils.error(e)
 
 
+@chains_routes.route('/update_params', methods=['POST'])
+def update_params_job():
+    try:
+        param = request.get_json()
+
+        # Obtener los datos enviados desde el formulario
+        order_id = param['order_id']
+        job_id = param['job_id']
+        new_data = param['data']
+
+        FileUtils.update_data_json(
+            "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json", new_data)
+
+        return ServiceUtils.success({})
+    except Exception as e:
+        return ServiceUtils.error(e)
+
+
 def get_chains(name):
     chains = FileUtils.get_param_json(
         "JobScheduler/backend/orders/" + name + "/param.json")
