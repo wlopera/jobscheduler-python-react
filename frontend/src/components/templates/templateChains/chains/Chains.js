@@ -4,13 +4,7 @@ import { TITLE_CHAIN } from "../../../utils/Constants";
 import service from "../../../../services/chains.service";
 import ModalChains from "../../../modal/ModalChains";
 
-const Chains = ({
-  orderId,
-  editButton,
-  onLoading,
-  setMessageChains,
-  textFooter,
-}) => {
+const Chains = ({ orderId, editButton, onLoading }) => {
   const [dataTable, setDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [selectedRow, setSelectedRow] = useState(null);
@@ -18,10 +12,6 @@ const Chains = ({
 
   useEffect(() => {
     const getData = async () => {
-      setMessageChains({
-        type: "LOADING",
-        text: "Cargando cadenas de tareas...",
-      });
       onLoading(true);
       const response = await service.get(orderId);
       console.log("Consultar Tareas:", response);
@@ -32,11 +22,9 @@ const Chains = ({
           positions: response.positions,
         });
       }
-      setMessageChains(response.alert);
       onLoading(false);
     };
     if (orderId === "") {
-      setMessageChains(null);
       setDataTable([]);
     } else if (orderId) {
       getData();
@@ -55,8 +43,9 @@ const Chains = ({
   };
 
   const handleProcessRow = async (data) => {
+    onLoading(true);
+    handleSetShow();
     data = { ...data, ["order_id"]: orderId };
-    setMessageChains({ type: "LOADING", text: "Procesando..." });
     const response = await service.update(data);
     if (response.code === 200) {
       response.data.forEach((item) => {
@@ -71,8 +60,7 @@ const Chains = ({
         positions: response.positions,
       });
     }
-    setMessageChains(response.alert);
-    handleSetShow();
+    onLoading(false);
   };
 
   return (
@@ -130,17 +118,7 @@ const Chains = ({
             </table>
           </div>
         </div>
-        <div className="card-footer">
-          <p
-            className={
-              textFooter && textFooter.type === "ERROR"
-                ? "text-danger fs-6"
-                : "text-primary fs-6"
-            }
-          >
-            {textFooter ? textFooter.text : ""}
-          </p>
-        </div>
+        <div className="card-footer"></div>
       </div>
       {show && (
         <ModalChains

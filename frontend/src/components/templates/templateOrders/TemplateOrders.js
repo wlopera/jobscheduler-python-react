@@ -12,7 +12,7 @@ const TemplateOrders = () => {
     <div className="row">
       <div className="row">
         {loading && (
-          <div className="overlay">
+          <div className="d-flex justify-content-center">
             <div className="spinner-border" role="status">
               <span className="visually-hidden">Cargando...</span>
             </div>

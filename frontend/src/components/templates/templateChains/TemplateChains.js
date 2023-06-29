@@ -4,14 +4,13 @@ import Chains from "./chains/Chains";
 
 const TemplateChains = () => {
   const [orderId, setOrderId] = useState(null);
-  const [messageChains, setMessageChains] = useState(null);
   const [loading, setLoading] = useState(false);
 
   return (
     <div className="row">
       <div className="row">
         {loading && (
-          <div className="overlay">
+          <div className="d-flex justify-content-center" >
             <div className="spinner-border" role="status">
               <span className="visually-hidden">Cargando...</span>
             </div>
@@ -33,8 +32,6 @@ const TemplateChains = () => {
               orderId={orderId}
               onLoading={setLoading}
               editButton={true}
-              setMessageChains={setMessageChains}
-              textFooter={messageChains ? messageChains : null}
             />
           </div>
         </div>

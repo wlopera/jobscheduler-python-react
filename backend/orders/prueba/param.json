@@ -1,16 +1,24 @@
 [
     {
-        "name": "job2",
+        "name": "task1",
         "package": "processFile.process_file",
         "class": "ProcessFile",
-        "next": "job3",
+        "next": "task2",
         "error": "error"
     },
     {
-        "name": "job1",
+        "name": "task2",
         "package": "processFile.process_file",
         "class": "ProcessFile",
-        "next": "job2",
+        "next": "task3",
+        "error": "error"
+    },
+    {
+        "name": "task3",
+        "package": "processFile.process_file",
+        "class": "ProcessFile",
+        "next": "exito",
         "error": "error"
     }
+
 ]

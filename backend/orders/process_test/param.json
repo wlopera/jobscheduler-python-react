@@ -10,7 +10,7 @@
         "name": "job2",
         "package": "processFile.process_file",
         "class": "ProcessFile",
-        "next": "job3",
+        "next": "exito",
         "error": "error"
     }
 ]
