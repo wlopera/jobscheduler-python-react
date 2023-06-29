@@ -15,7 +15,6 @@ const ModalComponent = ({
   useEffect(() => {
     setInputValue(value);
   }, [value, show]);
-  
 
   const handleValue = (input) => {
     setDisabled(input.trim().length > 0 ? false : true);
@@ -25,7 +24,6 @@ const ModalComponent = ({
   const handleProcess = () => {
     processModal(inputValue, type);
   };
-
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !disabled) {
@@ -58,10 +56,19 @@ const ModalComponent = ({
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={showModal}>
+          <Button
+            variant="secondary"
+            onClick={showModal}
+            className="btn btn-danger"
+          >
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleProcess} disabled={disabled}>
+          <Button
+            variant="primary"
+            onClick={handleProcess}
+            disabled={disabled}
+            className={disabled ? "btn btn-secondary" : "btn btn-primary"}
+          >
             Procesar
           </Button>
         </Modal.Footer>

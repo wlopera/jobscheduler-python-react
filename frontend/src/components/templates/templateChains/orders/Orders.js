@@ -37,7 +37,7 @@ const Orders = ({ onOrderId, loading, onLoading }) => {
         <div className="card-header">
           <div className="row">
             <div className="row">
-              <div className="col-md-4">{TITLE_ORDER}</div>
+              <div className="col-md-12">{TITLE_ORDER}</div>
             </div>
           </div>
         </div>

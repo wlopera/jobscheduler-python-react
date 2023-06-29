@@ -4,7 +4,7 @@ import Chains from "./chains/Chains";
 
 const TemplateChains = () => {
   const [orderId, setOrderId] = useState(null);
-  const [messageOrder, setMessageOrder] = useState(null);
+  const [messageChains, setMessageChains] = useState(null);
   const [loading, setLoading] = useState(false);
 
   return (
@@ -21,19 +21,20 @@ const TemplateChains = () => {
           className={loading ? "row content content-loading" : "row content"}
           style={{ opacity: loading ? 0.5 : 1 }} // Establece la opacidad reducida durante el loading
         >
-          <div className="col-md-4">
+          <div className="col-md-3">
             <Orders
               onOrderId={setOrderId}
               loading={loading}
               onLoading={setLoading}
             />
           </div>
-          <div className="col-md-8">
+          <div className="col-md-9">
             <Chains
               orderId={orderId}
-              loading={loading}
               onLoading={setLoading}
-              editButton={!loading}
+              editButton={true}
+              setMessageChains={setMessageChains}
+              textFooter={messageChains ? messageChains : null}
             />
           </div>
         </div>

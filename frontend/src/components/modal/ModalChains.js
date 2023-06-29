@@ -10,6 +10,7 @@ const ModalChains = ({
   positions,
 }) => {
   const [data, setData] = useState(row);
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     setData({ ...row, ["old_id"]: row.id });
@@ -18,6 +19,27 @@ const ModalChains = ({
   const handleChange = (input) => {
     const { name, value } = input.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
+    setDisabled(!isValidateData({ ...data, [name]: value }));
+  };
+
+  const isValidateData = (input) => {
+    if (input.package.trim().length === 0) {
+      return false;
+    }
+    if (input.class.trim().length === 0) {
+      return false;
+    }
+    if (input.name === input.next) {
+      return false;
+    }
+    if (input.name === input.error) {
+      return false;
+    }
+    if (input.next === input.error) {
+      return false;
+    }
+
+    return true;
   };
 
   const handleProcess = () => {
@@ -128,10 +150,15 @@ const ModalChains = ({
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={showModal}>
+          <Button variant="secondary" onClick={showModal} className="btn btn-danger">
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleProcess}>
+          <Button
+            variant="primary"
+            onClick={handleProcess}
+            disabled={disabled}
+            className={disabled ? "btn btn-secondary" : "btn btn-primary"}
+          >
             Procesar
           </Button>
         </Modal.Footer>

@@ -12,7 +12,7 @@ class ChainsService {
               ...response.data,
               alert: {
                 type: "SUCCESS",
-                text: `Ordenes cargadas satisfactoriamente.`,
+                text: `Cadena de tareas cargadas satisfactoriamente.`,
               },
             };
           } else {
@@ -29,7 +29,7 @@ class ChainsService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error cargando órdenes [${response.data.code}]: ${response.data.message}`,
+              text: `Error cargando cadena de tareas: [${response.data.code}]: ${response.data.message}`,
             },
           };
         }
@@ -40,7 +40,7 @@ class ChainsService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error cargando órdenes: ${errorMessage}`,
+          text: `Error cargando cadena de tareas: ${errorMessage}`,
         },
       };
     }
@@ -55,7 +55,7 @@ class ChainsService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `Modificar tarea "${data.old_value}" => "${data.new_value}".`,
+              text: `Modificada tarea "${data.name}"`,
             },
           };
         } else {
@@ -63,7 +63,7 @@ class ChainsService {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error modificando tarea "${data.old_value}": [${response.data.code}] - ${response.data.message}`,
+              text: `Error modificando tarea "${data.name}": [${response.data.code}] - ${response.data.message}`,
             },
           };
         }
@@ -74,7 +74,7 @@ class ChainsService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error modificando orden "${data.old_value}": ${errorMessage}`,
+          text: `Error modificando tarea "${data.name}": ${errorMessage}`,
         },
       };
     }

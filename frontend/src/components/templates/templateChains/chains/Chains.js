@@ -4,7 +4,13 @@ import { TITLE_CHAIN } from "../../../utils/Constants";
 import service from "../../../../services/chains.service";
 import ModalChains from "../../../modal/ModalChains";
 
-const Chains = ({ orderId, editButton, loading, onLoading }) => {
+const Chains = ({
+  orderId,
+  editButton,
+  onLoading,
+  setMessageChains,
+  textFooter,
+}) => {
   const [dataTable, setDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [selectedRow, setSelectedRow] = useState(null);
@@ -12,7 +18,10 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
 
   useEffect(() => {
     const getData = async () => {
-      //setMessageJob({ type: "LOADING", text: "Cargando Tareas..." });
+      setMessageChains({
+        type: "LOADING",
+        text: "Cargando cadenas de tareas...",
+      });
       onLoading(true);
       const response = await service.get(orderId);
       console.log("Consultar Tareas:", response);
@@ -23,11 +32,11 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
           positions: response.positions,
         });
       }
-      // setMessageJob(response.alert);
+      setMessageChains(response.alert);
       onLoading(false);
     };
     if (orderId === "") {
-      // setMessageJob(null);
+      setMessageChains(null);
       setDataTable([]);
     } else if (orderId) {
       getData();
@@ -47,10 +56,8 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
 
   const handleProcessRow = async (data) => {
     data = { ...data, ["order_id"]: orderId };
-    //setMessageJob({ type: "LOADING", text: "Procesando..." });
-    //onLoading(true);
+    setMessageChains({ type: "LOADING", text: "Procesando..." });
     const response = await service.update(data);
-    console.log("Modificar handleProcessRow - Tarea:", response);
     if (response.code === 200) {
       response.data.forEach((item) => {
         if (item.active) {
@@ -64,8 +71,7 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
         positions: response.positions,
       });
     }
-    //setMessageJob(response.alert);
-    //onLoading(false);
+    setMessageChains(response.alert);
     handleSetShow();
   };
 
@@ -75,7 +81,7 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
         <div className="card-header">
           <div className="row">
             <div className="row">
-              <div className="col-md-4">{TITLE_CHAIN}</div>
+              <div className="col-md-12">{TITLE_CHAIN}</div>
             </div>
           </div>
         </div>
@@ -84,6 +90,7 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
             <table id="myTable" className="table table-hover">
               <thead>
                 <tr>
+                  <th scope="col">Posición</th>
                   <th scope="col">Tarea</th>
                   <th scope="col">Paquete</th>
                   <th scope="col">Clase</th>
@@ -101,11 +108,12 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
                     >
-                      <td>{item.name}</td>
+                      <td className="text-center">{item.id}</td>
+                      <td className="link-success">{item.name}</td>
                       <td>{item.package}</td>
                       <td>{item.class}</td>
-                      <td>{item.next}</td>
-                      <td>{item.error}</td>
+                      <td className="link-primary">{item.next}</td>
+                      <td className="link-danger">{item.error}</td>
                       <td>
                         {editButton && (
                           <button
@@ -122,7 +130,17 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
             </table>
           </div>
         </div>
-        <div className="card-footer"></div>
+        <div className="card-footer">
+          <p
+            className={
+              textFooter && textFooter.type === "ERROR"
+                ? "text-danger fs-6"
+                : "text-primary fs-6"
+            }
+          >
+            {textFooter ? textFooter.text : ""}
+          </p>
+        </div>
       </div>
       {show && (
         <ModalChains
