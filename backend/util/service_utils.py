@@ -8,7 +8,6 @@ class ServiceUtils:
         response['status'] = 'SUCCESS'
         response['error'] = None
         response['message'] = "Operación exitosa"
-        print("exito: ", response)
         return jsonify(response)
 
     @staticmethod

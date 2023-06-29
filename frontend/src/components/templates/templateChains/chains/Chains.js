@@ -34,17 +34,10 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
     }
   }, [orderId]);
 
-  const handleClick = (id, name) => {
-    if (!loading) {
-      setRow("");
-      setShow(true);
-      setSelectedRow(id);
-    }
-  };
-
   const modifyRow = (input) => {
     setRow(input);
     setShow(true);
+    setSelectedRow(input.id);
   };
 
   const handleSetShow = () => {
@@ -52,13 +45,30 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
     setShow(false);
   };
 
-  const handleProcessRow = async (newRow, type) => {
+  const handleProcessRow = async (data) => {
+    data = { ...data, ["order_id"]: orderId };
+    //setMessageJob({ type: "LOADING", text: "Procesando..." });
+    //onLoading(true);
+    const response = await service.update(data);
+    console.log("Modificar handleProcessRow - Tarea:", response);
+    if (response.code === 200) {
+      response.data.forEach((item) => {
+        if (item.active) {
+          setSelectedRow(item.id);
+          return;
+        }
+      });
+      setDataTable({
+        data: response.data,
+        options: response.options,
+        positions: response.positions,
+      });
+    }
+    //setMessageJob(response.alert);
+    //onLoading(false);
     handleSetShow();
-
-    console.log("Procesar modal");
   };
 
-  console.log(444444444, dataTable);
   return (
     <div>
       <div className="card">
@@ -84,12 +94,12 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
                 </tr>
               </thead>
               <tbody>
-                {dataTable && dataTable.data &&
+                {dataTable &&
+                  dataTable.data &&
                   dataTable.data.map((item) => (
                     <tr
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
-                      //onClick={() => handleClick(item.id, item.name)}
                     >
                       <td>{item.name}</td>
                       <td>{item.package}</td>
@@ -100,7 +110,7 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
                         {editButton && (
                           <button
                             className="btn btn-light btn-sm"
-                            onClick={() => modifyRow(item.name)}
+                            onClick={() => modifyRow(item)}
                           >
                             <i className="bi bi-pencil-square icon_table"></i>
                           </button>
@@ -114,16 +124,17 @@ const Chains = ({ orderId, editButton, loading, onLoading }) => {
         </div>
         <div className="card-footer"></div>
       </div>
-      <ModalChains
-        title="Definir cadena de trabajo"
-        placeHolder=""
-        show={show}
-        showModal={handleSetShow}
-        processModal={handleProcessRow}
-        data={{}}
-        options={dataTable.options}
-        positions={dataTable.positions}
-      />
+      {show && (
+        <ModalChains
+          placeHolder=""
+          show={show}
+          showModal={handleSetShow}
+          processModal={handleProcessRow}
+          row={row}
+          options={dataTable.options}
+          positions={dataTable.positions}
+        />
+      )}
     </div>
   );
 };

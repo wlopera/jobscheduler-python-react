@@ -2,32 +2,30 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 const ModalChains = ({
-  title,
   show,
   showModal,
   processModal,
-  data,
+  row,
   options,
   positions,
 }) => {
-  const [inputValue, setInputValue] = useState({});
-  const [disabled, setDisabled] = useState(true);
+  const [data, setData] = useState(row);
 
   useEffect(() => {
-    setInputValue(data);
-  }, [data, show]);
+    setData({ ...row, ["old_id"]: row.id });
+  }, [row, show]);
 
-  const handleValue = (input) => {
-    setDisabled(input.trim().length > 0 ? false : true);
-    setInputValue(input);
+  const handleChange = (input) => {
+    const { name, value } = input.target;
+    setData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleProcess = () => {
-    processModal(inputValue, type);
+    processModal(data);
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !disabled) {
+    if (e.key === "Enter") {
       handleProcess();
     } else if (e.key === "Escape") {
       showModal();
@@ -38,16 +36,21 @@ const ModalChains = ({
     <>
       <Modal centered show={show} onHide={showModal}>
         <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
+          <Modal.Title>{`Tarea - ${data.name}`}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div class="modal-body">
-            <div class="row mb-3">
-              <label htmlFor="txtPosition" class="col-sm-4 col-form-label">
+          <div className="modal-body">
+            <div className="row mb-3">
+              <label htmlFor="txtPosition" className="col-sm-4 col-form-label">
                 Posición:
               </label>
-              <div class="col-sm-8">
-                <select id="txtPosition" name="txtPosition" class="form-select">
+              <div className="col-sm-8">
+                <select
+                  className="form-select"
+                  value={data.id}
+                  name="id"
+                  onChange={handleChange}
+                >
                   {positions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -56,40 +59,45 @@ const ModalChains = ({
                 </select>
               </div>
             </div>
-            <div class="row mb-3">
-              <label htmlFor="txtPackage" class="col-sm-4 col-form-label">
+            <div className="row mb-3">
+              <label htmlFor="txtPackage" className="col-sm-4 col-form-label">
                 Paquete:
               </label>
-              <div class="col-sm-8">
+              <div className="col-sm-8">
                 <input
                   type="text"
-                  id="txtPackage"
-                  name="txtPackage"
-                  class="form-control"
-                  //value="{{ data.job['package'] }}"
+                  className="form-control"
+                  name="package"
+                  value={data.package}
+                  onChange={handleChange}
                 />
               </div>
             </div>
-            <div class="row mb-3">
-              <label htmlFor="txtClass" class="col-sm-4 col-form-label">
+            <div className="row mb-3">
+              <label htmlFor="txtClass" className="col-sm-4 col-form-label">
                 Clase:
               </label>
-              <div class="col-sm-8">
+              <div className="col-sm-8">
                 <input
                   type="text"
-                  id="txtClass"
-                  name="txtClass"
-                  class="form-control"
-                  // value="{{ data.job['class'] }}"
+                  className="form-control"
+                  name="class"
+                  value={data.class}
+                  onChange={handleChange}
                 />
               </div>
             </div>
-            <div class="row mb-3">
-              <label htmlFor="txtNext" class="col-sm-4 col-form-label">
-                Próxima tarea:
+            <div className="row mb-3">
+              <label htmlFor="txtNext" className="col-sm-4 col-form-label">
+                Siguiente:
               </label>
-              <div class="col-sm-8">
-                <select id="txtNext" name="txtNext" class="form-select">
+              <div className="col-sm-8">
+                <select
+                  className="form-select"
+                  value={data.next}
+                  name="next"
+                  onChange={handleChange}
+                >
                   {options.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -98,12 +106,17 @@ const ModalChains = ({
                 </select>
               </div>
             </div>
-            <div class="row mb-3">
-              <label htmlFor="txtError" class="col-sm-4 col-form-label">
+            <div className="row mb-3">
+              <label htmlFor="txtError" className="col-sm-4 col-form-label">
                 Error:
               </label>
-              <div class="col-sm-8">
-                <select id="txtError" name="txtError" class="form-select">
+              <div className="col-sm-8">
+                <select
+                  className="form-select"
+                  name="error"
+                  value={data.error}
+                  onChange={handleChange}
+                >
                   {options.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -118,7 +131,7 @@ const ModalChains = ({
           <Button variant="secondary" onClick={showModal}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleProcess} disabled={disabled}>
+          <Button variant="primary" onClick={handleProcess}>
             Procesar
           </Button>
         </Modal.Footer>

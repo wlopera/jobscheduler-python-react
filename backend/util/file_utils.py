@@ -99,17 +99,6 @@ class FileUtils:
     @staticmethod
     def get_param_json(path):
         # Leer los datos desde el archivo JSON
-        print(22222, path)
         with open(path, 'r') as file:
             data = json.load(file)
-            print(3333, data)
             return data
-
-    # @staticmethod
-    # def get_chains_by_name(path, name):
-    #     print(22222, path, name)
-    #     with open(path, 'r') as file:
-    #         data = json.load(file)
-    #         print(3333, data)
-    #         data = [tag for tag in data if tag.get('name') == name]
-    #     return data

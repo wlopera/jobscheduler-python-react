@@ -6,8 +6,8 @@ function App() {
   return (
     <div className="container">
       <TemplateChains />
-      <br />
-      <TemplateOrders />
+      {/* <br />
+      <TemplateOrders /> */}
     </div>
   );
 }
