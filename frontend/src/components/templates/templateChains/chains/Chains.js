@@ -14,6 +14,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [showParams, setShowParams] = useState(false);
   const [params, setParams] = useState([]);
+  const [textFooter, setTextFooter] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -27,6 +28,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
           positions: response.positions,
         });
       }
+      setTextFooter(response.alert);
       onLoading(false);
     };
     if (orderId === "") {
@@ -45,7 +47,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
       setParams(response.params);
     }
     onLoading(false);
-
+    setTextFooter(response.alert);
     setRow(data);
     setShowParams(true);
     setSelectedRow(input.id);
@@ -55,6 +57,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
     setRow(input);
     setShowEdit(true);
     setSelectedRow(input.id);
+    setTextFooter(null);
   };
 
   const handleSetShowParams = () => {
@@ -85,6 +88,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
         positions: response.positions,
       });
     }
+    setTextFooter(response.alert);
     onLoading(false);
   };
 
@@ -96,6 +100,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
     if (response.code === 200) {
       setParams(response.params);
     }
+    setTextFooter(response.alert);
     onLoading(false);
   };
 
@@ -165,7 +170,17 @@ const Chains = ({ orderId, editButton, onLoading }) => {
             </table>
           </div>
         </div>
-        <div className="card-footer"></div>
+        <div className="card-footer">
+          <p
+            className={
+              textFooter && textFooter.type === "ERROR"
+                ? "text-danger fs-6"
+                : "text-primary fs-6"
+            }
+          >
+            {textFooter ? textFooter.text : ""}
+          </p>
+        </div>
       </div>
       {showEdit && (
         <ModalChains

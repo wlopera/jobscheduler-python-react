@@ -55,7 +55,7 @@ class ChainsService {
             ...response.data,
             alert: {
               type: "SUCCESS",
-              text: `Modificada tarea "${data.name}"`,
+              text: `Modificada tarea "${data.name}" satisfactoriamente`,
             },
           };
         } else {
@@ -126,27 +126,17 @@ class ChainsService {
 
   updateParams(data) {
     try {
-      console.log("Update Params:", data)
+      console.log("Update Params:", data);
       return http.post(`${PATH_API}/update_params`, data).then((response) => {
         console.log("Parámetros - tarea luego de actualizados:", response);
         if (response.data.code === 200) {
-          if (response.data.params.length > 0) {
-            return {
-              ...response.data,
-              alert: {
-                type: "SUCCESS",
-                text: `Parámetros de orden/tarea -> ${data.order_id}/${data.job_id} actualizados satisfactoriamente.`,
-              },
-            };
-          } else {
-            return {
-              ...response.data,
-              alert: {
-                type: "SUCCESS",
-                text: `No hay registros disponibles`,
-              },
-            };
-          }
+          return {
+            ...response.data,
+            alert: {
+              type: "SUCCESS",
+              text: `Parámetros orden/tarea: ${data.order_id}/${data.job_id} -> actualizados satisfactoriamente.`,
+            },
+          };
         } else {
           return {
             ...response.data,

@@ -53,25 +53,25 @@ const ModalParams = ({ show, showModal, processModal, params, row }) => {
     });
   };
 
-  const isValidateData = (input) => {
-    if (input.package.trim().length === 0) {
-      return false;
-    }
-    if (input.class.trim().length === 0) {
-      return false;
-    }
-    if (input.name === input.next) {
-      return false;
-    }
-    if (input.name === input.error) {
-      return false;
-    }
-    if (input.next === input.error) {
-      return false;
-    }
+  // const isValidateData = (input) => {
+  //   if (input.package.trim().length === 0) {
+  //     return false;
+  //   }
+  //   if (input.class.trim().length === 0) {
+  //     return false;
+  //   }
+  //   if (input.name === input.next) {
+  //     return false;
+  //   }
+  //   if (input.name === input.error) {
+  //     return false;
+  //   }
+  //   if (input.next === input.error) {
+  //     return false;
+  //   }
 
-    return true;
-  };
+  //   return true;
+  // };
 
   const handleProcess = () => {
     const output = [];
@@ -92,7 +92,7 @@ const ModalParams = ({ show, showModal, processModal, params, row }) => {
     <>
       <Modal centered show={show} onHide={showModal}>
         <Modal.Header>
-          <Modal.Title>{`Parámetros - ${row.job_id}`}</Modal.Title>
+          <Modal.Title>{`Parámetros ${row.job_id}`}</Modal.Title>
           <div className="d-flex justify-content-end">
             <button
               className="btn btn-light btn-sm ml-2 "
