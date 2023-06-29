@@ -4,9 +4,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import service from "../../../../services/orders.service";
 
 import { TITLE_ORDER } from "../../../utils/Constants";
-import './Orders.css'
 
-const Orders = ({ onOrderId, loading, onLoading }) => {
+const Params = ({ onOrderId, loading, onLoading }) => {
   const [dataTable, seDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [selectedRow, setSelectedRow] = useState(null);
@@ -71,4 +70,4 @@ const Orders = ({ onOrderId, loading, onLoading }) => {
   );
 };
 
-export default Orders;
+export default Params;

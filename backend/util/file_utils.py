@@ -95,10 +95,14 @@ class FileUtils:
             json.dump(data, file, indent=4)
             file.truncate()
 
-    # ----------------- Chains
+    # ----------------- Parametros
+
     @staticmethod
     def get_param_json(path):
-        # Leer los datos desde el archivo JSON
-        with open(path, 'r') as file:
-            data = json.load(file)
-            return data
+        try:
+            with open(path, 'r') as file:
+                return json.load(file)
+        except FileNotFoundError:
+            print("El archivo no existe")
+        except json.JSONDecodeError:
+            print("El archivo no es válido JSON")

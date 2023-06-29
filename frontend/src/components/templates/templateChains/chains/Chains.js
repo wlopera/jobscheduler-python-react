@@ -3,12 +3,17 @@ import React, { useEffect, useState } from "react";
 import { TITLE_CHAIN } from "../../../utils/Constants";
 import service from "../../../../services/chains.service";
 import ModalChains from "../../../modal/ModalChains";
+import ModalParams from "../../../modal/ModalParams";
+
+import "./Chains.css";
 
 const Chains = ({ orderId, editButton, onLoading }) => {
   const [dataTable, setDataTable] = useState(null);
   const [row, setRow] = useState("");
   const [selectedRow, setSelectedRow] = useState(null);
-  const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showParams, setShowParams] = useState(false);
+  const [params, setParams] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -31,20 +36,41 @@ const Chains = ({ orderId, editButton, onLoading }) => {
     }
   }, [orderId]);
 
-  const modifyRow = (input) => {
-    setRow(input);
-    setShow(true);
+  const paramRow = async (input) => {
+    onLoading(true);
+    handleSetShowEdit();
+    const data = { order_id: orderId, job_id: input.name };
+    const response = await service.params(data);
+    if (response.code === 200) {
+      //setSelectedRow(input.id);
+      setParams(response.params);
+    }
+    onLoading(false);
+
+    setRow(data);
+    setShowParams(true);
     setSelectedRow(input.id);
   };
 
-  const handleSetShow = () => {
+  const modifyRow = (input) => {
+    setRow(input);
+    setShowEdit(true);
+    setSelectedRow(input.id);
+  };
+
+  const handleSetShowParams = () => {
     setRow("");
-    setShow(false);
+    setShowParams(false);
+  };
+
+  const handleSetShowEdit = () => {
+    setRow("");
+    setShowEdit(false);
   };
 
   const handleProcessRow = async (data) => {
     onLoading(true);
-    handleSetShow();
+    handleSetShowEdit();
     data = { ...data, ["order_id"]: orderId };
     const response = await service.update(data);
     if (response.code === 200) {
@@ -84,7 +110,8 @@ const Chains = ({ orderId, editButton, onLoading }) => {
                   <th scope="col">Clase</th>
                   <th scope="col">Siguiente</th>
                   <th scope="col">Error</th>
-                  <th style={{ width: "100px" }}>Acciones</th>
+                  <th style={{ width: "100px" }}>Parámetros</th>
+                  <th style={{ width: "100px" }}>Acción</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -102,7 +129,17 @@ const Chains = ({ orderId, editButton, onLoading }) => {
                       <td>{item.class}</td>
                       <td className="link-primary">{item.next}</td>
                       <td className="link-danger">{item.error}</td>
-                      <td>
+                      <td className="text-center">
+                        {editButton && (
+                          <button
+                            className="btn btn-light btn-sm"
+                            onClick={() => paramRow(item)}
+                          >
+                            <i className="bi bi-building-fill-add icon_table"></i>
+                          </button>
+                        )}
+                      </td>
+                      <td className="text-center">
                         {editButton && (
                           <button
                             className="btn btn-light btn-sm"
@@ -120,12 +157,22 @@ const Chains = ({ orderId, editButton, onLoading }) => {
         </div>
         <div className="card-footer"></div>
       </div>
-      {show && (
+      {showEdit && (
         <ModalChains
-          placeHolder=""
-          show={show}
-          showModal={handleSetShow}
+          show={showEdit}
+          showModal={handleSetShowEdit}
           processModal={handleProcessRow}
+          row={row}
+          options={dataTable.options}
+          positions={dataTable.positions}
+        />
+      )}
+      {showParams && (
+        <ModalParams
+          show={showParams}
+          showModal={handleSetShowParams}
+          processModal={handleProcessRow}
+          params={params}
           row={row}
           options={dataTable.options}
           positions={dataTable.positions}

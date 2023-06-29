@@ -52,6 +52,22 @@ def modify_chain():
         return ServiceUtils.error(e)
 
 
+@chains_routes.route('/params', methods=['POST'])
+def params_job():
+    try:
+        param = request.get_json()
+
+        # Obtener los datos enviados desde el formulario
+        order_id = param['order_id']
+        job_id = param['job_id']
+
+        response = get_params(order_id, job_id)
+
+        return ServiceUtils.success(response)
+    except Exception as e:
+        return ServiceUtils.error(e)
+
+
 def get_chains(name):
     chains = FileUtils.get_param_json(
         "JobScheduler/backend/orders/" + name + "/param.json")
@@ -70,5 +86,7 @@ def get_chains(name):
 
     return {"data": chains, "options": options, "positions": positions}
 
-# def get_chains_by_name(name):
-#     return FileUtils.get_chains_by_name("JobScheduler/backend/orders/" + name + "param.json")
+
+def get_params(order_id, job_id):
+    return FileUtils.get_param_json(
+        "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json")

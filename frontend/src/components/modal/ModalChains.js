@@ -46,14 +46,6 @@ const ModalChains = ({
     processModal(data);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleProcess();
-    } else if (e.key === "Escape") {
-      showModal();
-    }
-  };
-
   return (
     <>
       <Modal centered show={show} onHide={showModal}>
