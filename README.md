@@ -1,5 +1,7 @@
 # jobscheduler-python-react
-APP JobScheduler que poermite correr encadenamientos de tareas en Python y React
+APP WEB: JobSchedule => rmite generar tareas encadenadas para correr mediante un cron de ejecución a una fecha y hora definida.
+ * Python - Flask como Backend
+ * React: Como frontend.
 
 ## Salidas:
 
