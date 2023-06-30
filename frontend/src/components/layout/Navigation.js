@@ -10,7 +10,9 @@ const Navigation = () => {
       style={{ color: "white", backgroundColor: "#51e451" }}
     >
       <div className="container-fluid">
-        <h1>JobScheduler</h1>
+        <a style={{color:"white", textDecoration: "none"}} href="/">
+          <h1>JobScheduler</h1>
+        </a>
 
         <button
           className="navbar-toggler"
@@ -29,11 +31,11 @@ const Navigation = () => {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <NavLink
-                  to="/home"
+                  to="/process"
                   activeClassName={classes.active}
                   className="nav-link"
                 >
-                  Inicio
+                  Procesar Tareas
                 </NavLink>
               </li>
               <li className="nav-item">

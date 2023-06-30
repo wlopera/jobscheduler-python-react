@@ -8,6 +8,7 @@ import {
 
 import Layout from "./components/layout/Layout";
 import Home from "./components/templates/Home";
+import TemplateProcess from "./components/templates/templateProcess/TemplateProcess";
 import TemplateChains from "./components/templates/templateChains/TemplateChains";
 import TemplateOrders from "./components/templates/templateOrders/TemplateOrders";
 
@@ -18,6 +19,9 @@ function App() {
         <Switch>
           <Route path="/" exact>
             <Redirect to="home" />
+          </Route>
+          <Route path="/process">
+            <TemplateProcess />
           </Route>
           <Route path="/home">
             <Home />

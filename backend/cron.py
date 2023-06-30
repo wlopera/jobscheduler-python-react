@@ -26,3 +26,17 @@ while running:
     time.sleep(1)
 
 print("Cron Finalizado")
+
+
+# from flask import Flask
+# import subprocess
+
+# app = Flask(__name__)
+
+# @app.route('/invoke_script', methods=['GET'])
+# def invoke_script():
+#     subprocess.run(['python', 'JobScheduler/spooler_task.py', 'JobSchduler/chains/batch_files'])
+#     return "Script invoked successfully"
+
+# if __name__ == '__main__':
+#     app.run()
