@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Orders from "./orders/Orders";
 import Chains from "./chains/Chains";
-import Params from "./params/Params";
 
 const TemplateChains = () => {
   const [orderId, setOrderId] = useState(null);

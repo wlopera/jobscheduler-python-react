@@ -1,0 +1,20 @@
+{
+    "params": [
+        {
+            "name": "environment",
+            "value": "prod"
+        },
+        {
+            "name": "date",
+            "value": ""
+        },
+        {
+            "name": "source_ip",
+            "value": ""
+        },
+        {
+            "name": "host",
+            "value": ""
+        }
+    ]
+}
