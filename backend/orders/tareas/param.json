@@ -1,0 +1,10 @@
+[
+  {
+    "name": "get_list",
+    "package": "processFile.process_file",
+    "class": "ProcessFile",
+    "param": "batch_files\\get_list",
+    "next": "exito",
+    "error": "error"
+  }
+]

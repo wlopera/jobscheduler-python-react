@@ -1,31 +1,10 @@
-2023-06-30 15:19:12,818 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
-2023-06-30 15:19:12,818 - scheduler - INFO - JOBS ==> [{'name': 'get_list', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'next': 'copy_file', 'error': 'error'}, {'name': 'copy_file', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'next': 'send_email', 'error': 'error'}, {'name': 'send_email', 'package': 'sendEmail.send_email', 'class': 'SendEmail', 'next': 'exito', 'error': 'error'}]
-2023-06-30 15:19:12,818 - scheduler - INFO - Tarea inicial ==> get_list
-2023-06-30 15:19:13,037 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
-2023-06-30 15:19:13,037 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
-2023-06-30 15:19:13,037 - scheduler - INFO - Operacion: GetList
-2023-06-30 15:19:13,632 - scheduler - INFO - Archivos: ['1_ICF_20230605102002.I', 'IMA202306051113328.I', '1_IDF_20230605102006.I', '1_ICF_20230605101930.I', '1_IVRacmt20230605102007.I', 'IDF_202306051113324.I', 'IDF_202306051113377.I']
-2023-06-30 15:19:13,632 - scheduler - INFO - Resultado: True
-2023-06-30 15:19:13,632 - scheduler - INFO - Porceso exitoso...!
-2023-06-30 15:19:13,632 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
-2023-06-30 15:19:13,632 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
-2023-06-30 15:19:13,641 - scheduler - INFO - Operacion: Copy
-2023-06-30 15:19:15,787 - scheduler - INFO - Archivo 1_ICF_20230605102002.I copiado exitosamente.
-2023-06-30 15:19:16,875 - scheduler - INFO - Archivo IMA202306051113328.I copiado exitosamente.
-2023-06-30 15:19:17,142 - scheduler - INFO - Archivo 1_IDF_20230605102006.I copiado exitosamente.
-2023-06-30 15:19:17,338 - scheduler - INFO - Archivo 1_ICF_20230605101930.I copiado exitosamente.
-2023-06-30 15:19:17,536 - scheduler - INFO - Archivo 1_IVRacmt20230605102007.I copiado exitosamente.
-2023-06-30 15:19:18,901 - scheduler - INFO - Archivo IDF_202306051113324.I copiado exitosamente.
-2023-06-30 15:19:19,126 - scheduler - INFO - Archivo IDF_202306051113377.I copiado exitosamente.
-2023-06-30 15:19:19,126 - scheduler - INFO - Archivos copiados exitosamente de A a B a través de SFTP.
-2023-06-30 15:19:19,126 - scheduler - INFO - Resultado: True
-2023-06-30 15:19:19,126 - scheduler - INFO - Porceso exitoso...!
-2023-06-30 15:19:19,179 - scheduler - INFO - Modulo: <module 'jobs.sendEmail.send_email' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\sendEmail\\send_email.py'>
-2023-06-30 15:19:19,179 - scheduler - INFO - Instancia: <class 'jobs.sendEmail.send_email.SendEmail'>
-2023-06-30 15:19:19,179 - scheduler - INFO - Enviar correo
-2023-06-30 15:19:19,180 - scheduler - INFO - send email: smtp.googlemail.com
-2023-06-30 15:19:21,210 - scheduler - INFO - Correo enviado correctamente
-2023-06-30 15:19:21,210 - scheduler - INFO - Finalizo el envio
-2023-06-30 15:19:21,210 - scheduler - INFO - Resultado: True
-2023-06-30 15:19:21,210 - scheduler - INFO - Porceso exitoso...!
-2023-06-30 15:19:21,210 - scheduler - INFO - Scheduler finalizado con exito
+2023-06-30 16:02:55,967 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
+2023-06-30 16:02:55,967 - scheduler - INFO - JOBS ==> [{'name': 'get_list', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'param': 'batch_files\\get_list', 'next': 'exito', 'error': 'error'}]
+2023-06-30 16:02:55,967 - scheduler - INFO - Tarea inicial ==> get_list
+2023-06-30 16:02:56,159 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-06-30 16:02:56,159 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
+2023-06-30 16:02:56,159 - scheduler - INFO - Operacion: GetList
+2023-06-30 16:02:57,081 - scheduler - INFO - Archivos: ['1_ICF_20230605102002.I', 'IMA202306051113328.I', '1_IDF_20230605102006.I', '1_ICF_20230605101930.I', '1_IVRacmt20230605102007.I', 'IDF_202306051113324.I', 'IDF_202306051113377.I']
+2023-06-30 16:02:57,081 - scheduler - INFO - Resultado: True
+2023-06-30 16:02:57,081 - scheduler - INFO - Porceso exitoso...!
+2023-06-30 16:02:57,091 - scheduler - INFO - Scheduler finalizado con exito

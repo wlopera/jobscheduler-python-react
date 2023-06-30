@@ -1,0 +1,10 @@
+[
+  {
+    "name": "send_email",
+    "package": "sendEmail.send_email",
+    "class": "SendEmail",
+    "param": "batch_files\\send_email",
+    "next": "exito",
+    "error": "error"
+  }
+]
