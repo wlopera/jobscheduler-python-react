@@ -1,28 +1,28 @@
 {
-    "params": [
-        {
-            "name": "source_server",
-            "value": "123.456.789.012"
-        },
-        {
-            "name": "source_port",
-            "value": "42"
-        },
-        {
-            "name": "source_user",
-            "value": "new_user"
-        },
-        {
-            "name": "source_password",
-            "value": "******************"
-        },
-        {
-            "name": "source_path",
-            "value": "/ACH/enviado_ccb/2023-06-05/"
-        },
-        {
-            "name": "operation",
-            "value": "GetList"
-        }
-    ]
+	"params": [
+		{
+      "name": "source_server",
+      "value": "192.168.251.95"
+    },
+    {
+      "name": "source_port",
+      "value": "22"
+    },
+    {
+      "name": "source_user",
+      "value": "srv_jobscheduler"
+    },
+    {
+      "name": "source_password",
+      "value": "jv6yKgK-LZp:7B6eDo"
+    },
+    {
+      "name": "source_path",
+      "value": "/ACH/enviado_ccb/2023-06-05/"
+    },
+    {
+      "name": "operation",
+      "value": "GetList"
+    }
+	]
 }
