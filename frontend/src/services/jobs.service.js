@@ -46,6 +46,49 @@ class JobsService {
     }
   }
 
+  get_from_json(data) {
+    try {
+      return http.post(`${PATH_API}/fromJson/${data}`).then((response) => {
+        if (response.data.code === 200) {
+          if (response.data.data.length > 0) {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `Tareas cargadas satisfactoriamente.`,
+              },
+            };
+          } else {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `No hay registros disponibles`,
+              },
+            };
+          }
+        } else {
+          return {
+            ...response.data,
+            alert: {
+              type: "ERROR",
+              text: `Error cargando tareas [${response.data.code}]: ${response.data.message}`,
+            },
+          };
+        }
+      });
+    } catch (error) {
+      const errorMessage = error.response;
+      return {
+        data: response.data,
+        message: {
+          type: "ERROR",
+          text: `Error cargando $tareas: ${errorMessage}`,
+        },
+      };
+    }
+  }
+
   create(data) {
     try {
       return http.post(`${PATH_API}/add`, data).then((response) => {

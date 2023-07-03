@@ -8,15 +8,30 @@ import Drawing from "./Drawing";
 
 const Jobs = ({ orderId, setMessageJob, onLoading, textFooter }) => {
   const [dataTable, setDataTable] = useState(null);
+  const [diagramData, setDiagramData] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
       setMessageJob({ type: "LOADING", text: "Cargando Tareas..." });
       onLoading(true);
-      const response = await service.get(orderId);
+      const response = await service.get_from_json(orderId);
       console.log("Consultar Tareas:", response);
       if (response.code === 200) {
         setDataTable(response.data);
+        let diagram = response.data.map((item) => ({
+          id: item.id,
+          text: item.name,
+        }));
+        diagram.push({
+          id: diagram.length + 1,
+          text: "error",
+        });
+        setDiagramData(diagram);
+        diagram.push({
+          id: diagram.length + 1,
+          text: "exito",
+        });
+        setDiagramData(diagram);
       }
       setMessageJob(response.alert);
       onLoading(false);
@@ -29,7 +44,6 @@ const Jobs = ({ orderId, setMessageJob, onLoading, textFooter }) => {
     }
   }, [orderId]);
 
-  console.log(12345, orderId, dataTable);
   return (
     <div>
       <div className="card">
@@ -42,7 +56,13 @@ const Jobs = ({ orderId, setMessageJob, onLoading, textFooter }) => {
         </div>
         <div className="card-body">
           <div className="widthClass">
-            <Drawing />
+            {diagramData && (
+              <Drawing
+                width={diagramData.length * 100}
+                height={diagramData.length * 100}
+                diagramData={diagramData}
+              />
+            )}
           </div>
         </div>
         <div className="card-footer">

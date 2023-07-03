@@ -17,6 +17,18 @@ def jobs(name):
     except Exception as e:
         return ServiceUtils.error(e)
 
+@jobs_routes.route('/fromJson/<string:name>', methods=['POST'])
+def jobs_from_json(name):
+    try:
+        jobs = []
+        if name != '':
+            jobs = [{"id": index, "name": data['name']}
+                    for index, data in enumerate(get_jobs_from_json(name))]
+        response = {"data": jobs}
+        return ServiceUtils.success(response)
+    except Exception as e:
+        return ServiceUtils.error(e)
+    
 
 @jobs_routes.route('/add', methods=['POST'])
 def add_job():
@@ -113,3 +125,8 @@ def delete_job():
 
 def get_jobs(order_id):
     return FileUtils.get_folders("JobScheduler/backend/orders/" + order_id + "/jobs")
+
+def get_jobs_from_json(order_id):
+    return FileUtils.get_param_json("JobScheduler/backend/orders/" + order_id + "/param.json")
+
+

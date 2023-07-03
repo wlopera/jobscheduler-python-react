@@ -1,57 +1,61 @@
-import React from 'react';
+import React from "react";
 
-const Drawing = () => {
+const Drawing = ({ width, height, diagramData }) => {
   const canvasRef = React.useRef(null);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
+    const X0 = 50;
+    const Y0 = 75;
+    let X = 0;
+    let Y = -75;
 
-    // Dibuja los procesos
-    ctx.fillStyle = '#f4eeeefc';
-    ctx.fillRect(100, 0, 100, 50);   
-    ctx.fillRect(150, 100, 100, 50);
-    ctx.fillRect(200, 200, 100, 50);
+    const drawRect = (x, y, w, h, text) => {
+      console.log(1111, x, y, w, h, text);
+      ctx.fillStyle = "#f4eeeefc";
+      ctx.fillRect(x, y, w, h);
 
-    ctx.fillStyle = '#f49696';
-    ctx.fillRect(100, 300, 140, 50);
+      ctx.fillStyle = "black";
+      ctx.font = "12px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, x + w / 2, y + h / 2);
+    };
 
-    ctx.fillStyle = '#d1f5c7';
-    ctx.fillRect(250, 300, 100, 50);
+    const drawLine = (fromX, fromY, toX, toY) => {
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo(toX, toY);
+      ctx.stroke();
+    };
 
-    // Dibuja las flechas
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    
-    ctx.moveTo(125, 50);
-    ctx.lineTo(125, 300);
-    ctx.moveTo(175, 50);
-    ctx.lineTo(175, 100);
+    let cont = 0;
+    // Dibujar elementos
+    for (const element of diagramData) {
+      if (element.text === "exito") {
+        drawRect(X0 + X + 5, Y0 + Y, 100, 50, element.text);
+      } else if (element.text === "error") {
+        drawRect(X0 / 2, Y0 + Y, X + X0 - 25, 50, element.text);
+      } else {
+        X = X + X0;
+        Y = Y + Y0;
+        cont++, drawRect(X, Y, 100, 50, element.text);
+        drawLine(X + 25, Y + 50, X + 25, (diagramData.length - 2) * 3 * 25);
+        drawLine(X + 75, Y + 50, X + 75, cont * 3 * 25);
+      }
+    }
+  }, [diagramData]);
 
-    ctx.moveTo(175, 150);
-    ctx.lineTo(175, 300);
-    ctx.moveTo(225, 150);
-    ctx.lineTo(225, 200);
-
-    ctx.moveTo(225, 250);
-    ctx.lineTo(225, 300);
-    ctx.moveTo(275, 250);
-    ctx.lineTo(275, 300);
-    ctx.stroke();
-
-    // Dibuja los textos
-    ctx.fillStyle = 'black';
-    ctx.font = '12px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('get_list', 150, 30);
-    ctx.fillText('copy_file', 200, 130);
-    ctx.fillText('send_email', 250, 230);
-    ctx.fillText('Error', 175, 330);
-    ctx.fillText('Exito', 300, 330);
-  }, []);
-
-  return <canvas ref={canvasRef} width={350} height={350} />;
+  return (
+    <div
+     
+    >
+      <canvas ref={canvasRef} width={width} height={height} />
+    </div>
+  );
 };
 
 export default Drawing;
