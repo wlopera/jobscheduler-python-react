@@ -1,9 +1,9 @@
 import sys
-import json
 import importlib
 from util.logger import setup_logger
 from datetime import datetime
 from util.file_utils import FileUtils
+import time
 
 
 class SpoolerTask:
@@ -12,9 +12,9 @@ class SpoolerTask:
         self.current_order = {}
         self.jobs = {}
         self.current_job = None
-        self.logger = setup_logger(
-            "scheduler", "Scheduler-" + datetime.now().strftime('%Y%m%d'))
         # self.logger = setup_logger("scheduler", "Scheduler-" + datetime.now().strftime('%Y%m%d%H%M%S'))
+        self.log_name = "Scheduler-" + datetime.now().strftime('%Y%m%d')
+        self.logger = setup_logger("scheduler", self.log_name)
         self.logger.info(
             "#----------------------- Inicia proceso de Scheduler")
 
@@ -32,16 +32,21 @@ class SpoolerTask:
         return None
 
     def process(self):
+        self.logger.info("detener................")
+        time.sleep(30)
+        self.logger.info("continuar................")
         # Iniciar el procesamiento de tareas
         for iterator in range(len(self.jobs)):
             self.process_job(self.get_job(self.current_job))
         self.logger.info("Scheduler finalizado con exito")
+        
 
     def process_job(self, job):
         package_job = "jobs." + job['package']
         class_job = job['class']
-        path_param = "JobScheduler/backend/orders/" + self.current_order + "/jobs/" + self.current_job
-        
+        path_param = "JobScheduler/backend/orders/" + \
+            self.current_order + "/jobs/" + self.current_job
+
         # print("--------------------------------------------")
         # print("Package:" + package_job)
         # print("Class:" + class_job)
@@ -76,10 +81,13 @@ class SpoolerTask:
             sys.exit()
 
 
+
 if __name__ == "__main__":
     spooler = SpoolerTask()
 
     args = sys.argv
+    print(12345, args)
+
     if (len(args) > 1):
         spooler.get_chains(args[1])
     else:

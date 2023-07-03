@@ -158,6 +158,50 @@ class ChainsService {
       };
     }
   }
+
+  process(data) {
+    try {
+      return http.post(`${PATH_API}/process/${data}`).then((response) => {
+        console.log(12345, response)
+        if (response.data.code === 200) {
+          if (response.data.data.length > 0) {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `Cadena de tareas cargadas satisfactoriamente.`,
+              },
+            };
+          } else {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `No hay registros disponibles`,
+              },
+            };
+          }
+        } else {
+          return {
+            ...response.data,
+            alert: {
+              type: "ERROR",
+              text: `Error cargando cadena de tareas: [${response.data.code}]: ${response.data.message}`,
+            },
+          };
+        }
+      });
+    } catch (error) {
+      const errorMessage = error.response;
+      return {
+        data: response.data,
+        message: {
+          type: "ERROR",
+          text: `Error cargando cadena de tareas: ${errorMessage}`,
+        },
+      };
+    }
+  }
 }
 
 export default new ChainsService();

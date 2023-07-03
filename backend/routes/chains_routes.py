@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, send_from_directory
 from util.file_utils import FileUtils
 from util.service_utils import ServiceUtils
+from spooler_task import SpoolerTask
+import threading
 
 chains_routes = Blueprint('chains_routes', __name__, url_prefix='/api/chains')
 
@@ -82,6 +84,29 @@ def update_params_job():
             "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json", new_data)
 
         return ServiceUtils.success({})
+    except Exception as e:
+        return ServiceUtils.error(e)
+
+
+@chains_routes.route('/process/<string:name>', methods=['POST'])
+def process(name):
+    try:
+        spooler = SpoolerTask()
+        spooler.get_chains(name)
+
+        # spooler.logger.info("ORDER ==> " + str(spooler.order))
+        spooler.logger.info("JOBS ==> " + str(spooler.jobs))
+        spooler.logger.info("Tarea inicial ==> " + spooler.current_job)
+
+        # Define una función que ejecutará spooler.process()
+        def run_spooler():
+            spooler.process()
+
+        # Crea un hilo y ejecuta run_spooler() en él
+        thread = threading.Thread(target=run_spooler)
+        thread.start()
+
+        return ServiceUtils.success({"log_name": spooler.log_name})
     except Exception as e:
         return ServiceUtils.error(e)
 

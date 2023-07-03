@@ -12,7 +12,7 @@ const Drawing = ({ width, height, diagramData }) => {
     let Y = -75;
 
     const drawRect = (x, y, w, h, text) => {
-      console.log(1111, x, y, w, h, text);
+      //console.log(1111, x, y, w, h, text);
       ctx.fillStyle = "#f4eeeefc";
       ctx.fillRect(x, y, w, h);
 
