@@ -193,46 +193,6 @@ class ChainsService {
     }
   }
 
-  status(token) {
-    try {
-      console.log(1111, http.defaults)
-      http.defaults.headers.common["X-Request-Token"] = token;
-      console.log(22222, http.defaults)
-      return http.get(`${PATH_API}/status`).then((response) => {
-        console.log(
-          "Respuesta de estado actual del procesamiento de la orden",
-          response
-        );
-        if (response.data.code === 200) {
-          return {
-            ...response.data,
-            alert: {
-              type: "SUCCESS",
-              text: `Orden procesada satisfactoriamente.`,
-            },
-          };
-        } else {
-          return {
-            ...response.data,
-            alert: {
-              type: "ERROR",
-              text: `Error procesando la orden: [${response.data.code}]: ${response.data.message}`,
-            },
-          };
-        }
-      });
-    } catch (error) {
-      const errorMessage = error.response;
-      return {
-        data: response.data,
-        message: {
-          type: "ERROR",
-          text: `Error prcoesando la orden: ${errorMessage}`,
-        },
-      };
-    }
-  }
-
   read_log_file(data) {
     try {
       return http.post(`${PATH_API}/log/${data}`).then((response) => {

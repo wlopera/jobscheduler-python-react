@@ -32,9 +32,9 @@ class SpoolerTask:
         return None
 
     def process(self):
-        self.logger.info("detener................")
-        time.sleep(10)
-        self.logger.info("continuar................")
+        # self.logger.info("detener................")
+        # time.sleep(10)
+        # self.logger.info("continuar................")
         # Iniciar el procesamiento de tareas
         for iterator in range(len(self.jobs)):
             self.process_job(self.get_job(self.current_job))
