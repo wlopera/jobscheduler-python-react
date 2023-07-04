@@ -162,31 +162,21 @@ class ChainsService {
   process(data) {
     try {
       return http.post(`${PATH_API}/process/${data}`).then((response) => {
-        console.log(12345, response)
+        console.log(12345, response);
         if (response.data.code === 200) {
-          if (response.data.data.length > 0) {
-            return {
-              ...response.data,
-              alert: {
-                type: "SUCCESS",
-                text: `Cadena de tareas cargadas satisfactoriamente.`,
-              },
-            };
-          } else {
-            return {
-              ...response.data,
-              alert: {
-                type: "SUCCESS",
-                text: `No hay registros disponibles`,
-              },
-            };
-          }
+          return {
+            ...response.data,
+            alert: {
+              type: "SUCCESS",
+              text: `Orden procesada satisfactoriamente.`,
+            },
+          };
         } else {
           return {
             ...response.data,
             alert: {
               type: "ERROR",
-              text: `Error cargando cadena de tareas: [${response.data.code}]: ${response.data.message}`,
+              text: `Error procesando la orden: [${response.data.code}]: ${response.data.message}`,
             },
           };
         }
@@ -197,7 +187,41 @@ class ChainsService {
         data: response.data,
         message: {
           type: "ERROR",
-          text: `Error cargando cadena de tareas: ${errorMessage}`,
+          text: `Error prcoesando la orden: ${errorMessage}`,
+        },
+      };
+    }
+  }
+
+  read_log_file(data) {
+    try {
+      return http.post(`${PATH_API}/log/${data}`).then((response) => {
+        console.log(12345, response);
+        if (response.data.code === 200) {
+          return {
+            ...response.data,
+            alert: {
+              type: "SUCCESS",
+              text: `Archivo Log cargado satisfactoriamente.`,
+            },
+          };
+        } else {
+          return {
+            ...response.data,
+            alert: {
+              type: "ERROR",
+              text: `Error cargando archivo log: [${response.data.code}]: ${response.data.message}`,
+            },
+          };
+        }
+      });
+    } catch (error) {
+      const errorMessage = error.response;
+      return {
+        data: response.data,
+        message: {
+          type: "ERROR",
+          text: `Error cargando archivo log: ${errorMessage}`,
         },
       };
     }

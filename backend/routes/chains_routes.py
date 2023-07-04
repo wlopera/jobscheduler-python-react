@@ -111,6 +111,19 @@ def process(name):
         return ServiceUtils.error(e)
 
 
+@chains_routes.route('/log/<string:name>', methods=['POST'])
+def log_data(name):
+    try:
+        response = FileUtils.get_log_file(
+            'JobScheduler/backend/log/' + name + ".log")
+        
+        print(123456, ServiceUtils.success(response))
+        
+        return ServiceUtils.success(response)
+    except Exception as e:
+        return ServiceUtils.error(e)
+
+
 def get_chains(name):
     chains = FileUtils.get_param_json(
         "JobScheduler/backend/orders/" + name + "/param.json")

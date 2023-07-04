@@ -1,6 +1,7 @@
 import os
 import shutil
 import json
+from flask import jsonify
 
 
 class FileUtils:
@@ -115,3 +116,14 @@ class FileUtils:
             print("El archivo no existe")
         except json.JSONDecodeError:
             print("El archivo no es válido JSON")
+
+    # ----------------- Archivo log
+
+    @staticmethod
+    def get_log_file(path):
+        try:
+            with open(path, 'r') as file:
+                content = file.read().splitlines()
+                return {'log': content}
+        except IOError:
+            return {'error': 'Error al leer el archivo de registro.'}

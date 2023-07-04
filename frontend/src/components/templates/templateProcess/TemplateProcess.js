@@ -8,6 +8,7 @@ const TemplateProcess = () => {
   const [messageOrder, setMessageOrder] = useState(null);
   const [messageJob, setMessageJob] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [logName, setLogName] = useState(null);
 
   return (
     <div className="row">
@@ -35,12 +36,11 @@ const TemplateProcess = () => {
             loading={loading}
             onLoading={setLoading}
             textFooter={messageJob ? messageJob : null}
+            onLogName={setLogName}
           />
         </div>
       </div>
-      <div className="row">
-        <MessageView />
-      </div>
+      <div className="row">{logName && <MessageView logName={logName} />}</div>
     </div>
   );
 };

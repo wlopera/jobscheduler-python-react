@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-function MessageView() {
+import chainsService from "../../../../services/chains.service";
+
+const MessageView = ({ logName }) => {
   const [messages, setMessages] = useState([]);
 
-  const handleButtonClick = () => {
-    const newMessage = `Mensaje ${messages.length + 1}`;
-    setMessages(prevMessages => [...prevMessages, newMessage]);
-  };
+  useEffect(() => {
+    const getData = async () => {
+      console.log(12345, logName);
+      const response = await chainsService.read_log_file(logName);
+      console.log("Archivo log:", response);
+      if (response.code === 200) {
+        const logLines = response.log;
+        setMessages(logLines);
+      }
+    };
+    getData();
+  }, [logName]);
 
   return (
-    <div style={{ height: '300px', overflow: 'auto' }}>
-      <button onClick={handleButtonClick}>Agregar Mensaje</button>
-      <div>
-        {messages.map((message, index) => (
-          <p key={index}>{message}</p>
-        ))}
+    <div style={{ height: "300px", overflow: "auto" }}>
+      <div className="card">
+        <div className="card-header">Procesamiento de la Orden </div>
+        <div className="card-body">
+          <pre>{messages.join("\n")}</pre>
+        </div>
+        <div className="card-footer text-muted">Footer</div>
       </div>
     </div>
   );
-}
+};
 
 export default MessageView;

@@ -7,7 +7,7 @@ import chainsService from "../../../../services/chains.service";
 import { TITLE_JOB } from "../../../utils/Constants";
 import Drawing from "./Drawing";
 
-const Jobs = ({ orderId, setMessageJob, onLoading, textFooter }) => {
+const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onLogName }) => {
   const [diagramData, setDiagramData] = useState(null);
 
   useEffect(() => {
@@ -43,15 +43,15 @@ const Jobs = ({ orderId, setMessageJob, onLoading, textFooter }) => {
   }, [orderId]);
 
   const process = async (item) => {
-    //setMessageOrder({ type: "LOADING", text: "Procesando Orden..." });
-    //onLoading(true);
-    console.log(22222, orderId)
+    setMessageJob({ type: "LOADING", text: "Procesando Orden..." });
+    onLoading(true);
     const response = await chainsService.process(orderId);
-    //console.log("Consultar Ordenes:", response);
+    console.log("Procesando la orden:", response);
     if (response.code === 200) {
+      onLogName(response.log_name);
     }
-    //setMessageOrder(response.alert);
-    //onLoading(false);
+    setMessageJob(response.alert);
+    onLoading(false);
   };
 
   return (
