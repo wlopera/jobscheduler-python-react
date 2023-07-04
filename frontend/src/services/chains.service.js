@@ -35,7 +35,7 @@ class ChainsService {
         }
       });
     } catch (error) {
-      const errorMessage = error.response;
+      const errorMessage = error;
       return {
         data: response.data,
         message: {
@@ -163,6 +163,46 @@ class ChainsService {
     try {
       return http.post(`${PATH_API}/process/${data}`).then((response) => {
         console.log(12345, response);
+        if (response.data.code === 200) {
+          return {
+            ...response.data,
+            alert: {
+              type: "SUCCESS",
+              text: `Orden procesada satisfactoriamente.`,
+            },
+          };
+        } else {
+          return {
+            ...response.data,
+            alert: {
+              type: "ERROR",
+              text: `Error procesando la orden: [${response.data.code}]: ${response.data.message}`,
+            },
+          };
+        }
+      });
+    } catch (error) {
+      const errorMessage = error.response;
+      return {
+        data: response.data,
+        message: {
+          type: "ERROR",
+          text: `Error prcoesando la orden: ${errorMessage}`,
+        },
+      };
+    }
+  }
+
+  status(token) {
+    try {
+      console.log(1111, http.defaults)
+      http.defaults.headers.common["X-Request-Token"] = token;
+      console.log(22222, http.defaults)
+      return http.get(`${PATH_API}/status`).then((response) => {
+        console.log(
+          "Respuesta de estado actual del procesamiento de la orden",
+          response
+        );
         if (response.data.code === 200) {
           return {
             ...response.data,

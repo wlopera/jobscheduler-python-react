@@ -9,6 +9,8 @@ import Drawing from "./Drawing";
 
 const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onLogName }) => {
   const [diagramData, setDiagramData] = useState(null);
+  const [inProgress, setInProgress] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -49,9 +51,27 @@ const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onLogName }) => {
     console.log("Procesando la orden:", response);
     if (response.code === 200) {
       onLogName(response.log_name);
+      setToken(response.token);
+      setInProgress(true);
+      evaluateStatus(response.token);
     }
     setMessageJob(response.alert);
     onLoading(false);
+  };
+
+  const evaluateStatus = async (token) => {
+  const intervalId = setInterval(async () => {
+    const response = await chainsService.status(token);
+    console.log("Estado actual de la orden:", response.message, response['status-code']);
+    if (response.code === 200) {
+      // Hacer algo con la respuesta
+    }
+  }, 5000); // Intervalo de 5 segundos (puedes ajustar el valor según tus necesidades)
+
+  // Detener la repetición después de 30 segundos
+  setTimeout(() => {
+    clearInterval(intervalId);
+  }, 30000); // Detener después de 30 segundos (puedes ajustar el valor según tus necesidades)
   };
 
   return (

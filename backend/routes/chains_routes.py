@@ -3,8 +3,11 @@ from util.file_utils import FileUtils
 from util.service_utils import ServiceUtils
 from spooler_task import SpoolerTask
 import threading
+import secrets
 
 chains_routes = Blueprint('chains_routes', __name__, url_prefix='/api/chains')
+
+processes = {}  # Diccionario para almacenar los procesos en ejecución
 
 
 @chains_routes.route('/<string:name>', methods=['POST'])
@@ -91,22 +94,57 @@ def update_params_job():
 @chains_routes.route('/process/<string:name>', methods=['POST'])
 def process(name):
     try:
-        spooler = SpoolerTask()
-        spooler.get_chains(name)
+        # Generar un token único
+        token = secrets.token_hex(16)
 
-        # spooler.logger.info("ORDER ==> " + str(spooler.order))
-        spooler.logger.info("JOBS ==> " + str(spooler.jobs))
-        spooler.logger.info("Tarea inicial ==> " + spooler.current_job)
+        print("Procesar  orden: ", processes, token)
+        # Verificar si ya existe un proceso en ejecución con ese token
+        if token in processes:
+            # 102: El servidor ha aceptado la solicitud, pero aún no la ha completado
+            return ServiceUtils.success({'message': 'Ya hay un proceso en ejecución con ese token', 'status-code': 102})
+        else:
+            # Almacenar el token en el diccionario de procesos en ejecución
+            processes[token] = True
 
-        # Define una función que ejecutará spooler.process()
-        def run_spooler():
-            spooler.process()
+            spooler = SpoolerTask()
+            spooler.get_chains(name)
 
-        # Crea un hilo y ejecuta run_spooler() en él
-        thread = threading.Thread(target=run_spooler)
-        thread.start()
+            # spooler.logger.info("ORDER ==> " + str(spooler.order))
+            spooler.logger.info("JOBS ==> " + str(spooler.jobs))
+            spooler.logger.info("Tarea inicial ==> " + spooler.current_job)
 
-        return ServiceUtils.success({"log_name": spooler.log_name})
+            # Define una función que ejecutará spooler.process()
+            def run_spooler():
+                spooler.process()
+                print(12345678, token)
+                if token in processes:
+                    del processes[token]
+
+            # Crea un hilo y ejecuta run_spooler() en él
+            thread = threading.Thread(target=run_spooler)
+            thread.start()
+
+            return ServiceUtils.success({"log_name": spooler.log_name, "token": token})
+    except Exception as e:
+        return ServiceUtils.error(e)
+
+
+@chains_routes.route('/status')
+def check_status():
+    try:
+        print(111111111111111)
+        # Obtener el token de la petición
+        token = request.headers.get('X-Request-Token')
+        
+        print("processes -token: ", processes, token)
+
+        # Verificar si existe un proceso en ejecución con ese token
+        if token in processes:
+            # 202: Indica que la solicitud se ha aceptado para su procesamiento, pero el procesamiento no se ha completado;
+            return ServiceUtils.success({"message": "El proceso aún está en ejecución", "token": token, 'status-code': 202})
+        else:
+            # 200: La solicitud tuvo éxito
+            return ServiceUtils.success({"message": "El proceso ha finalizado", "token": token, 'status-code': 200})
     except Exception as e:
         return ServiceUtils.error(e)
 
@@ -116,9 +154,9 @@ def log_data(name):
     try:
         response = FileUtils.get_log_file(
             'JobScheduler/backend/log/' + name + ".log")
-        
+
         print(123456, ServiceUtils.success(response))
-        
+
         return ServiceUtils.success(response)
     except Exception as e:
         return ServiceUtils.error(e)
