@@ -13,7 +13,8 @@ class SpoolerTask:
         self.jobs = {}
         self.current_job = None
         # self.logger = setup_logger("scheduler", "Scheduler-" + datetime.now().strftime('%Y%m%d%H%M%S'))
-        self.log_name = "Scheduler-" + datetime.now().strftime('%Y%m%d')
+        # self.log_name = "Scheduler-" + datetime.now().strftime('%Y%m%d')
+        self.log_name = "Scheduler-" + datetime.now().strftime('%Y%m%d%H%M%S')
         self.logger = setup_logger("scheduler", self.log_name)
         self.logger.info(
             "#----------------------- Inicia proceso de Scheduler")
@@ -39,7 +40,6 @@ class SpoolerTask:
         for iterator in range(len(self.jobs)):
             self.process_job(self.get_job(self.current_job))
         self.logger.info("Scheduler finalizado con exito")
-        
 
     def process_job(self, job):
         package_job = "jobs." + job['package']
@@ -79,7 +79,6 @@ class SpoolerTask:
             self.logger.error(f"Error: {err}")
             print("")
             sys.exit()
-
 
 
 if __name__ == "__main__":

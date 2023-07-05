@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./Orders.css";
 
-import service from "../../../../services/orders.service";
+import service from "../../../../services/chains.service";
 
 import { TITLE_ORDER } from "../../../utils/Constants";
 
-const Orders = ({ onOrderId, setMessageOrder, onLoading, textFooter }) => {
+const History = ({ onLogName, textFooter }) => {
   const [dataTable, setDataTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
-      setMessageOrder({ type: "LOADING", text: "Cargando Ordenes..." });
-      onLoading(true);
-      const response = await service.get();
-      //console.log("Consultar Ordenes:", response);
+      //   setMessageOrder({ type: "LOADING", text: "Cargando historial..." });
+      //   onLoading(true);
+      const response = await service.history();
+      console.log("Historial:", response);
       if (response.code === 200) {
         setDataTable(response.data);
       }
-      setMessageOrder(response.alert);
-      onLoading(false);
+      //   setMessageOrder(response.alert);
+      //   onLoading(false);
     };
     getData();
   }, []);
 
-  const play = async (item) => {
-    onOrderId(item.name);
+  const showLog = async (item) => {
+    onLogName(item.log)
     setSelectedRow(item.id);
   };
 
@@ -43,15 +42,32 @@ const Orders = ({ onOrderId, setMessageOrder, onLoading, textFooter }) => {
         <div className="card-body">
           <div className="widthClass">
             <table id="myTable" className="table table-hover">
+              <thead>
+                <tr>
+                  <th>Orden ID</th>
+                  <th>Estado</th>
+                  <th>Fecha de inicio</th>
+                  <th>Fecha de fin</th>
+                  <th>Duración</th>
+                  <th>Nodo</th>
+                  <th>Archivo LOG</th>
+                </tr>
+              </thead>
               <tbody>
                 {dataTable &&
                   dataTable.map((item) => (
                     <tr
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
-                      onClick={() => play(item)}
+                      onClick={() => showLog(item)}
                     >
-                      <td>{item.name}</td>
+                      <td>{item.order_id}</td>
+                      <td>{item.status}</td>
+                      <td>{item.startDate}</td>
+                      <td>{item.endDate}</td>
+                      <td>{item.duration}</td>
+                      <td>{item.node}</td>
+                      <td>{item.log}</td>
                     </tr>
                   ))}
               </tbody>
@@ -74,4 +90,4 @@ const Orders = ({ onOrderId, setMessageOrder, onLoading, textFooter }) => {
   );
 };
 
-export default Orders;
+export default History;

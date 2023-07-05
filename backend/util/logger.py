@@ -8,7 +8,8 @@ def setup_logger(log_name, log_file):
 
     try:
         # Crear el archivo de registro
-        file_handler = logging.FileHandler('JobScheduler/backend/log/' + log_file + ".log")
+        file_handler = logging.FileHandler(
+            'JobScheduler/backend/log/' + log_file + ".log")
         file_handler.setLevel(logging.INFO)
 
         # Formateador del registro
@@ -20,6 +21,6 @@ def setup_logger(log_name, log_file):
         logger.addHandler(file_handler)
 
         return logger
-    
+
     except Exception as e:
         print(f"Error al configurar el archivo de registro: {str(e)}")

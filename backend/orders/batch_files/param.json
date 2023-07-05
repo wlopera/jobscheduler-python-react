@@ -12,7 +12,7 @@
     "package": "processFile.process_file",
     "class": "ProcessFile",
     "param": "batch_files\\copy_file",
-    "next": "email",
+    "next": "send_email",
     "error": "error"
   },
   {

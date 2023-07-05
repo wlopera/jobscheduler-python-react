@@ -9,8 +9,6 @@ import Drawing from "./Drawing";
 
 const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onLogName }) => {
   const [diagramData, setDiagramData] = useState(null);
-  const [inProgress, setInProgress] = useState(null);
-  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -51,8 +49,6 @@ const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onLogName }) => {
     console.log("Procesando la orden:", response);
     if (response.code === 200) {
       onLogName(response.log_name);
-      setToken(response.token);
-      setInProgress(true);
     }
     setMessageJob(response.alert);
     onLoading(false);
@@ -65,21 +61,21 @@ const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onLogName }) => {
           <div className="row">
             <div className="row">
               <div className="col-md-4">{TITLE_JOB}</div>
-              {diagramData && diagramData.length > 0 && (
-                <div className="col-md-8 d-flex justify-content-end">
-                  <button
-                    className="btn btn-light btn-sm ml-2 "
-                    onClick={() => process()}
-                  >
-                    <i className="bi bi-play-btn-fill icon_table"></i>
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
         <div className="card-body">
           <div className="widthClass">
+            {diagramData && diagramData.length > 0 && (
+              <div className="col-md-8 d-flex justify-content-end">
+                <button
+                  className="btn btn-light btn-sm ml-2 "
+                  onClick={() => process()}
+                >
+                  <i className="bi bi-play-btn-fill icon_table"></i>
+                </button>
+              </div>
+            )}
             {diagramData && (
               <Drawing
                 width={(diagramData.length - 1) * 100}

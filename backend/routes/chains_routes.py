@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, send_from_directory
 from util.file_utils import FileUtils
 from util.service_utils import ServiceUtils
 from spooler_task import SpoolerTask
+from datetime import datetime
 
 chains_routes = Blueprint('chains_routes', __name__, url_prefix='/api/chains')
 
@@ -91,15 +92,41 @@ def update_params_job():
 def process(name):
     try:
         spooler = SpoolerTask()
+        spooler.logger.info("Orden a procesar " + name)
         spooler.get_chains(name)
 
         # spooler.logger.info("ORDER ==> " + str(spooler.order))
         spooler.logger.info("JOBS ==> " + str(spooler.jobs))
         spooler.logger.info("Tarea inicial ==> " + spooler.current_job)
+
+        values = {
+            "id": datetime.now().strftime('%Y%m%d%H%M%S'),
+            "order_id": name,
+            "status": "init",
+            "startDate": datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
+            "endDate": "",
+            "duration": "",
+            "node": spooler.current_job,
+            "log": spooler.log_name
+        }
+
+        FileUtils.add_job_at_last_position(
+            "JobScheduler/backend/orders/orders.json", values)
+
         spooler.process()
+
+        handlers = spooler.logger.handlers[:]
+        for handler in handlers:
+            spooler.logger.removeHandler(handler)
+            handler.close()
 
         return ServiceUtils.success({})
     except Exception as e:
+        handlers = spooler.logger.handlers[:]
+        for handler in handlers:
+            spooler.logger.removeHandler(handler)
+            handler.close()
+
         return ServiceUtils.error(e)
 
 
@@ -109,9 +136,16 @@ def log_data(name):
         response = FileUtils.get_log_file(
             'JobScheduler/backend/log/' + name + ".log")
 
-        print(123456, ServiceUtils.success(response))
-
         return ServiceUtils.success(response)
+    except Exception as e:
+        return ServiceUtils.error(e)
+
+
+@chains_routes.route('/history')
+def history():
+    try:
+        response = get_history()
+        return ServiceUtils.success({"data": response})
     except Exception as e:
         return ServiceUtils.error(e)
 
@@ -138,3 +172,8 @@ def get_chains(name):
 def get_params(order_id, job_id):
     return FileUtils.get_param_json(
         "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json")
+
+
+def get_history():
+    return FileUtils.get_param_json(
+        "JobScheduler/backend/orders/orders.json")

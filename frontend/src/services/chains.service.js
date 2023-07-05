@@ -226,6 +226,50 @@ class ChainsService {
       };
     }
   }
+
+  history() {
+    try {
+      return http.get(`${PATH_API}/history`).then((response) => {
+        console.log("Historia:", response);
+        if (response.data.code === 200) {
+          if (response.data.data.length > 0) {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `Parámetros de tarea cargados satisfactoriamente.`,
+              },
+            };
+          } else {
+            return {
+              ...response.data,
+              alert: {
+                type: "SUCCESS",
+                text: `No hay registros disponibles`,
+              },
+            };
+          }
+        } else {
+          return {
+            ...response.data,
+            alert: {
+              type: "ERROR",
+              text: `Error cargando parámetros de tarea: [${response.data.code}]: ${response.data.message}`,
+            },
+          };
+        }
+      });
+    } catch (error) {
+      const errorMessage = error.response;
+      return {
+        data: response.data,
+        message: {
+          type: "ERROR",
+          text: `Error cargando parámetros de tarea: ${errorMessage}`,
+        },
+      };
+    }
+  }
 }
 
 export default new ChainsService();

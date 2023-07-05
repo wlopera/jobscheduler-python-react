@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Orders from "./orders/Orders";
 import Jobs from "./jobs/Jobs";
 import MessageView from "./browser/MessageView";
+import History from "./history/History";
 
 const TemplateProcess = () => {
   const [orderId, setOrderId] = useState(null);
@@ -36,10 +37,17 @@ const TemplateProcess = () => {
             loading={loading}
             onLoading={setLoading}
             textFooter={messageJob ? messageJob : null}
-            onLogName={setLogName}
           />
         </div>
       </div>
+      <br/>
+      <div className="row">
+        <History
+          onLogName={setLogName}
+          textFooter={messageJob ? messageJob : null}
+        />
+      </div>
+      <br/>
       <div className="row">{logName && <MessageView logName={logName} />}</div>
     </div>
   );
