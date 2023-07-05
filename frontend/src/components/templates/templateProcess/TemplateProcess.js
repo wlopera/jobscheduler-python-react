@@ -10,6 +10,7 @@ const TemplateProcess = () => {
   const [messageJob, setMessageJob] = useState(null);
   const [loading, setLoading] = useState(false);
   const [logName, setLogName] = useState(null);
+  const [updateHistory, setUpdateHistory] = useState(null)
 
   return (
     <div className="row">
@@ -37,6 +38,7 @@ const TemplateProcess = () => {
             loading={loading}
             onLoading={setLoading}
             textFooter={messageJob ? messageJob : null}
+            onUpdateHistory={setUpdateHistory}
           />
         </div>
       </div>
@@ -44,7 +46,9 @@ const TemplateProcess = () => {
       <div className="row">
         <History
           onLogName={setLogName}
+          updateHistory={updateHistory}
           textFooter={messageJob ? messageJob : null}
+          onUpdateHistory={setUpdateHistory}
         />
       </div>
       <br/>

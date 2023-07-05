@@ -5,7 +5,7 @@ import service from "../../../../services/chains.service";
 
 import { TITLE_ORDER } from "../../../utils/Constants";
 
-const History = ({ onLogName, textFooter }) => {
+const History = ({ onLogName, updateHistory, onUpdateHistory, textFooter }) => {
   const [dataTable, setDataTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -17,15 +17,21 @@ const History = ({ onLogName, textFooter }) => {
       console.log("Historial:", response);
       if (response.code === 200) {
         setDataTable(response.data);
+        onUpdateHistory(false)
       }
       //   setMessageOrder(response.alert);
       //   onLoading(false);
     };
-    getData();
-  }, []);
+    if (updateHistory) {
+      setTimeout(() => {
+        getData();
+      }, 3000);
+      
+    }
+  }, [updateHistory, setDataTable]);
 
   const showLog = async (item) => {
-    onLogName(item.log)
+    onLogName(item.log);
     setSelectedRow(item.id);
   };
 

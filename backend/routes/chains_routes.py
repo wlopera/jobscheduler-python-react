@@ -90,6 +90,7 @@ def update_params_job():
 
 @chains_routes.route('/process/<string:name>', methods=['POST'])
 def process(name):
+    values = {}
     try:
         spooler = SpoolerTask()
         spooler.logger.info("Orden a procesar " + name)
@@ -112,8 +113,14 @@ def process(name):
 
         FileUtils.add_job_at_last_position(
             "JobScheduler/backend/orders/orders.json", values)
-
         spooler.process()
+        
+        values['status']="exito"
+        values['endDate']= datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
+        values['endDate'] = values['endDate'][0]
+        values['duration']="15 seg"
+        
+        FileUtils.modify_json_by_id("JobScheduler/backend/orders/orders.json", values['id'], values)
 
         handlers = spooler.logger.handlers[:]
         for handler in handlers:
@@ -122,6 +129,13 @@ def process(name):
 
         return ServiceUtils.success({})
     except Exception as e:
+        values['status']="error"
+        values['endDate']= datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
+        values['endDate'] = values['endDate'][0]
+        values['duration']="15 seg"
+        
+        FileUtils.modify_json_by_id("JobScheduler/backend/orders/orders.json", values['id'], values)
+        
         handlers = spooler.logger.handlers[:]
         for handler in handlers:
             spooler.logger.removeHandler(handler)

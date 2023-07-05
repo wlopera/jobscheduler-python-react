@@ -1,32 +1,22 @@
 [
     {
-        "id": "20230704201429",
-        "order_id": "batch_files",
-        "status": "init",
-        "startDate": "04/07/2023-20:14:29",
-        "endDate": "",
-        "duration": "",
-        "node": "get_list",
-        "log": "Scheduler-20230704201429"
-    },
-    {
-        "id": "20230704201612",
+        "id": "20230705100911",
         "order_id": "process_task",
-        "status": "init",
-        "startDate": "04/07/2023-20:16:12",
-        "endDate": "",
-        "duration": "",
+        "status": "error",
+        "startDate": "05/07/2023-10:09:11",
+        "endDate": "05/07/2023-10:09:21",
+        "duration": "15 seg",
         "node": "get_list",
-        "log": "Scheduler-20230704201612"
+        "log": "Scheduler-20230705100911"
     },
     {
-        "id": "20230704201615",
-        "order_id": "tareas",
-        "status": "init",
-        "startDate": "04/07/2023-20:16:15",
-        "endDate": "",
-        "duration": "",
-        "node": "get_list",
-        "log": "Scheduler-20230704201615"
+        "id": "20230705101314",
+        "order_id": "process_task",
+        "status": "exito",
+        "startDate": "05/07/2023-10:13:14",
+        "endDate": "05/07/2023-10:13:31",
+        "duration": "15 seg",
+        "node": "copy_file",
+        "log": "Scheduler-20230705101314"
     }
 ]

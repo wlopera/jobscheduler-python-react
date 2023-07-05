@@ -5,7 +5,6 @@ class ServiceUtils:
 
     @staticmethod
     def success(response):
-        print(2222, response)
         response['code'] = 200
         response['status'] = 'SUCCESS'
         response['error'] = None

@@ -1,0 +1,8 @@
+2023-07-05 10:09:11,518 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
+2023-07-05 10:09:11,518 - scheduler - INFO - Orden a procesar process_task
+2023-07-05 10:09:11,519 - scheduler - INFO - JOBS ==> [{'name': 'get_list', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'param': 'batch_files\\get_list', 'next': 'copy_file', 'error': 'error'}, {'name': 'copy_file', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'param': 'batch_files\\copy_file', 'next': 'exito', 'error': 'error'}]
+2023-07-05 10:09:11,519 - scheduler - INFO - Tarea inicial ==> get_list
+2023-07-05 10:09:11,520 - scheduler - INFO - detener................
+2023-07-05 10:09:21,521 - scheduler - INFO - continuar................
+2023-07-05 10:09:21,693 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-07-05 10:09:21,693 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>

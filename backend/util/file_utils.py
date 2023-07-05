@@ -87,6 +87,18 @@ class FileUtils:
             file.truncate()
 
     @staticmethod
+    def modify_json_by_id(path, id, input):
+        with open(path, 'r+') as file:
+            data = json.load(file)
+            for index, item in enumerate(data):
+                if item["id"] == id:
+                    data[index] = input
+                    break
+            file.seek(0)
+            json.dump(data, file, indent=4)
+            file.truncate()
+
+    @staticmethod
     def remove_job_by_position(path, position):
         with open(path, 'r+') as file:
             data = json.load(file)
