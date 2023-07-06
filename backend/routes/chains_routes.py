@@ -3,6 +3,7 @@ from util.file_utils import FileUtils
 from util.service_utils import ServiceUtils
 from spooler_task import SpoolerTask
 from datetime import datetime
+import traceback
 
 chains_routes = Blueprint('chains_routes', __name__, url_prefix='/api/chains')
 
@@ -100,11 +101,12 @@ def process(name):
         spooler.logger.info("JOBS ==> " + str(spooler.jobs))
         spooler.logger.info("Tarea inicial ==> " + spooler.current_job)
 
+        startDate = datetime.now().strftime('%d/%m/%Y-%H:%M:%S')
         values = {
             "id": datetime.now().strftime('%Y%m%d%H%M%S'),
             "order_id": name,
             "status": "init",
-            "startDate": datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
+            "startDate": startDate,
             "endDate": "",
             "duration": "",
             "node": spooler.current_job,
@@ -114,13 +116,22 @@ def process(name):
         FileUtils.add_job_at_last_position(
             "JobScheduler/backend/orders/orders.json", values)
         spooler.process()
-        
-        values['status']="exito"
-        values['endDate']= datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
-        values['endDate'] = values['endDate'][0]
-        values['duration']="15 seg"
-        
-        FileUtils.modify_json_by_id("JobScheduler/backend/orders/orders.json", values['id'], values)
+
+        # Calcular la diferencia de tiempo
+        endDate = datetime.now().strftime('%d/%m/%Y-%H:%M:%S')
+
+        # Convertir las cadenas en objetos de fecha y hora
+        startDate_time = datetime.strptime(startDate, "%d/%m/%Y-%H:%M:%S")
+        endDate_time = datetime.strptime(endDate, "%d/%m/%Y-%H:%M:%S")
+
+        diff = endDate_time - startDate_time
+
+        values['status'] = "exito"
+        values['endDate'] = endDate
+        values['duration'] = str(diff.total_seconds()) + " seg"
+
+        FileUtils.modify_json_by_id(
+            "JobScheduler/backend/orders/orders.json", values['id'], values)
 
         handlers = spooler.logger.handlers[:]
         for handler in handlers:
@@ -129,19 +140,32 @@ def process(name):
 
         return ServiceUtils.success({})
     except Exception as e:
-        values['status']="error"
-        values['endDate']= datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
+        
+        # Obtener la traza de excepción como cadena de texto
+        trace = traceback.format_exc()
+
+        # Enviar la traza al logger de nivel de error
+        print(f"Error.........................: {str(e)}\n{trace}")
+        spooler.logger.info(f"Error.........................: {str(e)}\n{trace}")
+
+        
+        
+        values['status'] = "error"
+        values['endDate'] = datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
         values['endDate'] = values['endDate'][0]
-        values['duration']="15 seg"
-        
-        FileUtils.modify_json_by_id("JobScheduler/backend/orders/orders.json", values['id'], values)
-        
+        values['duration'] = "15 seg"
+
+        response = ServiceUtils.error(e, spooler.logger)
+
+        FileUtils.modify_json_by_id(
+            "JobScheduler/backend/orders/orders.json", values['id'], values)
+
         handlers = spooler.logger.handlers[:]
         for handler in handlers:
             spooler.logger.removeHandler(handler)
             handler.close()
 
-        return ServiceUtils.error(e)
+        return response
 
 
 @chains_routes.route('/log/<string:name>', methods=['POST'])
@@ -159,6 +183,10 @@ def log_data(name):
 def history():
     try:
         response = get_history()
+
+        # Ordenar por el campo "startDate"
+        response.sort(key=lambda x: x['startDate'], reverse=True)
+
         return ServiceUtils.success({"data": response})
     except Exception as e:
         return ServiceUtils.error(e)

@@ -1,5 +1,5 @@
 from flask import jsonify
-
+import traceback
 
 class ServiceUtils:
 
@@ -12,7 +12,10 @@ class ServiceUtils:
         return jsonify(response)
 
     @staticmethod
-    def error(err):
+    def error(err, logger):        
+        # trace =traceback.print_exc()
+        # print(f"Traza: {str(err)}\n{trace}")
+        #print("errorrrrrrrrrrrrrr.........: ", traceback.print_exc())
         response = {
             "code": 400,
             "message": "Error en servicio",
@@ -20,4 +23,7 @@ class ServiceUtils:
             "status": "ERROR"
         }
         print("error: ", response)
+        # logger.info(f"Traza: {str(err)}\n{trace}")
+        # logger.info("error: " + str(response))
+        
         return jsonify(response)

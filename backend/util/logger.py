@@ -4,13 +4,13 @@ import logging
 def setup_logger(log_name, log_file):
     # Configurar el logger
     logger = logging.getLogger(log_name)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     try:
         # Crear el archivo de registro
         file_handler = logging.FileHandler(
             'JobScheduler/backend/log/' + log_file + ".log")
-        file_handler.setLevel(logging.INFO)
+        file_handler.setLevel(logging.DEBUG)
 
         # Formateador del registro
         formatter = logging.Formatter(
