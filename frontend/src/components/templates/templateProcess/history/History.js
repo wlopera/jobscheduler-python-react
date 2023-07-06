@@ -5,7 +5,9 @@ import service from "../../../../services/chains.service";
 
 import { TITLE_ORDER } from "../../../utils/Constants";
 
-const History = ({ onLogName, updateHistory, onUpdateHistory, textFooter }) => {
+import "./History.css";
+
+const History = ({ onLogName, updateHistory, onUpdateHistory }) => {
   const [dataTable, setDataTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -17,7 +19,7 @@ const History = ({ onLogName, updateHistory, onUpdateHistory, textFooter }) => {
       console.log("Historial:", response);
       if (response.code === 200) {
         setDataTable(response.data);
-        onUpdateHistory(false)
+        onUpdateHistory(false);
       }
       //   setMessageOrder(response.alert);
       //   onLoading(false);
@@ -25,8 +27,7 @@ const History = ({ onLogName, updateHistory, onUpdateHistory, textFooter }) => {
     if (updateHistory) {
       setTimeout(() => {
         getData();
-      }, 3000);
-      
+      }, 2000);
     }
   }, [updateHistory, setDataTable]);
 
@@ -68,7 +69,19 @@ const History = ({ onLogName, updateHistory, onUpdateHistory, textFooter }) => {
                       onClick={() => showLog(item)}
                     >
                       <td>{item.order_id}</td>
-                      <td>{item.status}</td>
+                      <td>                        
+                        <span
+                          className={
+                            item.node == "error"
+                              ? "row_color_error"
+                              : item.node == "success"
+                              ? "row_color_success"
+                              : "row_color_init"
+                          }
+                        >
+                          {item.status}
+                        </span>
+                      </td>
                       <td>{item.startDate}</td>
                       <td>{item.endDate}</td>
                       <td>{item.duration}</td>
@@ -81,15 +94,6 @@ const History = ({ onLogName, updateHistory, onUpdateHistory, textFooter }) => {
           </div>
         </div>
         <div className="card-footer">
-          <p
-            className={
-              textFooter && textFooter.type === "ERROR"
-                ? "text-danger fs-6"
-                : "text-primary fs-6"
-            }
-          >
-            {textFooter ? textFooter.text : ""}
-          </p>
         </div>
       </div>
     </div>

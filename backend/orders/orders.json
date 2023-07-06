@@ -1,112 +1,38 @@
 [
     {
-        "id": "20230706101822",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:18:22",
-        "endDate": "06/07/2023-10:18:32",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706101822"
+        "id": "20230706155342",
+        "order_id": "batch_files",
+        "status": "exitoso",
+        "startDate": "06/07/2023-15:53:42",
+        "endDate": "06/07/2023-15:53:59",
+        "duration": "17.0 seg",
+        "node": [
+            "success"
+        ],
+        "log": "Scheduler-20230706155342"
     },
     {
-        "id": "20230706102135",
+        "id": "20230706155408",
         "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:21:35",
-        "endDate": "06/07/2023-10:21:46",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706102135"
+        "status": "fallido",
+        "startDate": "06/07/2023-15:54:08",
+        "endDate": "06/07/2023-15:54:18",
+        "duration": "10.0 seg",
+        "node": [
+            "error"
+        ],
+        "log": "Scheduler-20230706155408"
     },
     {
-        "id": "20230706102324",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:23:24",
-        "endDate": "06/07/2023-10:23:34",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706102324"
-    },
-    {
-        "id": "20230706102611",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:26:11",
-        "endDate": "06/07/2023-10:26:21",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706102611"
-    },
-    {
-        "id": "20230706102723",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:27:23",
-        "endDate": "06/07/2023-10:27:33",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706102723"
-    },
-    {
-        "id": "20230706102848",
-        "order_id": "generate_data",
-        "status": "init",
-        "startDate": "06/07/2023-10:28:48",
-        "endDate": "",
-        "duration": "",
-        "node": "task1",
-        "log": "Scheduler-20230706102848"
-    },
-    {
-        "id": "20230706103003",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:30:03",
-        "endDate": "06/07/2023-10:30:14",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706103003"
-    },
-    {
-        "id": "20230706103120",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:31:20",
-        "endDate": "06/07/2023-10:31:30",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706103120"
-    },
-    {
-        "id": "20230706103235",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:32:35",
-        "endDate": "06/07/2023-10:32:46",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706103235"
-    },
-    {
-        "id": "20230706103505",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:35:05",
-        "endDate": "06/07/2023-10:35:15",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706103505"
-    },
-    {
-        "id": "20230706103812",
-        "order_id": "generate_data",
-        "status": "error",
-        "startDate": "06/07/2023-10:38:12",
-        "endDate": "06/07/2023-10:38:22",
-        "duration": "15 seg",
-        "node": "task1",
-        "log": "Scheduler-20230706103812"
+        "id": "20230706160304",
+        "order_id": "process_task",
+        "status": "exitoso",
+        "startDate": "06/07/2023-16:03:04",
+        "endDate": "06/07/2023-16:03:22",
+        "duration": "18.0 seg",
+        "node": [
+            "success"
+        ],
+        "log": "Scheduler-20230706160304"
     }
 ]

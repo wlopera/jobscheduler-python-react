@@ -1,0 +1,33 @@
+.row_color_init {
+    border: "1px solid";
+    background-color: #ffc300e6;
+    color: #000000;
+    border-radius: 0.25rem;
+    display: inline-block;
+    font-size: 75%;
+    padding: 0.25em 0.4em;
+    line-height: 1;
+  }
+
+.row_color_success {
+    border: "1px solid";
+    background-color: #7ab97a;
+    color: #ffffff;
+    border-radius: 0.25rem;
+    display: inline-block;
+    font-size: 75%;
+    padding: 0.25em 0.4em;
+    line-height: 1;
+  }
+
+.row_color_error {
+    border: "1px solid";
+    background-color: #e86680;
+    color: #ffffff;
+    border-radius: 0.25rem;
+    display: inline-block;
+    font-size: 75%;
+    padding: 0.25em 0.4em;
+    line-height: 1;
+  }
+

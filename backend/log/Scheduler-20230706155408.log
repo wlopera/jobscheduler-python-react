@@ -1,0 +1,21 @@
+2023-07-06 15:54:08,142 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
+2023-07-06 15:54:08,142 - scheduler - INFO - Orden a procesar generate_data
+2023-07-06 15:54:08,142 - scheduler - INFO - JOBS ==> [{'name': 'task1', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'next': 'task2', 'error': 'error'}, {'name': 'task2', 'package': 'sendEmail.send_email', 'class': 'SendEmail', 'next': 'exito', 'error': 'error'}]
+2023-07-06 15:54:08,142 - scheduler - INFO - Tarea inicial ==> task1
+2023-07-06 15:54:08,143 - scheduler - INFO - detener................
+2023-07-06 15:54:18,144 - scheduler - INFO - continuar................
+2023-07-06 15:54:18,144 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-07-06 15:54:18,144 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
+2023-07-06 15:54:18,150 - scheduler - ERROR - Error.........................: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "d:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend\routes\chains_routes.py", line 118, in process
+    spooler.process()
+  File "d:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend\spooler_task.py", line 41, in process
+    self.process_job(self.get_job(self.current_job))
+  File "d:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend\spooler_task.py", line 64, in process_job
+    instance.update_param(instance, path_param)
+  File "d:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend\jobs\scheduler.py", line 16, in update_param
+    for item in param['params']:
+                ~~~~~^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+

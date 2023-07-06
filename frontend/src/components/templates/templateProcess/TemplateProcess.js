@@ -56,7 +56,6 @@ const TemplateProcess = () => {
         <History
           onLogName={handleLogName}
           updateHistory={updateHistory}
-          textFooter={messageJob ? messageJob : null}
           onUpdateHistory={setUpdateHistory}
         />
       </div>

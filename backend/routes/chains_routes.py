@@ -105,7 +105,7 @@ def process(name):
         values = {
             "id": datetime.now().strftime('%Y%m%d%H%M%S'),
             "order_id": name,
-            "status": "init",
+            "status": "iniciado",
             "startDate": startDate,
             "endDate": "",
             "duration": "",
@@ -126,9 +126,10 @@ def process(name):
 
         diff = endDate_time - startDate_time
 
-        values['status'] = "exito"
+        values['status'] = "exitoso"
         values['endDate'] = endDate
         values['duration'] = str(diff.total_seconds()) + " seg"
+        values["node"] = "success",
 
         FileUtils.modify_json_by_id(
             "JobScheduler/backend/orders/orders.json", values['id'], values)
@@ -138,6 +139,7 @@ def process(name):
             spooler.logger.removeHandler(handler)
             handler.close()
 
+        spooler.logger.info("Proceso termino exitosamente.")
         return ServiceUtils.success({})
     except Exception as e:
         
@@ -146,26 +148,34 @@ def process(name):
 
         # Enviar la traza al logger de nivel de error
         print(f"Error.........................: {str(e)}\n{trace}")
-        spooler.logger.info(f"Error.........................: {str(e)}\n{trace}")
+        spooler.logger.error(f"Error.........................: {str(e)}\n{trace}")
+        
+        # Calcular la diferencia de tiempo
+        endDate = datetime.now().strftime('%d/%m/%Y-%H:%M:%S')
 
+        # Convertir las cadenas en objetos de fecha y hora
+        startDate_time = datetime.strptime(values['startDate'], "%d/%m/%Y-%H:%M:%S")
+        endDate_time = datetime.strptime(endDate, "%d/%m/%Y-%H:%M:%S")
+
+        diff = endDate_time - startDate_time
         
-        
-        values['status'] = "error"
+        values['status'] = "fallido"
         values['endDate'] = datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
-        values['endDate'] = values['endDate'][0]
-        values['duration'] = "15 seg"
-
-        response = ServiceUtils.error(e, spooler.logger)
+        values['endDate'] = endDate
+        values['duration'] = str(diff.total_seconds()) + " seg"
+        values["node"] = "error",
 
         FileUtils.modify_json_by_id(
             "JobScheduler/backend/orders/orders.json", values['id'], values)
 
+        spooler.logger.info("Proceso termino con error.")
+        
         handlers = spooler.logger.handlers[:]
         for handler in handlers:
             spooler.logger.removeHandler(handler)
             handler.close()
 
-        return response
+        return ServiceUtils.error(e)
 
 
 @chains_routes.route('/log/<string:name>', methods=['POST'])

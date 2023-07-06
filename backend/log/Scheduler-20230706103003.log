@@ -1,8 +1,0 @@
-2023-07-06 10:30:03,893 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
-2023-07-06 10:30:03,893 - scheduler - INFO - Orden a procesar generate_data
-2023-07-06 10:30:03,894 - scheduler - INFO - JOBS ==> [{'name': 'task1', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'next': 'task2', 'error': 'error'}, {'name': 'task2', 'package': 'sendEmail.send_email', 'class': 'SendEmail', 'next': 'exito', 'error': 'error'}]
-2023-07-06 10:30:03,894 - scheduler - INFO - Tarea inicial ==> task1
-2023-07-06 10:30:03,895 - scheduler - INFO - detener................
-2023-07-06 10:30:13,896 - scheduler - INFO - continuar................
-2023-07-06 10:30:14,066 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
-2023-07-06 10:30:14,068 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
