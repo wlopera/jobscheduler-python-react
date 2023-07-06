@@ -5,34 +5,28 @@ APP WEB: JobSchedule => rmite generar tareas encadenadas para correr mediante un
 
 ## Salidas:
 
+### Cabecera 
+![Captura1](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/67241fe9-2de8-434f-bda8-52a9177078b0)
+
 #### Ordenes
-![ordenes1](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/d145b4bf-1142-4752-b7bd-5295102cfe83)
 
-#### Agregar Ordenes
-![agregarordenes2](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/7336e5d2-006d-45c2-871e-0e36af7a73f6)
-
-![agregarordenes3](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/d9df9389-7779-4f3d-824f-676fe0c573b9)
-
-#### Tareas
-![agregartask1](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/384593da-8deb-4fa0-bda8-3f779a8c3b5b)
-
-![agregartask2](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/7d8ead2f-89e1-4764-9e18-62216a684979)
+![Captura2](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/1b93311c-ce7f-40c3-a633-ddf657aa78b7)
 
 #### Cadena de Ordenes
-![cadenatarea1](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/8d9c7784-c758-432d-b2f1-4fa860bac422)
 
-![cadenatarea2](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/24a4b21a-4f53-46ab-8e39-4c68455803f2)
+![Captura3](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/b9b49424-33b1-4976-9c62-0b6294056ef5)
 
-#### Modificar Cadena de Ordenes
-![modificarDataCadena1](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/44d994e2-7ea2-451f-ab59-2f626c12d072)
+#### Procesar Ordenes
 
-![modificarDataCadena2](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/21e70f67-e771-49b0-90be-5e96f808fa68)
+![Captura5](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/b8537cba-a2cb-453e-9374-0248ba9426f4)
+![Captura6](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/82dd3cbc-b1ad-4e09-b1d4-335e797790ef)
 
-![modificarDataCadena3](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/28a93801-2be4-49bc-a801-c45e0ad27ade)
+#### Mostrar log
 
-#### Modificar Parametros de tareas
-![modificarParametros1](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/8fe2e765-8016-4f02-8b10-54fd85006e2d)
+![Captura7](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/a82f9e83-00ac-4c69-a201-a94549163e81)
+![Captura8](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/e6b0aef8-8ef4-48c4-ab43-bd1c08dadcca)
 
-![modificarParametros2](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/0972ff65-e0ff-496b-b935-5ef1e981b27d)
+#### Download log
 
-
+![Captura9](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/70fa27bd-dfff-4e6c-938a-32c6a1059b77)
+![Captura10](https://github.com/wlopera/jobscheduler-python-react/assets/7141537/aaf7cb6d-66d1-4be4-931b-3d751a158048)
