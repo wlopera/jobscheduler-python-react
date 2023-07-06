@@ -1,0 +1,28 @@
+2023-07-05 18:03:46,695 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
+2023-07-05 18:03:46,695 - scheduler - INFO - Orden a procesar process_task
+2023-07-05 18:03:46,696 - scheduler - INFO - JOBS ==> [{'name': 'copy_file', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'param': 'batch_files\\copy_file', 'next': 'send_email', 'error': 'error'}, {'name': 'send_email', 'package': 'sendEmail.send_email', 'class': 'SendEmail', 'param': 'batch_files\\send_email', 'next': 'exito', 'error': 'error'}]
+2023-07-05 18:03:46,696 - scheduler - INFO - Tarea inicial ==> copy_file
+2023-07-05 18:03:46,697 - scheduler - INFO - detener................
+2023-07-05 18:03:56,698 - scheduler - INFO - continuar................
+2023-07-05 18:03:56,698 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-07-05 18:03:56,698 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
+2023-07-05 18:03:56,699 - scheduler - INFO - Operacion: Copy
+2023-07-05 18:03:58,760 - scheduler - INFO - Archivo 1_ICF_20230605102002.I copiado exitosamente.
+2023-07-05 18:03:59,714 - scheduler - INFO - Archivo IMA202306051113328.I copiado exitosamente.
+2023-07-05 18:04:00,000 - scheduler - INFO - Archivo 1_IDF_20230605102006.I copiado exitosamente.
+2023-07-05 18:04:00,244 - scheduler - INFO - Archivo 1_ICF_20230605101930.I copiado exitosamente.
+2023-07-05 18:04:00,428 - scheduler - INFO - Archivo 1_IVRacmt20230605102007.I copiado exitosamente.
+2023-07-05 18:04:01,598 - scheduler - INFO - Archivo IDF_202306051113324.I copiado exitosamente.
+2023-07-05 18:04:01,812 - scheduler - INFO - Archivo IDF_202306051113377.I copiado exitosamente.
+2023-07-05 18:04:01,814 - scheduler - INFO - Archivos copiados exitosamente de A a B a través de SFTP.
+2023-07-05 18:04:01,814 - scheduler - INFO - Resultado: True
+2023-07-05 18:04:01,815 - scheduler - INFO - Porceso exitoso...!
+2023-07-05 18:04:01,815 - scheduler - INFO - Modulo: <module 'jobs.sendEmail.send_email' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\sendEmail\\send_email.py'>
+2023-07-05 18:04:01,815 - scheduler - INFO - Instancia: <class 'jobs.sendEmail.send_email.SendEmail'>
+2023-07-05 18:04:01,816 - scheduler - INFO - Enviar correo
+2023-07-05 18:04:01,816 - scheduler - INFO - send email: smtp.googlemail.com
+2023-07-05 18:04:03,886 - scheduler - INFO - Correo enviado correctamente
+2023-07-05 18:04:03,886 - scheduler - INFO - Finalizo el envio
+2023-07-05 18:04:03,886 - scheduler - INFO - Resultado: True
+2023-07-05 18:04:03,887 - scheduler - INFO - Porceso exitoso...!
+2023-07-05 18:04:03,887 - scheduler - INFO - Scheduler finalizado con exito

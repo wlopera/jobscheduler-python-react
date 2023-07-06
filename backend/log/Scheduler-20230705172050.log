@@ -1,0 +1,34 @@
+2023-07-05 17:20:50,660 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
+2023-07-05 17:20:50,660 - scheduler - INFO - Orden a procesar batch_files
+2023-07-05 17:20:50,661 - scheduler - INFO - JOBS ==> [{'name': 'get_list', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'param': 'batch_files\\get_list', 'next': 'copy_file', 'error': 'error'}, {'name': 'copy_file', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'param': 'batch_files\\copy_file', 'next': 'send_email', 'error': 'error'}, {'name': 'send_email', 'package': 'sendEmail.send_email', 'class': 'SendEmail', 'param': 'batch_files\\send_email', 'next': 'exito', 'error': 'error'}]
+2023-07-05 17:20:50,662 - scheduler - INFO - Tarea inicial ==> get_list
+2023-07-05 17:20:50,663 - scheduler - INFO - detener................
+2023-07-05 17:21:00,664 - scheduler - INFO - continuar................
+2023-07-05 17:21:00,664 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-07-05 17:21:00,664 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
+2023-07-05 17:21:00,666 - scheduler - INFO - Operacion: GetList
+2023-07-05 17:21:01,205 - scheduler - INFO - Archivos: ['1_ICF_20230605102002.I', 'IMA202306051113328.I', '1_IDF_20230605102006.I', '1_ICF_20230605101930.I', '1_IVRacmt20230605102007.I', 'IDF_202306051113324.I', 'IDF_202306051113377.I']
+2023-07-05 17:21:01,205 - scheduler - INFO - Resultado: True
+2023-07-05 17:21:01,205 - scheduler - INFO - Porceso exitoso...!
+2023-07-05 17:21:01,206 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-07-05 17:21:01,206 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
+2023-07-05 17:21:01,207 - scheduler - INFO - Operacion: Copy
+2023-07-05 17:21:03,177 - scheduler - INFO - Archivo 1_ICF_20230605102002.I copiado exitosamente.
+2023-07-05 17:21:04,174 - scheduler - INFO - Archivo IMA202306051113328.I copiado exitosamente.
+2023-07-05 17:21:04,417 - scheduler - INFO - Archivo 1_IDF_20230605102006.I copiado exitosamente.
+2023-07-05 17:21:04,589 - scheduler - INFO - Archivo 1_ICF_20230605101930.I copiado exitosamente.
+2023-07-05 17:21:04,743 - scheduler - INFO - Archivo 1_IVRacmt20230605102007.I copiado exitosamente.
+2023-07-05 17:21:06,000 - scheduler - INFO - Archivo IDF_202306051113324.I copiado exitosamente.
+2023-07-05 17:21:06,217 - scheduler - INFO - Archivo IDF_202306051113377.I copiado exitosamente.
+2023-07-05 17:21:06,219 - scheduler - INFO - Archivos copiados exitosamente de A a B a través de SFTP.
+2023-07-05 17:21:06,219 - scheduler - INFO - Resultado: True
+2023-07-05 17:21:06,220 - scheduler - INFO - Porceso exitoso...!
+2023-07-05 17:21:06,220 - scheduler - INFO - Modulo: <module 'jobs.sendEmail.send_email' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\sendEmail\\send_email.py'>
+2023-07-05 17:21:06,220 - scheduler - INFO - Instancia: <class 'jobs.sendEmail.send_email.SendEmail'>
+2023-07-05 17:21:06,221 - scheduler - INFO - Enviar correo
+2023-07-05 17:21:06,221 - scheduler - INFO - send email: smtp.googlemail.com
+2023-07-05 17:21:08,586 - scheduler - INFO - Correo enviado correctamente
+2023-07-05 17:21:08,586 - scheduler - INFO - Finalizo el envio
+2023-07-05 17:21:08,587 - scheduler - INFO - Resultado: True
+2023-07-05 17:21:08,587 - scheduler - INFO - Porceso exitoso...!
+2023-07-05 17:21:08,587 - scheduler - INFO - Scheduler finalizado con exito

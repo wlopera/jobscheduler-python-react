@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Orders from "./orders/Orders";
 import Jobs from "./jobs/Jobs";
-import MessageView from "./browser/MessageView";
 import History from "./history/History";
+import ModalViewLog from "../../modal/ModalViewLog";
 
 const TemplateProcess = () => {
   const [orderId, setOrderId] = useState(null);
@@ -10,7 +10,17 @@ const TemplateProcess = () => {
   const [messageJob, setMessageJob] = useState(null);
   const [loading, setLoading] = useState(false);
   const [logName, setLogName] = useState(null);
-  const [updateHistory, setUpdateHistory] = useState(null)
+  const [updateHistory, setUpdateHistory] = useState(true);
+  const [showViewLog, setShowViewLog] = useState(false);
+
+  const handleLogName = (name) => {
+    setLogName(name);
+    setShowViewLog(true);
+  };
+
+  const HandleCloseModal = () => {
+    setShowViewLog(false);
+  };
 
   return (
     <div className="row">
@@ -42,17 +52,21 @@ const TemplateProcess = () => {
           />
         </div>
       </div>
-      <br/>
-      <div className="row">
+      <div className="row" style={{ marginTop: "20px" }}>
         <History
-          onLogName={setLogName}
+          onLogName={handleLogName}
           updateHistory={updateHistory}
           textFooter={messageJob ? messageJob : null}
           onUpdateHistory={setUpdateHistory}
         />
       </div>
-      <br/>
-      <div className="row">{logName && <MessageView logName={logName} />}</div>
+      {logName && (
+        <ModalViewLog
+          logName={logName}
+          show={showViewLog}
+          closeModal={HandleCloseModal}
+        />
+      )}
     </div>
   );
 };

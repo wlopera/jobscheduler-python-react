@@ -1,0 +1,13 @@
+2023-07-05 17:19:33,288 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
+2023-07-05 17:19:33,289 - scheduler - INFO - Orden a procesar tareas
+2023-07-05 17:19:33,289 - scheduler - INFO - JOBS ==> [{'name': 'get_list', 'package': 'processFile.process_file', 'class': 'ProcessFile', 'param': 'batch_files\\get_list', 'next': 'exito', 'error': 'error'}]
+2023-07-05 17:19:33,289 - scheduler - INFO - Tarea inicial ==> get_list
+2023-07-05 17:19:33,290 - scheduler - INFO - detener................
+2023-07-05 17:19:43,292 - scheduler - INFO - continuar................
+2023-07-05 17:19:43,292 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-07-05 17:19:43,292 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
+2023-07-05 17:19:43,293 - scheduler - INFO - Operacion: GetList
+2023-07-05 17:19:43,826 - scheduler - INFO - Archivos: ['1_ICF_20230605102002.I', 'IMA202306051113328.I', '1_IDF_20230605102006.I', '1_ICF_20230605101930.I', '1_IVRacmt20230605102007.I', 'IDF_202306051113324.I', 'IDF_202306051113377.I']
+2023-07-05 17:19:43,826 - scheduler - INFO - Resultado: True
+2023-07-05 17:19:43,826 - scheduler - INFO - Porceso exitoso...!
+2023-07-05 17:19:43,826 - scheduler - INFO - Scheduler finalizado con exito

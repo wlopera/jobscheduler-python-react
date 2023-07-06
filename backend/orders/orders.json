@@ -1,22 +1,62 @@
 [
     {
-        "id": "20230705100911",
-        "order_id": "process_task",
-        "status": "error",
-        "startDate": "05/07/2023-10:09:11",
-        "endDate": "05/07/2023-10:09:21",
+        "id": "20230705171933",
+        "order_id": "tareas",
+        "status": "exito",
+        "startDate": "05/07/2023-17:19:33",
+        "endDate": "05/07/2023-17:19:43",
         "duration": "15 seg",
         "node": "get_list",
-        "log": "Scheduler-20230705100911"
+        "log": "Scheduler-20230705171933"
     },
     {
-        "id": "20230705101314",
+        "id": "20230705172050",
+        "order_id": "batch_files",
+        "status": "exito",
+        "startDate": "05/07/2023-17:20:50",
+        "endDate": "05/07/2023-17:21:08",
+        "duration": "15 seg",
+        "node": "get_list",
+        "log": "Scheduler-20230705172050"
+    },
+    {
+        "id": "20230705172623",
         "order_id": "process_task",
         "status": "exito",
-        "startDate": "05/07/2023-10:13:14",
-        "endDate": "05/07/2023-10:13:31",
+        "startDate": "05/07/2023-17:26:23",
+        "endDate": "05/07/2023-17:26:40",
         "duration": "15 seg",
         "node": "copy_file",
-        "log": "Scheduler-20230705101314"
+        "log": "Scheduler-20230705172623"
+    },
+    {
+        "id": "20230705174008",
+        "order_id": "tareas",
+        "status": "exito",
+        "startDate": "05/07/2023-17:40:08",
+        "endDate": "05/07/2023-17:40:18",
+        "duration": "15 seg",
+        "node": "get_list",
+        "log": "Scheduler-20230705174008"
+    },
+    {
+        "id": "20230705180346",
+        "order_id": "process_task",
+        "status": "exito",
+        "startDate": "05/07/2023-18:03:46",
+        "endDate": "05/07/2023-18:04:03",
+        "duration": "15 seg",
+        "node": "copy_file",
+        "log": "Scheduler-20230705180346"
+    },
+    {
+        "id": "20230705184805",
+        "order_id": "tareas",
+        "status": "exito",
+        "startDate": "05/07/2023-18:48:05",
+        "endDate": "05/07/2023-18:48:16",
+        "duration": "15 seg",
+        "node": "get_list",
+        "log": "Scheduler-20230705184805"
     }
 ]
