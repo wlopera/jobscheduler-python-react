@@ -27,8 +27,12 @@ class JsonUtils:
         Return:
             dict: Contenido del archivo de registro
         """
+        print(4444, path)
         with open(path, 'r') as file:
-            return json.load(file)
+            rep = json.load(file)
+            print(5555, file)
+            print(6666, rep)
+            return rep
 
     @staticmethod
     def read_log_file(path):
@@ -41,7 +45,7 @@ class JsonUtils:
         Return:
             dict: Contenido del archivo log.
         """
-        with open(path, 'r') as file:
+        with open(path + ".log", 'r') as file:
             content = file.read().splitlines()
             return {'log': content}
 

@@ -109,7 +109,7 @@ def create_job_folders(order_id, job_id):
         PATH_FOLDERS_ORDER + "/" + order_id + "/"+NAME_JOBS+"/", job_id)
 
     JsonUtils.write_json(
-        f"{PATH_FOLDERS_ORDER}/{order_id}/{NAME_JOBS}/{job_id}/{FILE_PARAM_JSON}", [])
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{NAME_JOBS}/{job_id}/{FILE_PARAM_JSON}", {"params": []})
 
 
 def update_job_in_order(order_id, old_job, new_job):

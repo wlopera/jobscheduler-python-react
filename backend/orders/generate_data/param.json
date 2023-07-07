@@ -8,9 +8,9 @@
     },
     {
         "name": "task2",
-        "package": "sendEmail.send_email",
-        "class": "SendEmail",
-        "next": "exito",
+        "package": "",
+        "class": "",
+        "next": "success",
         "error": "error"
     }
 ]

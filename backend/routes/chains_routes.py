@@ -1,9 +1,12 @@
-from flask import Blueprint, render_template, request, send_from_directory
-from util.file_utils import FileUtils
-from util.service_utils import ServiceUtils
+from flask import Blueprint, request
 from spooler_task import SpoolerTask
 from datetime import datetime
 import traceback
+
+from util.json_utils import JsonUtils
+from util.service_utils import ServiceUtils
+from util.constants import PATH_FOLDERS_ORDER, FILE_PARAM_JSON, FILE_ORDERS_JSON, NAME_JOBS, PATH_LOG
+
 
 chains_routes = Blueprint('chains_routes', __name__, url_prefix='/api/chains')
 
@@ -12,6 +15,7 @@ chains_routes = Blueprint('chains_routes', __name__, url_prefix='/api/chains')
 def chains(name):
     try:
         response = get_chains(name)
+        print(2222222,response)
         return ServiceUtils.success(response)
     except Exception as e:
         return ServiceUtils.error(e)
@@ -35,11 +39,11 @@ def modify_chain():
             "error": param['error']
         }
 
-        FileUtils.remove_job_by_position(
-            "JobScheduler/backend/orders/" + order_id + "/param.json", old_position)
+        JsonUtils.remove_item_by_position(
+            PATH_FOLDERS_ORDER + "/" + order_id + "/" + FILE_PARAM_JSON, old_position)
 
-        FileUtils.add_job_at_position(
-            "JobScheduler/backend/orders/" + order_id + "/param.json", data, new_position)
+        JsonUtils.add_item(
+            PATH_FOLDERS_ORDER + "/" + order_id + "/" + FILE_PARAM_JSON, data, new_position)
 
         response = get_chains(order_id)
 
@@ -81,8 +85,8 @@ def update_params_job():
         job_id = param['job_id']
         new_data = param['data']
 
-        FileUtils.update_data_json(
-            "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json", new_data)
+        JsonUtils.write_json(
+            PATH_FOLDERS_ORDER + "/" + order_id + "/" + NAME_JOBS + "/" + job_id + "/" + FILE_PARAM_JSON, new_data)
 
         return ServiceUtils.success({})
     except Exception as e:
@@ -113,8 +117,8 @@ def process(name):
             "log": spooler.log_name
         }
 
-        FileUtils.add_job_at_last_position(
-            "JobScheduler/backend/orders/orders.json", values)
+        JsonUtils.add_item(PATH_FOLDERS_ORDER + "/" + FILE_ORDERS_JSON, values)
+
         spooler.process()
 
         # Calcular la diferencia de tiempo
@@ -131,8 +135,8 @@ def process(name):
         values['duration'] = str(diff.total_seconds()) + " seg"
         values["node"] = "success",
 
-        FileUtils.modify_json_by_id(
-            "JobScheduler/backend/orders/orders.json", values['id'], values)
+        JsonUtils.update_item(
+            PATH_FOLDERS_ORDER + "/" + FILE_ORDERS_JSON, 'id', values['id'], values)
 
         handlers = spooler.logger.handlers[:]
         for handler in handlers:
@@ -142,34 +146,36 @@ def process(name):
         spooler.logger.info("Proceso termino exitosamente.")
         return ServiceUtils.success({})
     except Exception as e:
-        
+
         # Obtener la traza de excepción como cadena de texto
         trace = traceback.format_exc()
 
         # Enviar la traza al logger de nivel de error
         print(f"Error.........................: {str(e)}\n{trace}")
-        spooler.logger.error(f"Error.........................: {str(e)}\n{trace}")
-        
+        spooler.logger.error(
+            f"Error.........................: {str(e)}\n{trace}")
+
         # Calcular la diferencia de tiempo
         endDate = datetime.now().strftime('%d/%m/%Y-%H:%M:%S')
 
         # Convertir las cadenas en objetos de fecha y hora
-        startDate_time = datetime.strptime(values['startDate'], "%d/%m/%Y-%H:%M:%S")
+        startDate_time = datetime.strptime(
+            values['startDate'], "%d/%m/%Y-%H:%M:%S")
         endDate_time = datetime.strptime(endDate, "%d/%m/%Y-%H:%M:%S")
 
         diff = endDate_time - startDate_time
-        
+
         values['status'] = "fallido"
         values['endDate'] = datetime.now().strftime('%d/%m/%Y-%H:%M:%S'),
         values['endDate'] = endDate
         values['duration'] = str(diff.total_seconds()) + " seg"
         values["node"] = "error",
 
-        FileUtils.modify_json_by_id(
-            "JobScheduler/backend/orders/orders.json", values['id'], values)
+        JsonUtils.update_item(
+            PATH_FOLDERS_ORDER + "/" + FILE_ORDERS_JSON, 'id', values['id'], values)
 
         spooler.logger.info("Proceso termino con error.")
-        
+
         handlers = spooler.logger.handlers[:]
         for handler in handlers:
             spooler.logger.removeHandler(handler)
@@ -181,8 +187,7 @@ def process(name):
 @chains_routes.route('/log/<string:name>', methods=['POST'])
 def log_data(name):
     try:
-        response = FileUtils.get_log_file(
-            'JobScheduler/backend/log/' + name + ".log")
+        response = JsonUtils.read_log_file(PATH_LOG + '/' + name)
 
         return ServiceUtils.success(response)
     except Exception as e:
@@ -203,9 +208,10 @@ def history():
 
 
 def get_chains(name):
-    chains = FileUtils.get_param_json(
-        "JobScheduler/backend/orders/" + name + "/param.json")
+    chains = JsonUtils.read_json(
+        PATH_FOLDERS_ORDER + "/" + name + "/" + FILE_PARAM_JSON)
 
+    print(111111111, chains)
     # Combo de posiciones posibles
     positions = []
     # Agrego identificador ID
@@ -222,10 +228,10 @@ def get_chains(name):
 
 
 def get_params(order_id, job_id):
-    return FileUtils.get_param_json(
-        "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json")
+    return JsonUtils.read_json(
+        PATH_FOLDERS_ORDER + "/" + order_id + "/" + NAME_JOBS + "/" + job_id + "/" + FILE_PARAM_JSON)
 
 
 def get_history():
-    return FileUtils.get_param_json(
-        "JobScheduler/backend/orders/orders.json")
+    return JsonUtils.read_json(
+        PATH_FOLDERS_ORDER + "/" + FILE_ORDERS_JSON)
