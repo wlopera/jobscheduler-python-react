@@ -26,35 +26,39 @@ const ModalViewLog = ({ logName, show, closeModal }) => {
   };
 
   const handleDownload = () => {
+    try {
+      // Blob (Binary Large Object) es una clase incorporada en JavaScript que representa datos binarios, como archivos.
+      // Proporciona una forma de crear y manipular datos binarios de forma eficiente.
+      // Se puede utilizar para diversas operaciones, como descargar, almacenar o enviar el archivo a través de la red.
+      const blob = new Blob([messages.join("\n")], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", logName + ".log");
+      link.click();
 
-    // Blob (Binary Large Object) es una clase incorporada en JavaScript que representa datos binarios, como archivos.
-    // Proporciona una forma de crear y manipular datos binarios de forma eficiente.
-    // Se puede utilizar para diversas operaciones, como descargar, almacenar o enviar el archivo a través de la red.
-    const blob = new Blob([messages.join("\n")], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", logName + ".log");
-    link.click();
-    
-    URL.revokeObjectURL(url);
+      const rep= URL.revokeObjectURL(url);
+      console.log(11111, rep)
 
-    // console.log("blob:", blob);
+      // console.log("blob:", blob);
 
-    // blob.text().then((text) => {
-    //   console.log("Data dentreo del blob: ", text);
-    // });
+      // blob.text().then((text) => {
+      //   console.log("Data dentreo del blob: ", text);
+      // });
 
-    // const obj = { hello: "world" };
-    // const blob1 = new Blob([JSON.stringify(obj, null, 2)], {
-    //   type: "application/json",
-    // });
+      // const obj = { hello: "world" };
+      // const blob1 = new Blob([JSON.stringify(obj, null, 2)], {
+      //   type: "application/json",
+      // });
 
-    // console.log(1111, blob1);
+      // console.log(1111, blob1);
 
-    // blob1.text().then((text) => {
-    //     console.log("Data dentreo del blob: ", text);
-    //   });
+      // blob1.text().then((text) => {
+      //     console.log("Data dentreo del blob: ", text);
+      //   });
+    } catch (error) {
+      console.error("Error al descargar el archivo:", error);
+    }
   };
 
   return (
