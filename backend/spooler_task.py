@@ -48,9 +48,9 @@ class SpoolerTask:
             self.current_order + "/jobs/" + self.current_job
 
         # print("--------------------------------------------")
-        # print("Package:" + package_job)
-        # print("Class:" + class_job)
-        # print("path_param:" + str(path_param))
+        print("Package:" + package_job)
+        print("Class:" + class_job)
+        print("path_param:" + str(path_param))
 
         try:
             module = importlib.import_module(package_job)
@@ -61,25 +61,24 @@ class SpoolerTask:
             instance.logger = self.logger
 
             # Actualizar parametros de la orden con los de la tarea
-            instance.update_param(instance, path_param)
-            # self.logger.info(f"Parametros actual: {instance.order}")
-            self.current_job = job['next']
+            instance.update_param(instance, path_param)           
             result = instance.spooler_process(instance)
             self.logger.info(f"Resultado: {result}")
             if result == False:
                 print("Error salida del app")
-                self.logger.error("Error salida del app")
-                sys.exit()
-            else:
+                self.logger.error("Error salida del app: ", self.current_job)
+                raise Exception("Error salida del app: ", self.current_job)
+                #sys.exit()
+            else:                
                 print("Proceso exitoso...!")
-                self.logger.info("Porceso exitoso...!")
+                self.logger.info("Proceso exitoso: ", self.current_job)
+                self.current_job = job['next']
                 print("")
         except ImportError as err:
             print(f"Error: {err}")
             self.logger.error(f"Error: {err}")
             print("")
-            sys.exit()
-
+            raise(err) 
 
 if __name__ == "__main__":
     spooler = SpoolerTask()

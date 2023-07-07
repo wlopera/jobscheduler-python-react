@@ -27,11 +27,8 @@ class JsonUtils:
         Return:
             dict: Contenido del archivo de registro
         """
-        print(4444, path)
         with open(path, 'r') as file:
             rep = json.load(file)
-            print(5555, file)
-            print(6666, rep)
             return rep
 
     @staticmethod

@@ -1,38 +1,52 @@
 [
     {
-        "id": "20230706155342",
+        "id": "20230707162936",
         "order_id": "batch_files",
         "status": "exitoso",
-        "startDate": "06/07/2023-15:53:42",
-        "endDate": "06/07/2023-15:53:59",
-        "duration": "17.0 seg",
-        "node": [
-            "success"
-        ],
-        "log": "Scheduler-20230706155342"
+        "startDate": "07/07/2023-16:29:36",
+        "endDate": "07/07/2023-16:29:54",
+        "duration": "18.0 seg",
+        "node": "success",
+        "log": "Scheduler-20230707162936"
     },
     {
-        "id": "20230706155408",
+        "id": "20230707163004",
+        "order_id": "generate_data",
+        "status": "iniciado",
+        "startDate": "07/07/2023-16:30:04",
+        "endDate": "",
+        "duration": "",
+        "node": "task1",
+        "log": "Scheduler-20230707163004"
+    },
+    {
+        "id": "20230707164449",
         "order_id": "generate_data",
         "status": "fallido",
-        "startDate": "06/07/2023-15:54:08",
-        "endDate": "06/07/2023-15:54:18",
-        "duration": "10.0 seg",
-        "node": [
-            "error"
-        ],
-        "log": "Scheduler-20230706155408"
+        "startDate": "07/07/2023-16:44:49",
+        "endDate": "07/07/2023-16:45:00",
+        "duration": "11.0 seg",
+        "node": "error",
+        "log": "Scheduler-20230707164449"
     },
     {
-        "id": "20230706160304",
-        "order_id": "process_task",
-        "status": "exitoso",
-        "startDate": "06/07/2023-16:03:04",
-        "endDate": "06/07/2023-16:03:22",
-        "duration": "18.0 seg",
-        "node": [
-            "success"
-        ],
-        "log": "Scheduler-20230706160304"
+        "id": "20230707164727",
+        "order_id": "generate_data",
+        "status": "fallido",
+        "startDate": "07/07/2023-16:47:27",
+        "endDate": "07/07/2023-16:47:37",
+        "duration": "10.0 seg",
+        "node": "error",
+        "log": "Scheduler-20230707164727"
+    },
+    {
+        "id": "20230707165815",
+        "order_id": "generate_data",
+        "status": "fallido",
+        "startDate": "07/07/2023-16:58:15",
+        "endDate": "07/07/2023-16:58:26",
+        "duration": "11.0 seg",
+        "node": "error",
+        "log": "Scheduler-20230707165815"
     }
 ]

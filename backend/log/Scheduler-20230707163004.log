@@ -1,0 +1,10 @@
+2023-07-07 16:30:04,708 - scheduler - INFO - #----------------------- Inicia proceso de Scheduler
+2023-07-07 16:30:04,708 - scheduler - INFO - Orden a procesar generate_data
+2023-07-07 16:30:04,718 - scheduler - INFO - detener................
+2023-07-07 16:30:14,720 - scheduler - INFO - continuar................
+2023-07-07 16:30:14,720 - scheduler - INFO - Modulo: <module 'jobs.processFile.process_file' from 'd:\\WorkSpace\\WS_REACT_PRANICAL\\JobScheduler\\backend\\jobs\\processFile\\process_file.py'>
+2023-07-07 16:30:14,720 - scheduler - INFO - Instancia: <class 'jobs.processFile.process_file.ProcessFile'>
+2023-07-07 16:30:14,720 - scheduler - INFO - Operacion: None
+2023-07-07 16:30:14,721 - scheduler - INFO - Resultado: True
+2023-07-07 16:30:14,721 - scheduler - INFO - Porceso exitoso...!
+2023-07-07 16:30:14,722 - scheduler - ERROR - Error: No module named 'jobs.'
