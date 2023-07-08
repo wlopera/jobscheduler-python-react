@@ -101,7 +101,7 @@ const Home = () => {
         almacenan de forma persistente durante el procesamiento.
       </p>
       <br />
-      <h4>wlopera @2023</h4>
+      <h4>2023 ©wlopera</h4>
     </div>
   );
 };

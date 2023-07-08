@@ -38,7 +38,6 @@ const ModalViewLog = ({ logName, show, closeModal }) => {
       link.click();
 
       const rep= URL.revokeObjectURL(url);
-      console.log(11111, rep)
 
       // console.log("blob:", blob);
 

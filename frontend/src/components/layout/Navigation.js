@@ -6,10 +6,11 @@ import classes from "./Navigation.module.css";
 const Navigation = () => {
   return (
     <nav
-      className="navbar navbar-expand-lg navbar-light bg-custom-secondary"
+      className="navbar navbar-expand-lg navbar-light bg-custom-secondary fixed-top "
+      
       style={{ color: "white", backgroundColor: "#51e451" }}
     >
-      <div className="container-fluid">
+      <div className="container" style={{ width: "80%" }}>
         <a style={{color:"white", textDecoration: "none"}} href="/">
           <h1>JobScheduler</h1>
         </a>
