@@ -1,11 +1,16 @@
-import TemplateOrders from "../components/templates/templateOrders/TemplateOrders";
-import TemplateProcess from "../components/templates/templateProcess/TemplateProcess";
-import TemplateChains from "../components/templates/templateChains/TemplateChains";
-
-//apps
-// const Chat = lazy(() => import("../views/chat/Chat"));
-//dashboards
-
+import { lazy } from "react";
+const TemplateOrders = lazy(() =>
+  import("../components/templates/templateOrders/TemplateOrders")
+);
+const TemplateProcess = lazy(() =>
+  import("../components/templates/templateProcess/TemplateProcess")
+);
+const TemplateChains = lazy(() =>
+  import("../components/templates/templateChains/TemplateChains")
+);
+const History = lazy(() =>
+  import("../components/templates/templateProcess/history/History")
+);
 
 var ThemeRoutes = [
   {
@@ -15,45 +20,24 @@ var ThemeRoutes = [
   },
   {
     collapse: true,
-    path: "/dashboards",
-    name: "Dashboards",
+    path: "/configuration",
+    name: "Configuración",
     state: "dashboardpages",
     icon: "home",
     child: [
       {
-        path: "/dashboards/modern",
-        name: "Modern",
+        path: "/configuration/orders",
+        name: "Ordenes",
         mini: "B",
         icon: "mdi mdi-adjust",
-        component: null,
+        component: TemplateOrders,
       },
       {
-        path: "/dashboards/awesome",
-        name: "Awesome",
+        path: "/configuration/chains",
+        name: "Cadenas de Trabajos",
         mini: "B",
         icon: "mdi mdi-adjust",
-        component: null,
-      },
-      {
-        path: "/dashboards/classy",
-        name: "Classy",
-        mini: "B",
-        icon: "mdi mdi-adjust",
-        component: null,
-      },
-      {
-        path: "/dashboards/analytical",
-        name: "Analytical",
-        mini: "B",
-        icon: "mdi mdi-adjust",
-        component: null,
-      },
-      {
-        path: "/dashboards/minimal",
-        name: "Minimal",
-        mini: "B",
-        icon: "mdi mdi-adjust",
-        component: null,
+        component: TemplateChains,
       },
     ],
   },
@@ -63,26 +47,20 @@ var ThemeRoutes = [
     icon: "mdi mdi-dots-horizontal",
   },
   {
-    path: "/orders",
-    name: "Ordenes",
-    icon: "cpu",
-    component: TemplateOrders,
-  },
-  {
-    path: "/chains",
-    name: "Canedas de trabajo",
-    icon: "file-text",
-    component: TemplateChains,
-  },
-  {
     path: "/process",
     name: "Procesar",
     icon: "map",
     component: TemplateProcess,
   },
   {
+    path: "/history",
+    name: "Historias",
+    icon: "map",
+    component: History,
+  },
+  {
     path: "/",
-    pathTo: "/dashboards/modern",
+    pathTo: "/dashboards/orders",
     name: "Dashboard",
     redirect: true,
   },

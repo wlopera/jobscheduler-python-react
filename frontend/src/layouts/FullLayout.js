@@ -84,6 +84,7 @@ export default (props) => {
           <Suspense fallback={<Spinner />}>
             <Switch>
               {ThemeRoutes.map((prop, key) => {
+                  console.log(11111, prop, props)
                 if (prop.navlabel) {
                   return null;
                 } else if (prop.collapse) {

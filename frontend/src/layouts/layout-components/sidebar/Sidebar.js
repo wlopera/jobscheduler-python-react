@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import FeatherIcon from "feather-icons-react";
 
 const Sidebar = (props) => {
+  console.log(3333, props)
   const activeRoute = (routeName) => {
     return props.location.pathname.indexOf(routeName) > -1 ? "selected" : "";
   };
