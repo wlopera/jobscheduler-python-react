@@ -12,27 +12,15 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  UncontrolledCarousel,
-  Progress,
-  ListGroup,
-  ListGroupItem,
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  Input,
+  DropdownItem
 } from "reactstrap";
-import * as data from "./Data";
 
 /*--------------------------------------------------------------------------------*/
 /* Import images which are need for the HEADER                                    */
 /*--------------------------------------------------------------------------------*/
 import logoreacticon from "../../../assets/images/logo-icon-react.png";
 import logopythonicon from "../../../assets/images/logo-icon-python.png";
-import logolighticon from "../../../assets/images/logo-light-icon.png";
 import logodarktext from "../../../assets/images/logo-text-jobscheduler.png";
-import logolighttext from "../../../assets/images/logo-light-text.png";
 import profilephoto from "../../../assets/images/users/programmer.png";
 
 export default () => {
@@ -87,6 +75,7 @@ export default () => {
           className="navbar-header"
           id="logobg"
           data-logobg={settings.activeLogoBg}
+          style={{ backgroundColor: "lightyellow" }}
         >
           {/*--------------------------------------------------------------------------------*/}
           {/* Mobile View Toggler  [visible only after 768px screen]                         */}
@@ -111,8 +100,8 @@ export default () => {
               <img
                 src={logopythonicon}
                 alt="homepage"
-                className="dark-logo"  
-                style={{ paddingLeft: "5px" , width:"100%", height:"100%"}}
+                className="dark-logo"
+                style={{ paddingLeft: "5px", width: "100%", height: "100%" }}
               />
             </b>
           </NavbarBrand>
@@ -145,7 +134,7 @@ export default () => {
             {/*--------------------------------------------------------------------------------*/}
             {/* Start Notifications Dropdown                                                   */}
             {/*--------------------------------------------------------------------------------*/}
-            
+
             {/*--------------------------------------------------------------------------------*/}
             {/* End Mega Menu Dropdown                                                         */}
             {/*--------------------------------------------------------------------------------*/}
@@ -156,7 +145,7 @@ export default () => {
                 <input
                   type="text"
                   className="form-control rounded-pill"
-                  placeholder="Search for..."
+                  placeholder="Buscar..."
                 />
                 <a className="srh-btn">
                   <i className="ti-search"></i>
