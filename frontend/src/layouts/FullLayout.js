@@ -4,7 +4,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./layout-components/header/Header";
 import Sidebar from "./layout-components/sidebar/Sidebar";
 import Footer from "./layout-components/footer/Footer";
-// import Customizer from "./layout-components/customizer/Customizer";
 import ThemeRoutes from "../routes/Router";
 import Spinner from "../views/spinner/Spinner";
 
@@ -84,7 +83,6 @@ export default (props) => {
           <Suspense fallback={<Spinner />}>
             <Switch>
               {ThemeRoutes.map((prop, key) => {
-                  console.log(11111, prop, props)
                 if (prop.navlabel) {
                   return null;
                 } else if (prop.collapse) {
@@ -127,10 +125,6 @@ export default (props) => {
         </div>
         <Footer />
       </div>
-      {/*--------------------------------------------------------------------------------*/}
-      {/* Customizer from which you can set all the Layout Settings                      */}
-      {/*--------------------------------------------------------------------------------*/}
-      {/* <Customizer /> */}
     </div>
   );
 };

@@ -131,9 +131,6 @@ export default () => {
                 <i className="icon-arrow-left-circle"></i>
               </NavLink>
             </NavItem>
-            {/*--------------------------------------------------------------------------------*/}
-            {/* Start Notifications Dropdown                                                   */}
-            {/*--------------------------------------------------------------------------------*/}
 
             {/*--------------------------------------------------------------------------------*/}
             {/* End Mega Menu Dropdown                                                         */}
@@ -192,14 +189,14 @@ export default () => {
             {/*--------------------------------------------------------------------------------*/}
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav>
-                <i className="flag-icon flag-icon-us"></i>
+                <i className="flag-icon flag-icon-es"></i>
               </DropdownToggle>
-              <DropdownMenu right className="animated bounceInDown">
+              <DropdownMenu right className="animated bounceInDown">               
                 <DropdownItem>
-                  <i className="flag-icon flag-icon-us"></i> English
+                  <i className="flag-icon flag-icon-es"></i> Español
                 </DropdownItem>
                 <DropdownItem>
-                  <i className="flag-icon flag-icon-es"></i> Spanish
+                  <i className="flag-icon flag-icon-us"></i> Inglés
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
