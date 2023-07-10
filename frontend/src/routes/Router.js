@@ -15,19 +15,19 @@ const History = lazy(() =>
 var ThemeRoutes = [
   {
     navlabel: true,
-    name: "Personal",
+    name: "Configuración",
     icon: "mdi mdi-dots-horizontal",
   },
   {
     collapse: true,
     path: "/configuration",
-    name: "Configuración",
+    name: "Parametrización",
     state: "dashboardpages",
-    icon: "home",
+    icon: "layers",
     child: [
       {
         path: "/configuration/orders",
-        name: "Ordenes",
+        name: "Ordenes y Tareas",
         mini: "B",
         icon: "mdi mdi-adjust",
         component: TemplateOrders,
@@ -49,13 +49,13 @@ var ThemeRoutes = [
   {
     path: "/process",
     name: "Procesar",
-    icon: "map",
+    icon: "play",
     component: TemplateProcess,
   },
   {
     path: "/history",
     name: "Historias",
-    icon: "map",
+    icon: "clock",
     component: History,
   },
   {

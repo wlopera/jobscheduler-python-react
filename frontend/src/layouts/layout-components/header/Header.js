@@ -28,11 +28,12 @@ import * as data from "./Data";
 /*--------------------------------------------------------------------------------*/
 /* Import images which are need for the HEADER                                    */
 /*--------------------------------------------------------------------------------*/
-import logodarkicon from "../../../assets/images/logo-icon.png";
+import logoreacticon from "../../../assets/images/logo-icon-react.png";
+import logopythonicon from "../../../assets/images/logo-icon-python.png";
 import logolighticon from "../../../assets/images/logo-light-icon.png";
-import logodarktext from "../../../assets/images/logo-text.png";
+import logodarktext from "../../../assets/images/logo-text-jobscheduler.png";
 import logolighttext from "../../../assets/images/logo-light-text.png";
-import profilephoto from "../../../assets/images/users/1.jpg";
+import profilephoto from "../../../assets/images/users/programmer.png";
 
 export default () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,13 +102,19 @@ export default () => {
           {/*--------------------------------------------------------------------------------*/}
           <NavbarBrand href="/">
             <b className="logo-icon">
-              <img src={logodarkicon} alt="homepage" className="dark-logo" />
-              <img src={logolighticon} alt="homepage" className="light-logo" />
+              <img src={logoreacticon} alt="homepage" className="dark-logo" />
             </b>
             <span className="logo-text">
               <img src={logodarktext} alt="homepage" className="dark-logo" />
-              <img src={logolighttext} className="light-logo" alt="homepage" />
             </span>
+            <b className="logo-icon">
+              <img
+                src={logopythonicon}
+                alt="homepage"
+                className="dark-logo"  
+                style={{ paddingLeft: "5px" , width:"100%", height:"100%"}}
+              />
+            </b>
           </NavbarBrand>
           {/*--------------------------------------------------------------------------------*/}
           {/* Mobile View Toggler  [visible only after 768px screen]                         */}
@@ -138,301 +145,7 @@ export default () => {
             {/*--------------------------------------------------------------------------------*/}
             {/* Start Notifications Dropdown                                                   */}
             {/*--------------------------------------------------------------------------------*/}
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                <i className="mdi mdi-message"></i>
-                <div className="notify">
-                  <span className="heartbit"></span>
-                  <span className="point"></span>
-                </div>
-              </DropdownToggle>
-              <DropdownMenu className="mailbox animated bounceInDown">
-                <ul className="list-style-none">
-                  <li>
-                    <div className="font-weight-medium border-bottom rounded-top py-3 px-4">
-                      Notifications
-                    </div>
-                  </li>
-                  <li>
-                    <div className="message-center notifications">
-                      {/*<!-- Message -->*/}
-                      {data.notifications.map((notification, index) => {
-                        return (
-                          <a
-                            href="#"
-                            className="message-item d-flex align-items-center border-bottom px-3 py-2"
-                            key={index}
-                          >
-                            <span
-                              className={
-                                "btn rounded-circle btn-" + notification.iconbg
-                              }
-                            >
-                              <i className={notification.iconclass} />
-                            </span>
-                            <span className="w-75 d-inline-block v-middle pl-2">
-                              <h5 className="message-title mb-0 mt-1">
-                                {notification.title}
-                              </h5>
-                              <span className="font-12 text-nowrap d-block text-muted text-truncate">
-                                {notification.desc}
-                              </span>
-                              <span className="font-12 text-nowrap d-block text-muted">
-                                {notification.time}
-                              </span>
-                            </span>
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </li>
-                  <li>
-                    <a
-                      className="nav-link border-top text-center text-dark pt-3"
-                      href="#"
-                    >
-                      {" "}
-                      <strong>Check all notifications</strong>{" "}
-                      <i className="fa fa-angle-right"></i>{" "}
-                    </a>
-                  </li>
-                </ul>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            {/*--------------------------------------------------------------------------------*/}
-            {/* End Notifications Dropdown                                                     */}
-            {/*--------------------------------------------------------------------------------*/}
-            {/*--------------------------------------------------------------------------------*/}
-            {/* Start Messages Dropdown                                                        */}
-            {/*--------------------------------------------------------------------------------*/}
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                <i className="mdi mdi-email"></i>
-                <div className="notify">
-                  <span className="heartbit"></span>
-                  <span className="point"></span>
-                </div>
-              </DropdownToggle>
-              <DropdownMenu className="mailbox animated bounceInDown">
-                <ul className="list-style-none">
-                  <li>
-                    <div className="font-weight-medium border-bottom rounded-top py-3 px-4">
-                      Messages
-                    </div>
-                  </li>
-                  <li>
-                    <div className="message-center message-body">
-                      {/*<!-- Message -->*/}
-                      {data.messages.map((message, index) => {
-                        return (
-                          <a
-                            href="#"
-                            className="message-item d-flex align-items-center border-bottom px-3 py-2"
-                            key={index}
-                          >
-                            <span className="user-img position-relative d-inline-block">
-                              <img
-                                src={message.image}
-                                alt="user"
-                                className="rounded-circle w-100"
-                              />
-                              <span
-                                className={
-                                  "profile-status rounded-circle " +
-                                  message.status
-                                }
-                              ></span>
-                            </span>
-                            <div className="w-75 d-inline-block v-middle pl-2">
-                              <h5 className="message-title mb-0 mt-1">
-                                {message.title}
-                              </h5>
-                              <span className="font-12 text-nowrap d-block text-muted text-truncate">
-                                {message.desc}
-                              </span>
-                              <span className="font-12 text-nowrap d-block text-muted">
-                                {message.time}
-                              </span>
-                            </div>
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </li>
-                  <li>
-                    <a
-                      className="nav-link border-top text-center text-dark pt-3"
-                      href="#"
-                    >
-                      {" "}
-                      <b>See all e-Mails</b>{" "}
-                      <i className="fa fa-angle-right"></i>{" "}
-                    </a>
-                  </li>
-                </ul>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            {/*--------------------------------------------------------------------------------*/}
-            {/* End Messages Dropdown                                                          */}
-            {/*--------------------------------------------------------------------------------*/}
-            {/*--------------------------------------------------------------------------------*/}
-            {/* Start Mega Menu Dropdown                                                       */}
-            {/*--------------------------------------------------------------------------------*/}
-            <UncontrolledDropdown nav inNavbar className="mega-dropdown">
-              <DropdownToggle nav>
-                {" "}
-                <i className="mdi mdi-view-grid"></i>
-              </DropdownToggle>
-              <DropdownMenu>
-                <Row>
-                  {/*--------------------------------------------------------------------------------*/}
-                  {/* Carousel [Item-1]                                                              */}
-                  {/*--------------------------------------------------------------------------------*/}
-                  <Col xs="12" sm="12" md="12" lg="3">
-                    <h5 className="mb-3 text-uppercase">Carousel</h5>
-                    <UncontrolledCarousel items={data.items} />
-                  </Col>
-                  {/*--------------------------------------------------------------------------------*/}
-                  {/* Progress [Item-2]                                                              */}
-                  {/*--------------------------------------------------------------------------------*/}
-                  <Col xs="12" sm="12" md="12" lg="3">
-                    <h5 className="mb-3 text-uppercase">Progress</h5>
-                    <div className="d-flex no-block align-items-center mb-2">
-                      <span>Sales</span>
-                      <div className="ml-auto">
-                        <span className="text-primary">
-                          <i className="mdi mdi-chart-areaspline" />
-                        </span>
-                      </div>
-                    </div>
-                    <Progress className="mb-3" animated value={2 * 5} />
-                    <div className="d-flex no-block align-items-center mb-2">
-                      <span>Marketing</span>
-                      <div className="ml-auto">
-                        <span className="text-success">
-                          <i className="mdi mdi-chart-line" />
-                        </span>
-                      </div>
-                    </div>
-                    <Progress
-                      className="mb-3"
-                      animated
-                      color="success"
-                      value="25"
-                    />
-                    <div className="d-flex no-block align-items-center mb-2">
-                      <span>Accouting</span>
-                      <div className="ml-auto">
-                        <span className="text-danger">
-                          <i className="mdi mdi-chart-arc" />
-                        </span>
-                      </div>
-                    </div>
-                    <Progress
-                      className="mb-3"
-                      animated
-                      color="danger"
-                      value={50}
-                    />
-                    <div className="d-flex no-block align-items-center mb-2">
-                      <span>Sales Ratio</span>
-                      <div className="ml-auto">
-                        <span className="text-warning">
-                          <i className="mdi mdi-chart-pie" />
-                        </span>
-                      </div>
-                    </div>
-                    <Progress
-                      className="mb-3"
-                      animated
-                      color="warning"
-                      value={70}
-                    />
-                  </Col>
-                  {/*--------------------------------------------------------------------------------*/}
-                  {/* Contact Us [Item-3]                                                            */}
-                  {/*--------------------------------------------------------------------------------*/}
-                  <Col xs="12" sm="12" md="12" lg="3">
-                    <h5 className="mb-3 text-uppercase">Contact Us</h5>
-                    <Form>
-                      <FormGroup>
-                        <Input
-                          type="text"
-                          name="name"
-                          id="textname"
-                          placeholder="Enter Name Here"
-                        />
-                      </FormGroup>
-                      <FormGroup>
-                        <Input
-                          type="email"
-                          name="email"
-                          id="exampleEmail"
-                          placeholder="Enter Email Here"
-                        />
-                      </FormGroup>
-                      <FormGroup>
-                        <Input
-                          type="textarea"
-                          name="text"
-                          id="exampleText"
-                          placeholder="Message"
-                        />
-                      </FormGroup>
-                      <Button color="primary">Submit</Button>
-                    </Form>
-                  </Col>
-                  {/*--------------------------------------------------------------------------------*/}
-                  {/* List Style [Item-4]                                                            */}
-                  {/*--------------------------------------------------------------------------------*/}
-                  <Col xs="12" sm="12" md="12" lg="3">
-                    <h5 className="mb-3 text-uppercase">List Style</h5>
-                    <ListGroup flush>
-                      <ListGroupItem
-                        tag="a"
-                        href=""
-                        className="border-0 pl-0 text-dark pt-0"
-                      >
-                        <i className="fa fa-check text-success mr-2" />
-                        Cras justo odio
-                      </ListGroupItem>
-                      <ListGroupItem
-                        tag="a"
-                        href=""
-                        className="border-0 pl-0 text-dark pt-0"
-                      >
-                        <i className="fa fa-check text-success mr-2" />
-                        Dapibus ac facilisis in
-                      </ListGroupItem>
-                      <ListGroupItem
-                        tag="a"
-                        href=""
-                        className="border-0 pl-0 text-dark pt-0"
-                      >
-                        <i className="fa fa-check text-success mr-2" />
-                        Morbi leo risus
-                      </ListGroupItem>
-                      <ListGroupItem
-                        tag="a"
-                        href=""
-                        className="border-0 pl-0 text-dark pt-0"
-                      >
-                        <i className="fa fa-check text-success mr-2" />
-                        Porta ac consectetur ac
-                      </ListGroupItem>
-                      <ListGroupItem
-                        tag="a"
-                        href=""
-                        className="border-0 pl-0 text-dark pt-0"
-                      >
-                        <i className="fa fa-check text-success mr-2" />
-                        Vestibulum at eros
-                      </ListGroupItem>
-                    </ListGroup>
-                  </Col>
-                </Row>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            
             {/*--------------------------------------------------------------------------------*/}
             {/* End Mega Menu Dropdown                                                         */}
             {/*--------------------------------------------------------------------------------*/}
@@ -473,31 +186,13 @@ export default () => {
                     />
                   </div>
                   <div className="ml-2">
-                    <h4 className="mb-0">Steave Jobs</h4>
-                    <p className=" mb-0">varun@gmail.com</p>
+                    <h4 className="mb-0">William Lopera</h4>
+                    <p className=" mb-0">lopera.william@gmail.com</p>
                     <a href="#" className="btn btn-rounded btn-danger btn-sm">
-                      View Profile
+                      Perfil
                     </a>
                   </div>
                 </div>
-                <DropdownItem>
-                  <i className="ti-user mr-1 ml-1" /> My Account
-                </DropdownItem>
-                <DropdownItem>
-                  <i className="ti-wallet mr-1 ml-1" /> My Balance
-                </DropdownItem>
-                <DropdownItem>
-                  <i className="ti-email mr-1 ml-1" /> Inbox
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  <i className="ti-settings mr-1 ml-1" /> Account Settings
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem href="/pages/login">
-                  <i className="fa fa-power-off mr-1 ml-1" /> Logout
-                </DropdownItem>
-                <DropdownItem divider />
               </DropdownMenu>
             </UncontrolledDropdown>
             {/*--------------------------------------------------------------------------------*/}
@@ -515,13 +210,7 @@ export default () => {
                   <i className="flag-icon flag-icon-us"></i> English
                 </DropdownItem>
                 <DropdownItem>
-                  <i className="flag-icon flag-icon-fr"></i> French
-                </DropdownItem>
-                <DropdownItem>
                   <i className="flag-icon flag-icon-es"></i> Spanish
-                </DropdownItem>
-                <DropdownItem>
-                  <i className="flag-icon flag-icon-de"></i> German
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
