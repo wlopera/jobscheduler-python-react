@@ -53,7 +53,6 @@ const History = (props) => {
     setShowViewLog(false);
   };
 
-  console.log(4444, props);
   return (
     <div>
       <div className="card">

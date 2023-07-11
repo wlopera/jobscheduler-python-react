@@ -49,7 +49,7 @@ class ChainsService {
   update(data) {
     try {
       return http.post(`${PATH_API}/modify`, data).then((response) => {
-        console.log("Modificar update - tarea:", response);
+        // console.log("Modificar update - tarea:", response);
         if (response.data.code === 200) {
           return {
             ...response.data,
@@ -83,7 +83,7 @@ class ChainsService {
   getParams(data) {
     try {
       return http.post(`${PATH_API}/params`, data).then((response) => {
-        console.log("Parámetros - tarea:", response);
+        // "Parámetros - tarea:", response);
         if (response.data.code === 200) {
           if (response.data.params.length > 0) {
             return {
@@ -126,9 +126,9 @@ class ChainsService {
 
   updateParams(data) {
     try {
-      console.log("Update Params:", data);
+      // console.log("Update Params:", data);
       return http.post(`${PATH_API}/update_params`, data).then((response) => {
-        console.log("Parámetros - tarea luego de actualizados:", response);
+        // console.log("Parámetros - tarea luego de actualizados:", response);
         if (response.data.code === 200) {
           return {
             ...response.data,
@@ -162,7 +162,6 @@ class ChainsService {
   process(data) {
     try {
       return http.post(`${PATH_API}/process/${data}`).then((response) => {
-        console.log(12345, response);
         if (response.data.code === 200) {
           return {
             ...response.data,
@@ -196,7 +195,6 @@ class ChainsService {
   read_log_file(data) {
     try {
       return http.post(`${PATH_API}/log/${data}`).then((response) => {
-        console.log(12345, response);
         if (response.data.code === 200) {
           return {
             ...response.data,
@@ -230,7 +228,7 @@ class ChainsService {
   history() {
     try {
       return http.get(`${PATH_API}/history`).then((response) => {
-        console.log("Historia:", response);
+        // console.log("Historia:", response);
         if (response.data.code === 200) {
           if (response.data.data.length > 0) {
             return {

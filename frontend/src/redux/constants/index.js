@@ -11,4 +11,9 @@ export const SIDEBAR_TYPE = "SIDEBAR_TYPE";
 
 
 // History 
+export const ADD_PROCESS_ORDER = "ADD_PROCESS_ORDER";
+
+// Process
 export const UPDATE_HISTORY_TABLE = "UPDATE_HISTORY_TABLE";
+export const REMOVE_PROCESS_ORDER = "REMOVE_PROCESS_ORDER";
+

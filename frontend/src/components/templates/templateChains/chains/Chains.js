@@ -20,7 +20,7 @@ const Chains = ({ orderId, editButton, onLoading }) => {
     const getData = async () => {
       onLoading(true);
       const response = await service.get(orderId);
-      console.log("Consultar Tareas:", response);
+      // console.log("Consultar Tareas:", response);
       if (response.code === 200) {
         setDataTable({
           data: response.data,

@@ -16,7 +16,7 @@ const Orders = ({ onOrderId, loading, onLoading }) => {
       //setMessageOrder({ type: "LOADING", text: "Cargando Ordenes..." });
       onLoading(true);
       const response = await service.get();
-      console.log("Consultar Ordenes:", response);
+      // console.log("Consultar Ordenes:", response);
       if (response.code === 200) {
         seDataTable(response.data);
       }

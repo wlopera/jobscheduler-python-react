@@ -56,7 +56,6 @@ export default (props) => {
     };
   }, [settings.activeSidebarType, width]);
 
-  console.log(1111, props)
   return (
     <div
       id="main-wrapper"

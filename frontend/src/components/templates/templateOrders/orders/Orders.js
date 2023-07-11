@@ -32,7 +32,7 @@ const Orders = ({
       setMessageOrder({ type: "LOADING", text: "Cargando Ordenes..." });
       onLoading(true);
       const response = await service.get();
-      console.log("Consultar Ordenes:", response);
+      // console.log("Consultar Ordenes:", response);
       if (response.code === 200) {
         setDataTable(response.data);
       }
@@ -46,7 +46,7 @@ const Orders = ({
     setMessageOrder({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
     const response = await service.create(input);
-    console.log("Agregar Orden:", response);
+    // console.log("Agregar Orden:", response);
     if (response.code === 200) {
       response.data.forEach((item) => {
         if (item.active) {
@@ -69,7 +69,7 @@ const Orders = ({
       old_value,
       new_value,
     });
-    console.log("Modificar orden:", response);
+    // console.log("Modificar orden:", response);
     if (response.code === 200) {
       response.data.forEach((item) => {
         if (item.active) {
@@ -89,7 +89,7 @@ const Orders = ({
     setMessageOrder({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
     const response = await service.delete(row);
-    console.log("Eliminar orden:", response);
+    // console.log("Eliminar orden:", response);
     if (response.code === 200) {
       setSelectedRow(null);
       setDataTable(response.data);

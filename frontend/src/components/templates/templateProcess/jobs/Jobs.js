@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import "bootstrap-icons/font/bootstrap-icons.css";
+
 import "./Jobs.css";
 import service from "../../../../services/jobs.service";
 import chainsService from "../../../../services/chains.service";
 
 import { TITLE_JOB } from "../../../utils/Constants";
 import Drawing from "./Drawing";
-
 import { updateHistoryTable } from "../../../../redux/history/Action";
-import { useDispatch } from "react-redux";
+import {
+  addProcessOrder,
+  removeProcessOrder,
+} from "../../../../redux/process/Action";
 
 const Jobs = ({
   orderId,
@@ -26,7 +30,7 @@ const Jobs = ({
       setMessageJob({ type: "LOADING", text: "Cargando Tareas..." });
       onLoading(true);
       const response = await service.get_from_json(orderId);
-      console.log("Consultar Tareas:", response);
+      // console.log("Consultar Tareas:", response);
       if (response.code === 200) {
         let diagram = response.data.map((item) => ({
           id: item.id,
@@ -53,23 +57,28 @@ const Jobs = ({
     }
   }, [orderId]);
 
-  const process = async (item) => {
+  const process = async () => {
     setMessageJob({ type: "LOADING", text: "Procesando Orden..." });
     onLoading(true);
     onUpdateHistory();
-    console.log(111111111111)
+
+    // Agregar la tarea actual en procesamiento
+    dispatch(addProcessOrder({ order: orderId }));
+
     setTimeout(() => {
       dispatch(updateHistoryTable(true));
     }, 2000);
-    console.log(2222222222222)
     const response = await chainsService.process(orderId);
-    console.log("Procesando la orden:", response);
+    // console.log("Procesando la orden:", response);
     if (response.code === 200) {
     }
     setMessageJob(response.alert);
     onUpdateHistory(true);
     onLoading(false);
     dispatch(updateHistoryTable(true));
+
+    // remover la tarea actual en procesamiento
+    dispatch(removeProcessOrder({ order: orderId }));
   };
 
   return (

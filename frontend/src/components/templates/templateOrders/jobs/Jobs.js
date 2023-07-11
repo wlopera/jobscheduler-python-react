@@ -30,7 +30,7 @@ const Jobs = ({
       setMessageJob({ type: "LOADING", text: "Cargando Tareas..." });
       onLoading(true);
       const response = await service.get(orderId);
-      console.log("Consultar Tareas:", response);
+      // console.log("Consultar Tareas:", response);
       if (response.code === 200) {
         setDataTable(response.data);
       }
@@ -52,7 +52,7 @@ const Jobs = ({
       order_id: orderId,
       job_id: input,
     });
-    console.log("Agregar tarea:", response);
+    // console.log("Agregar tarea:", response);
     if (response.code === 200) {
       response.data.forEach((item) => {
         if (item.active) {
@@ -74,7 +74,7 @@ const Jobs = ({
       old_value,
       new_value,
     });
-    console.log("Modificar Tarea:", response);
+    // console.log("Modificar Tarea:", response);
     if (response.code === 200) {
       response.data.forEach((item) => {
         if (item.active) {
