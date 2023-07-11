@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import service from "../../../../services/chains.service";
@@ -7,12 +9,22 @@ import { TITLE_ORDER } from "../../../utils/Constants";
 
 import "./History.css";
 import ModalViewLog from "../../../modal/ModalViewLog";
+import { updateHistoryTable } from "../../../../redux/history/Action";
+import { useDispatch } from "react-redux";
 
-const History = ({ updateHistory = true, onUpdateHistory = null }) => {
+const History = (props) => {
+  const { updateHistory = false, onUpdateHistory = null } = props;
+
   const [logName, setLogName] = useState(null);
   const [dataTable, setDataTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [showViewLog, setShowViewLog] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const updateHistoryRedux = useSelector(
+    (state) => state.historyReducer.updateHistory
+  );
 
   useEffect(() => {
     const getData = async () => {
@@ -25,12 +37,11 @@ const History = ({ updateHistory = true, onUpdateHistory = null }) => {
         }
       }
     };
-    if (updateHistory) {
-      setTimeout(() => {
-        getData();
-      }, 2000);
+    if (updateHistory || updateHistoryRedux) {
+      getData();
+      dispatch(updateHistoryTable(false));
     }
-  }, [updateHistory, setDataTable]);
+  }, [updateHistory, updateHistoryRedux, setDataTable]);
 
   const showLog = async (item) => {
     setLogName(item.log);
@@ -42,6 +53,7 @@ const History = ({ updateHistory = true, onUpdateHistory = null }) => {
     setShowViewLog(false);
   };
 
+  console.log(4444, props);
   return (
     <div>
       <div className="card">

@@ -57,6 +57,7 @@ var ThemeRoutes = [
     name: "Historias",
     icon: "clock",
     component: History,
+    updateHistory: true
   },
   {
     path: "/",

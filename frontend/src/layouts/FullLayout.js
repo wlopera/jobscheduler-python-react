@@ -56,6 +56,7 @@ export default (props) => {
     };
   }, [settings.activeSidebarType, width]);
 
+  console.log(1111, props)
   return (
     <div
       id="main-wrapper"
@@ -114,8 +115,10 @@ export default (props) => {
                   return (
                     <Route
                       path={prop.path}
-                      component={prop.component}
                       key={key}
+                      render={(routeProps) => (
+                        <prop.component {...routeProps} {...prop} />
+                      )}
                     />
                   );
                 }

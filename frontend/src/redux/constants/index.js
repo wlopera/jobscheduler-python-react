@@ -8,3 +8,7 @@ export const SIDEBAR_POSITION = "SIDEBAR_POSITION";
 export const HEADER_POSITION = "HEADER_POSITION";
 export const LAYOUT = "LAYOUT";
 export const SIDEBAR_TYPE = "SIDEBAR_TYPE";
+
+
+// History 
+export const UPDATE_HISTORY_TABLE = "UPDATE_HISTORY_TABLE";

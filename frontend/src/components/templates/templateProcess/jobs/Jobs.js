@@ -7,8 +7,19 @@ import chainsService from "../../../../services/chains.service";
 import { TITLE_JOB } from "../../../utils/Constants";
 import Drawing from "./Drawing";
 
-const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onUpdateHistory }) => {
+import { updateHistoryTable } from "../../../../redux/history/Action";
+import { useDispatch } from "react-redux";
+
+const Jobs = ({
+  orderId,
+  setMessageJob,
+  onLoading,
+  textFooter,
+  onUpdateHistory,
+}) => {
   const [diagramData, setDiagramData] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getData = async () => {
@@ -45,15 +56,20 @@ const Jobs = ({ orderId, setMessageJob, onLoading, textFooter, onUpdateHistory }
   const process = async (item) => {
     setMessageJob({ type: "LOADING", text: "Procesando Orden..." });
     onLoading(true);
-    onUpdateHistory(true)
+    onUpdateHistory();
+    console.log(111111111111)
+    setTimeout(() => {
+      dispatch(updateHistoryTable(true));
+    }, 2000);
+    console.log(2222222222222)
     const response = await chainsService.process(orderId);
     console.log("Procesando la orden:", response);
     if (response.code === 200) {
-      
     }
     setMessageJob(response.alert);
     onUpdateHistory(true);
     onLoading(false);
+    dispatch(updateHistoryTable(true));
   };
 
   return (
