@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import service from "../../../../services/chains.service";
@@ -6,34 +8,49 @@ import service from "../../../../services/chains.service";
 import { TITLE_ORDER } from "../../../utils/Constants";
 
 import "./History.css";
+import ModalViewLog from "../../../modal/ModalViewLog";
+import { updateHistoryTable } from "../../../../redux/history/Action";
+import { useDispatch } from "react-redux";
 
-const History = ({ onLogName, updateHistory, onUpdateHistory }) => {
+const History = (props) => {
+  const { updateHistory = false, onUpdateHistory = null } = props;
+
+  const [logName, setLogName] = useState(null);
   const [dataTable, setDataTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [showViewLog, setShowViewLog] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const updateHistoryRedux = useSelector(
+    (state) => state.historyReducer.updateHistory
+  );
 
   useEffect(() => {
     const getData = async () => {
-      //   setMessageOrder({ type: "LOADING", text: "Cargando historial..." });
-      //   onLoading(true);
       const response = await service.history();
-      console.log("Historial:", response);
+      // console.log("Historial:", response);
       if (response.code === 200) {
         setDataTable(response.data);
-        onUpdateHistory(false);
+        if (onUpdateHistory) {
+          onUpdateHistory(false);
+        }
       }
-      //   setMessageOrder(response.alert);
-      //   onLoading(false);
     };
-    if (updateHistory) {
-      setTimeout(() => {
-        getData();
-      }, 2000);
+    if (updateHistory || updateHistoryRedux) {
+      getData();
+      dispatch(updateHistoryTable(false));
     }
-  }, [updateHistory, setDataTable]);
+  }, [updateHistory, updateHistoryRedux, setDataTable]);
 
   const showLog = async (item) => {
-    onLogName(item.log);
+    setLogName(item.log);
     setSelectedRow(item.id);
+    setShowViewLog(true);
+  };
+
+  const HandleCloseModal = () => {
+    setShowViewLog(false);
   };
 
   return (
@@ -69,7 +86,7 @@ const History = ({ onLogName, updateHistory, onUpdateHistory }) => {
                       onClick={() => showLog(item)}
                     >
                       <td>{item.order_id}</td>
-                      <td>                        
+                      <td>
                         <span
                           className={
                             item.node == "error"
@@ -93,9 +110,15 @@ const History = ({ onLogName, updateHistory, onUpdateHistory }) => {
             </table>
           </div>
         </div>
-        <div className="card-footer">
-        </div>
+        <div className="card-footer"></div>
       </div>
+      {logName && (
+        <ModalViewLog
+          logName={logName}
+          show={showViewLog}
+          closeModal={HandleCloseModal}
+        />
+      )}
     </div>
   );
 };

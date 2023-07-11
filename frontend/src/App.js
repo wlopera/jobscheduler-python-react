@@ -1,40 +1,32 @@
 import React from "react";
 import {
-  Route,
   Switch,
-  Redirect,
   BrowserRouter as Router,
 } from "react-router-dom";
+import { Provider } from "react-redux";
+import { configureStore } from "./redux/Store";
 
-import Layout from "./components/layout/Layout";
-import Home from "./components/templates/Home";
-import TemplateProcess from "./components/templates/templateProcess/TemplateProcess";
-import TemplateChains from "./components/templates/templateChains/TemplateChains";
-import TemplateOrders from "./components/templates/templateOrders/TemplateOrders";
+import indexRoutes from "./routes/";
+import { PrivateRoute } from "./routes/PrivateRoutes";
+import "./assets/scss/style.scss";
 
 function App() {
   return (
-    <Router>
-      <Layout>
+    <Provider store={configureStore()}>
+      <Router history={History}>
         <Switch>
-          <Route path="/" exact>
-            <Redirect to="home" />
-          </Route>
-          <Route path="/process">
-            <TemplateProcess />
-          </Route>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Route path="/orders">
-            <TemplateOrders />
-          </Route>
-          <Route path="/chains">
-            <TemplateChains />
-          </Route>
+          {indexRoutes.map((prop, key) => {
+            return (
+              <PrivateRoute
+                path={prop.path}
+                key={key}
+                component={prop.component}
+              />
+            );
+          })}
         </Switch>
-      </Layout>
-    </Router>
+      </Router>
+    </Provider>
   );
 }
 

@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, request, jsonify
-from util.file_utils import FileUtils
+from flask import Blueprint, request
+from util.folder_utils import FolderUtils
+from util.json_utils import JsonUtils
 from util.service_utils import ServiceUtils
+from util.constants import PATH_FOLDERS_ORDER, FILE_PARAM_JSON, NAME_JOBS
 
 jobs_routes = Blueprint('jobs_routes', __name__, url_prefix='/api/jobs')
 
@@ -9,26 +11,23 @@ jobs_routes = Blueprint('jobs_routes', __name__, url_prefix='/api/jobs')
 def jobs(name):
     try:
         jobs = []
-        if name != '':
-            jobs = [{"id": index, "name": valor}
-                    for index, valor in enumerate(get_jobs(name))]
-        response = {"data": jobs}
-        return ServiceUtils.success(response)
+        if name:
+            jobs = get_jobs(name)
+        return ServiceUtils.success({"data": jobs})
     except Exception as e:
         return ServiceUtils.error(e)
+
 
 @jobs_routes.route('/fromJson/<string:name>', methods=['POST'])
 def jobs_from_json(name):
     try:
         jobs = []
-        if name != '':
-            jobs = [{"id": index, "name": data['name']}
-                    for index, data in enumerate(get_jobs_from_json(name))]
-        response = {"data": jobs}
-        return ServiceUtils.success(response)
+        if name:
+            jobs = get_jobs_from_json(name)
+        return ServiceUtils.success({"data": jobs})
     except Exception as e:
         return ServiceUtils.error(e)
-    
+
 
 @jobs_routes.route('/add', methods=['POST'])
 def add_job():
@@ -37,35 +36,14 @@ def add_job():
         order_id = param['order_id']
         job_id = param['job_id']
 
-        FileUtils.create_folder(
-            "JobScheduler/backend/orders/" + order_id + "/jobs/", job_id)
+        create_job_folders(order_id, job_id)
+        add_job_to_order(order_id, job_id)
 
-        FileUtils.create_file_json(
-            "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id + "/param.json")
+        jobs = get_jobs(order_id)
 
-        values = {
-            "name": job_id,
-            "package": "",
-            "class": "",
-            "next": "success",
-            "error": "error"
-        }
+        activate_job(jobs, job_id)
 
-        FileUtils.add_job_at_last_position(
-            "JobScheduler/backend/orders/" + order_id + "/param.json", values)
-
-        jobs = [{"id": index, "name": valor}
-                for index, valor in enumerate(get_jobs(order_id))]
-
-        data = list(filter(
-            lambda item: "name" in item and item["name"] == job_id, jobs))
-
-        jobs[data[0]['id']]["active"] = True
-
-        response = {
-            "data": jobs,
-        }
-        return ServiceUtils.success(response)
+        return ServiceUtils.success({"data": jobs})
     except Exception as e:
         return ServiceUtils.error(e)
 
@@ -78,24 +56,13 @@ def modify_job():
         old_job = param['old_value']
         new_job = param['new_value']
 
-        FileUtils.rename_folder(
-            "JobScheduler/backend/orders/"+order_id+"/jobs/", old_job, new_job)
+        rename_job_folders(order_id, old_job, new_job)
+        update_job_in_order(order_id, old_job, new_job)
 
-        FileUtils.modify_job("JobScheduler/backend/orders/" +
-                             order_id + "/param.json", old_job, new_job)
+        jobs = get_jobs(order_id)
+        activate_job(jobs, new_job)
 
-        jobs = [{"id": index, "name": valor}
-                for index, valor in enumerate(get_jobs(order_id))]
-
-        data = list(filter(
-            lambda item: "name" in item and item["name"] == new_job, jobs))
-
-        jobs[data[0]['id']]["active"] = True
-
-        response = {
-            "data": jobs,
-        }
-        return ServiceUtils.success(response)
+        return ServiceUtils.success({"data": jobs})
     except Exception as e:
         return ServiceUtils.error(e)
 
@@ -107,26 +74,81 @@ def delete_job():
         order_id = param['order_id']
         job_id = param['job_id']
 
-        FileUtils.delete_folder(
-            "JobScheduler/backend/orders/" + order_id + "/jobs/" + job_id)
+        delete_job_folders(order_id, job_id)
+        remove_job_from_order(order_id, job_id)
 
-        FileUtils.remove_jobs_by_name(
-            "JobScheduler/backend/orders/" + order_id + "/param.json", job_id)
+        jobs = get_jobs(order_id)
 
-        jobs = [{"id": index, "name": valor}
-                for index, valor in enumerate(get_jobs(order_id))]
-        response = {
-            "data": jobs,
-        }
-        return ServiceUtils.success(response)
+        return ServiceUtils.success({"data": jobs})
     except Exception as e:
         return ServiceUtils.error(e)
 
 
 def get_jobs(order_id):
-    return FileUtils.get_folders("JobScheduler/backend/orders/" + order_id + "/jobs")
+    response = FolderUtils.get_folders(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{NAME_JOBS}")
+
+    jobs = [{"id": index, "name": value}
+            for index, value in enumerate(response)]
+
+    return jobs
+
 
 def get_jobs_from_json(order_id):
-    return FileUtils.get_param_json("JobScheduler/backend/orders/" + order_id + "/param.json")
+    response = JsonUtils.read_json(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{FILE_PARAM_JSON}")
+
+    jobs = [{"id": index, "name": data['name']}
+            for index, data in enumerate(response)]
+
+    return jobs
 
 
+def create_job_folders(order_id, job_id):
+    FolderUtils.create_folder(
+        PATH_FOLDERS_ORDER + "/" + order_id + "/"+NAME_JOBS+"/", job_id)
+
+    JsonUtils.write_json(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{NAME_JOBS}/{job_id}/{FILE_PARAM_JSON}", {"params": []})
+
+
+def update_job_in_order(order_id, old_job, new_job):
+    JsonUtils.update_item(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{FILE_PARAM_JSON}", 'name', old_job, new_job)
+
+
+def rename_job_folders(order_id, old_job, new_job):
+    FolderUtils.rename_folder(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{NAME_JOBS}", old_job, new_job)
+    JsonUtils.update_item(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{FILE_PARAM_JSON}", 'name', old_job, new_job)
+
+
+def delete_job_folders(order_id, job_id):
+    FolderUtils.delete_folder(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{NAME_JOBS}/{job_id}")
+
+
+def add_job_to_order(order_id, job_id):
+    values = {
+        "name": job_id,
+        "package": "",
+        "class": "",
+        "next": "success",
+        "error": "error"
+    }
+    JsonUtils.add_item(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{FILE_PARAM_JSON}", values)
+
+
+def remove_job_from_order(order_id, job_id):
+    JsonUtils.remove_item_by_identifier(
+        f"{PATH_FOLDERS_ORDER}/{order_id}/{FILE_PARAM_JSON}", 'name', job_id)
+
+
+def activate_job(jobs, job_id):
+    for job in jobs:
+        if job["name"] == job_id:
+            job["active"] = True
+        else:
+            job.pop("active", None)

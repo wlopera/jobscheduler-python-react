@@ -32,7 +32,7 @@ const Orders = ({
       setMessageOrder({ type: "LOADING", text: "Cargando Ordenes..." });
       onLoading(true);
       const response = await service.get();
-      console.log("Consultar Ordenes:", response);
+      // console.log("Consultar Ordenes:", response);
       if (response.code === 200) {
         setDataTable(response.data);
       }
@@ -46,7 +46,7 @@ const Orders = ({
     setMessageOrder({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
     const response = await service.create(input);
-    console.log("Agregar Orden:", response);
+    // console.log("Agregar Orden:", response);
     if (response.code === 200) {
       response.data.forEach((item) => {
         if (item.active) {
@@ -69,7 +69,7 @@ const Orders = ({
       old_value,
       new_value,
     });
-    console.log("Modificar orden:", response);
+    // console.log("Modificar orden:", response);
     if (response.code === 200) {
       response.data.forEach((item) => {
         if (item.active) {
@@ -89,7 +89,7 @@ const Orders = ({
     setMessageOrder({ type: "LOADING", text: "Procesando..." });
     onLoading(true);
     const response = await service.delete(row);
-    console.log("Eliminar orden:", response);
+    // console.log("Eliminar orden:", response);
     if (response.code === 200) {
       setSelectedRow(null);
       setDataTable(response.data);
@@ -135,86 +135,90 @@ const Orders = ({
 
   return (
     <div>
-      <div className="card">
-        <div className="card-header">
-          <div className="row">
+        <div
+          className="card"          
+        >
+          <div className="card-header">
             <div className="row">
-              <div className="col-md-4">{TITLE_ORDER}</div>
-              {addButton && (
-                <div className="col-md-8 d-flex justify-content-end">
-                  <button
-                    className="btn btn-light btn-sm ml-2 "
-                    onClick={() => addRow()}
-                  >
-                    <i className="bi bi-plus-square-fill icon_table"></i>
-                  </button>
-                </div>
-              )}
+              <div className="row">
+                <div className="col-md-4">{TITLE_ORDER}</div>
+                {addButton && (
+                  <div className="col-md-8 d-flex justify-content-end">
+                    <button
+                      className="btn btn-light btn-sm ml-2 "
+                      onClick={() => addRow()}
+                    >
+                      <i className="bi bi-plus-square-fill icon_table"></i>
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="card-body">
-          <div className="widthClass">
-            <table id="myTable" className="table table-hover">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataTable &&
-                  dataTable.map((item) => (
-                    <tr
-                      key={item.id}
-                      className={selectedRow === item.id ? "table-primary" : ""}
-                      onClick={() => handleClick(item.id, item.name)}
-                    >
-                      <td>{item.name}</td>
-                      <td>
-                        {editButton && (
-                          <button
-                            className="btn btn-light btn-sm"
-                            onClick={() => modifyRow(item.name)}
-                          >
-                            <i className="bi bi-pencil-square icon_table"></i>
-                          </button>
-                        )}{" "}
-                        {deleteButton && (
-                          <button
-                            className="btn btn-light btn-sm ml-2"
-                            onClick={() => handleDeleteRow(item.name)}
-                          >
-                            <i className="bi bi-trash-fill icon_table"></i>
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+          <div className="card-body">
+            <div className="widthClass">
+              <table id="myTable" className="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataTable &&
+                    dataTable.map((item) => (
+                      <tr
+                        key={item.id}
+                        className={
+                          selectedRow === item.id ? "table-primary" : ""
+                        }
+                        onClick={() => handleClick(item.id, item.name)}
+                      >
+                        <td>{item.name}</td>
+                        <td>
+                          {editButton && (
+                            <button
+                              className="btn btn-light btn-sm"
+                              onClick={() => modifyRow(item.name)}
+                            >
+                              <i className="bi bi-pencil-square icon_table"></i>
+                            </button>
+                          )}{" "}
+                          {deleteButton && (
+                            <button
+                              className="btn btn-light btn-sm ml-2"
+                              onClick={() => handleDeleteRow(item.name)}
+                            >
+                              <i className="bi bi-trash-fill icon_table"></i>
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="card-footer">
+            <p
+              className={
+                textFooter && textFooter.type === "ERROR"
+                  ? "text-danger fs-6"
+                  : "text-primary fs-6"
+              }
+            >
+              {textFooter ? textFooter.text : ""}
+            </p>
           </div>
         </div>
-        <div className="card-footer">
-          <p
-            className={
-              textFooter && textFooter.type === "ERROR"
-                ? "text-danger fs-6"
-                : "text-primary fs-6"
-            }
-          >
-            {textFooter ? textFooter.text : ""}
-          </p>
-        </div>
-      </div>
-      <ModalComponent
-        title={row.length === 0 ? ADD_TITLE_ORDER : MODIFY_TITLE_ORDER}
-        placeHolder={PLACEHOLDER_ORDER}
-        show={show}
-        showModal={handleSetShow}
-        processModal={handleProcessRow}
-        value={row}
-      />
+        <ModalComponent
+          title={row.length === 0 ? ADD_TITLE_ORDER : MODIFY_TITLE_ORDER}
+          placeHolder={PLACEHOLDER_ORDER}
+          show={show}
+          showModal={handleSetShow}
+          processModal={handleProcessRow}
+          value={row}
+        />
     </div>
   );
 };

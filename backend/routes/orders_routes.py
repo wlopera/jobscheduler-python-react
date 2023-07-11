@@ -1,81 +1,155 @@
 from flask import Blueprint, request
-from util.file_utils import FileUtils
+from util.folder_utils import FolderUtils
+from util.json_utils import JsonUtils
 from util.service_utils import ServiceUtils
+from util.constants import PATH_FOLDERS_ORDER, FILE_PARAM_JSON, NAME_JOBS
 
 orders_routes = Blueprint('orders_routes', __name__, url_prefix='/api/orders')
 
 
-@orders_routes.route('/')
-def orders():
+@orders_routes.route('/', methods=['GET'])
+def get_orders():
+    """
+        Consultar los directorios de la carpeta requerida..
+    Author:
+        wlopera
+    Return:
+            dict: Carpetas de una ruta
+    """
     try:
-        orders = [{"id": index, "name": valor}
-                  for index, valor in enumerate(get_orders())]
-        response = {"data": orders}
-        return ServiceUtils.success(response)
+        orders = get_orders_folders()
+        return ServiceUtils.success({"data": orders})
     except Exception as e:
         return ServiceUtils.error(e)
 
 
 @orders_routes.route('/add/<string:name>', methods=['POST'])
 def add_order(name):
+    """
+        Crear carpeta.
+    Args:
+        name (str): Nombre de la carpeta a crear
+    Author:
+        wlopera
+    Return:
+            dict: Resultado del procesamiento
+    """
     try:
-        FileUtils.create_folder("JobScheduler/backend/orders", name)
+        create_order_folders(name)
+        orders = get_orders_folders()
+        activate_order(orders, name)
 
-        FileUtils.create_folder(
-            "JobScheduler/backend/orders/" + name + "/", "jobs")
-
-        FileUtils.create_file_json(
-            "JobScheduler/backend/orders/" + name + "/param.json")
-
-        orders = [{"id": index, "name": valor}
-                  for index, valor in enumerate(get_orders())]
-
-        data = list(filter(
-            lambda item: "name" in item and item["name"] == name, orders))
-
-        orders[data[0]['id']]["active"] = True
-
-        response = {
-            "data": orders,
-        }
-        return ServiceUtils.success(response)
+        return ServiceUtils.success({"data": orders})
     except Exception as e:
         return ServiceUtils.error(e)
 
 
 @orders_routes.route('/modify', methods=['POST'])
 def modify_order():
+    """
+        Modificar nombre de carpeta.
+    Args:
+        old_value (str): Nombre de la carpeta a modificar
+        new_value (str): Nombre nuevo de la carpeta a modificar
+    Author:
+        wlopera
+    Return:
+            dict: Resultado del procesamiento
+    """
     try:
         param = request.get_json()
-        FileUtils.rename_folder("JobScheduler/backend/orders",
-                                param['old_value'], param['new_value'])
-        orders = [{"id": index, "name": valor}
-                  for index, valor in enumerate(get_orders())]
-        data = list(filter(
-            lambda item: "name" in item and item["name"] == param['new_value'], orders))
-        orders[data[0]['id']]["active"] = True
+        old_name = param['old_value']
+        new_name = param['new_value']
 
-        response = {
-            "data": orders,
-        }
-        return ServiceUtils.success(response)
+        rename_order_folders(old_name, new_name)
+        orders = get_orders_folders()
+        activate_order(orders, new_name)
+
+        return ServiceUtils.success({"data": orders})
     except Exception as e:
         return ServiceUtils.error(e)
 
 
 @orders_routes.route('/delete/<string:name>', methods=['POST'])
 def delete_order(name):
+    """
+        Eliminar carpeta.
+    Args:
+        name (str): Nombre de la carpeta a eliminar.
+    Author:
+        wlopera
+    Return:
+            dict: Resultado del procesamiento
+    """
     try:
-        FileUtils.delete_folder("JobScheduler/backend/orders/"+name)
-        orders = [{"id": index, "name": valor}
-                  for index, valor in enumerate(get_orders())]
-        response = {
-            "data": orders,
-        }
-        return ServiceUtils.success(response)
+        delete_order_folders(name)
+        orders = get_orders_folders()
+        return ServiceUtils.success({"data": orders})
     except Exception as e:
         return ServiceUtils.error(e)
 
 
-def get_orders():
-    return FileUtils.get_folders("JobScheduler/backend/orders")
+def get_orders_folders():
+    """
+        Lee los directorios de una ruta requerida.
+    Author: 
+        wlopera
+    Return:
+        dict: Carpetas de una ruta
+    """
+    response = FolderUtils.get_folders(PATH_FOLDERS_ORDER)
+    orders = [{"id": index, "name": value}
+              for index, value in enumerate(response)]
+
+    return orders
+
+
+def create_order_folders(name):
+    """
+        Crea una carpeta en una ruta requerida.
+    Args:
+        name (str): Nombre de la carpeta a eliminar
+    Author: 
+        wlopera
+    """
+    FolderUtils.create_folder(PATH_FOLDERS_ORDER, name)
+    FolderUtils.create_folder(f"{PATH_FOLDERS_ORDER}/{name}/", NAME_JOBS)
+    JsonUtils.write_json(f"{PATH_FOLDERS_ORDER}/{name}/{FILE_PARAM_JSON}", [])
+
+
+def rename_order_folders(old_name, new_name):
+    """
+        Renombrar carpeta.
+    Args:
+        old_value (str): Nombre de la carpeta a modificar
+        new_value (str): Nombre nuevo de la carpeta a modificar
+    Author: 
+        wlopera
+    """
+    FolderUtils.rename_folder(PATH_FOLDERS_ORDER, old_name, new_name)
+
+
+def delete_order_folders(name):
+    """
+        Eliminar carpeta.
+    Args:
+        name (str): Nombre de la carpeta a eliminar
+    Author:
+        wlopera
+    """
+    FolderUtils.delete_folder(f"{PATH_FOLDERS_ORDER}/{name}")
+
+
+def activate_order(orders, name):
+    """
+        Recorrer y activar la carpeta actual.
+    Args:
+        name (str): Nombre de la carpeta a activar
+    Author:
+        wlopera
+    """
+    for order in orders:
+        if order["name"] == name:
+            order["active"] = True
+        else:
+            order.pop("active", None)
