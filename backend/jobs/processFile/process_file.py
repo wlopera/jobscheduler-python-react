@@ -13,10 +13,12 @@ class ProcessFile(Scheduler):
         if operation == "GetList":
             list = self.getListFiles(self)
             self.logger.info(f"Archivos: {list}")
+            return True
         elif operation == "Copy":
             self.copyFiles(self)
+            return True
             
-        return True
+        return False
 
     def getClient(self, server, port, user, password):
         # Crear una instancia del cliente SFTP

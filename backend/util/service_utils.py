@@ -1,4 +1,5 @@
 from flask import jsonify
+import traceback
 
 
 class ServiceUtils:
@@ -19,5 +20,6 @@ class ServiceUtils:
             "error": str(err),
             "status": "ERROR"
         }
-        print("error: ", response)
+        trace = traceback.format_exc()
+        print(f"Error.........................: {str(err)}\n{trace}")
         return jsonify(response)

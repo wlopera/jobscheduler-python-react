@@ -5,10 +5,15 @@ import "./Orders.css";
 import service from "../../../../services/orders.service";
 
 import { TITLE_ORDER } from "../../../utils/Constants";
+import { useSelector } from "react-redux";
 
 const Orders = ({ onOrderId, setMessageOrder, onLoading, textFooter }) => {
   const [dataTable, setDataTable] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
+
+  const { loading: isLoading, order } = useSelector(
+    (state) => state.processReducer
+  );
 
   useEffect(() => {
     const getData = async () => {
@@ -25,13 +30,31 @@ const Orders = ({ onOrderId, setMessageOrder, onLoading, textFooter }) => {
     getData();
   }, []);
 
-  const play = async (item) => {
-    onOrderId(item.name);
-    setSelectedRow(item.id);
+  useEffect(() => {
+    if (dataTable) {
+      const filter = dataTable.filter((item) => item.name === order);
+      if (filter.length > 0) {
+        play(filter[0], true);
+      }
+    }
+  }, [order, dataTable]);
+
+  const play = async (item, conditional) => {
+    if (conditional){
+      onOrderId(item.name);
+      setSelectedRow(item.id);
+    }
   };
 
   return (
     <div>
+      {isLoading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-grow text-success" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+      )}
       <div className="card">
         <div className="card-header">
           <div className="row">
@@ -49,7 +72,7 @@ const Orders = ({ onOrderId, setMessageOrder, onLoading, textFooter }) => {
                     <tr
                       key={item.id}
                       className={selectedRow === item.id ? "table-primary" : ""}
-                      onClick={() => play(item)}
+                      onClick={() => play(item, !isLoading)}                      
                     >
                       <td>{item.name}</td>
                     </tr>
