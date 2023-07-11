@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./Jobs.css";
@@ -24,6 +24,10 @@ const Jobs = ({
   const [diagramData, setDiagramData] = useState(null);
 
   const dispatch = useDispatch();
+
+  const currentProcessOrder = useSelector(
+    (state) => state.processReducer.chains
+  );
 
   useEffect(() => {
     const getData = async () => {
@@ -80,6 +84,8 @@ const Jobs = ({
     // remover la tarea actual en procesamiento
     dispatch(removeProcessOrder({ order: orderId }));
   };
+
+  console.log("Procesamientos actuales:", currentProcessOrder)
 
   return (
     <div>

@@ -10,9 +10,9 @@ export default (state = INIT_STATE, action) => {
     case ADD_PROCESS_ORDER:
       return { chains: [...state.chains, action.chain] };
     case REMOVE_PROCESS_ORDER:
-      const filter = state.chains.map((chain) => {
-        chain.order !== action.chain.order;
-      });
+      const filter = state.chains.filter(
+        (chain) => chain.order !== action.chain.order
+      );
       console.log("filter", filter);
       return { chains: filter };
     default:
