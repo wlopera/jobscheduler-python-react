@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Orders from "./orders/Orders";
 import Jobs from "./jobs/Jobs";
 import History from "./history/History";
-import ModalViewLog from "../../modal/ModalViewLog";
 
 const TemplateProcess = () => {
   const [orderId, setOrderId] = useState(null);
@@ -34,7 +33,7 @@ const TemplateProcess = () => {
           <Jobs
             orderId={orderId}
             setMessageJob={setMessageJob}
-            loading={loading}
+            // loading={loading}
             onLoading={setLoading}
             textFooter={messageJob ? messageJob : null}
             onUpdateHistory={setUpdateHistory}

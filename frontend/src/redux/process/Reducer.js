@@ -1,20 +1,16 @@
-import { ADD_PROCESS_ORDER, REMOVE_PROCESS_ORDER } from "../constants";
+import { LOADING_JOB_ORDER, CLEAN_LOADING_JOB_ORDER } from "../constants";
 
 const INIT_STATE = {
-  chains: [],
+  loading: false,
+  order: null,
 };
 
 export default (state = INIT_STATE, action) => {
-  console.log("Orden:", state, action);
   switch (action.type) {
-    case ADD_PROCESS_ORDER:
-      return { chains: [...state.chains, action.chain] };
-    case REMOVE_PROCESS_ORDER:
-      const filter = state.chains.filter(
-        (chain) => chain.order !== action.chain.order
-      );
-      console.log("filter", filter);
-      return { chains: filter };
+    case LOADING_JOB_ORDER:
+      return { loading: true, order: action.order };
+    case CLEAN_LOADING_JOB_ORDER:
+      return { loading: false, order: null };
     default:
       return state;
   }

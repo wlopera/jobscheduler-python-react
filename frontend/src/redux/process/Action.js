@@ -1,15 +1,14 @@
-import { ADD_PROCESS_ORDER, REMOVE_PROCESS_ORDER } from "../constants";
+import { LOADING_JOB_ORDER, CLEAN_LOADING_JOB_ORDER } from "../constants";
 
-export const addProcessOrder = (chain) => {
+export const setLoadingJobOrder = (order) => {
   return {
-    type: ADD_PROCESS_ORDER,
-    chain,
+    type: LOADING_JOB_ORDER,
+    order,
   };
 };
 
-export const removeProcessOrder = (chain) => {
+export const cleanLoadingJobOrder = () => {
   return {
-    type: REMOVE_PROCESS_ORDER,
-    chain,
+    type: CLEAN_LOADING_JOB_ORDER,
   };
 };

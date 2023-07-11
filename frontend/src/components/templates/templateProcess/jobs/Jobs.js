@@ -10,9 +10,11 @@ import { TITLE_JOB } from "../../../utils/Constants";
 import Drawing from "./Drawing";
 import { updateHistoryTable } from "../../../../redux/history/Action";
 import {
-  addProcessOrder,
-  removeProcessOrder,
+  setLoadingJobOrder,
+  cleanLoadingJobOrder,
 } from "../../../../redux/process/Action";
+
+useState;
 
 const Jobs = ({
   orderId,
@@ -25,9 +27,13 @@ const Jobs = ({
 
   const dispatch = useDispatch();
 
-  const currentProcessOrder = useSelector(
-    (state) => state.processReducer.chains
-  );
+  const { loading: isLoading } = useSelector((state) => state.processReducer);
+
+  useEffect(() => {
+    setMessageJob(
+      isLoading ? { type: "LOADING", text: "Procesando Orden..." } : null
+    );
+  }, [isLoading]);
 
   useEffect(() => {
     const getData = async () => {
@@ -63,11 +69,10 @@ const Jobs = ({
 
   const process = async () => {
     setMessageJob({ type: "LOADING", text: "Procesando Orden..." });
-    onLoading(true);
-    onUpdateHistory();
 
-    // Agregar la tarea actual en procesamiento
-    dispatch(addProcessOrder({ order: orderId }));
+    // Registrar procesamiento de orden de trabajo
+    dispatch(setLoadingJobOrder(orderId));
+    onUpdateHistory();
 
     setTimeout(() => {
       dispatch(updateHistoryTable(true));
@@ -78,17 +83,22 @@ const Jobs = ({
     }
     setMessageJob(response.alert);
     onUpdateHistory(true);
-    onLoading(false);
     dispatch(updateHistoryTable(true));
 
-    // remover la tarea actual en procesamiento
-    dispatch(removeProcessOrder({ order: orderId }));
+    // Limpiar procesamiento de orden de trabajo
+    dispatch(cleanLoadingJobOrder());
   };
 
-  console.log("Procesamientos actuales:", currentProcessOrder)
-
+  console.log(22222, isLoading);
   return (
     <div>
+      {isLoading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-grow text-success" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+      )}
       <div className="card">
         <div className="card-header">
           <div className="row">
@@ -102,8 +112,13 @@ const Jobs = ({
             {diagramData && diagramData.length > 0 && (
               <div className="col-md-8 d-flex justify-content-end">
                 <button
-                  className="btn btn-light btn-sm ml-2 "
+                  className={
+                    isLoading
+                      ? "spinner-grow text-success"
+                      : "btn btn-light btn-sm ml-2"
+                  }
                   onClick={() => process()}
+                  disabled={isLoading ? true : false}
                 >
                   <i className="bi bi-play-btn-fill icon_table"></i>
                 </button>

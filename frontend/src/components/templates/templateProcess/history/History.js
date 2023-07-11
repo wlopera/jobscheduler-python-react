@@ -29,7 +29,7 @@ const History = (props) => {
   useEffect(() => {
     const getData = async () => {
       const response = await service.history();
-      console.log("Historial:", response);
+      // console.log("Historial:", response);
       if (response.code === 200) {
         setDataTable(response.data);
         if (onUpdateHistory) {
