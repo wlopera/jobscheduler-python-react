@@ -89,7 +89,6 @@ const Jobs = ({
     dispatch(cleanLoadingJobOrder());
   };
 
-  console.log(22222, isLoading);
   return (
     <div>
       {isLoading && (

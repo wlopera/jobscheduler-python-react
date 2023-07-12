@@ -38,5 +38,15 @@
         "duration": "20.0 seg",
         "node": "error",
         "log": "Scheduler-20230711124415"
+    },
+    {
+        "id": "20230712151341",
+        "order_id": "send_email",
+        "status": "exitoso",
+        "startDate": "12/07/2023-15:13:41",
+        "endDate": "12/07/2023-15:14:03",
+        "duration": "22.0 seg",
+        "node": "success",
+        "log": "Scheduler-20230712151341"
     }
 ]

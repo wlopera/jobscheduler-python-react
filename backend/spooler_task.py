@@ -2,7 +2,8 @@ import sys
 import importlib
 from util.logger import setup_logger
 from datetime import datetime
-from util.file_utils import FileUtils
+from util.json_utils import JsonUtils
+from util.constants import PATH_FOLDERS_ORDER, FILE_PARAM_JSON
 import time
 
 
@@ -22,8 +23,8 @@ class SpoolerTask:
     def get_chains(self, order_id):
         self.current_order = order_id
         # Consultas las tareas a procesar
-        self.jobs = FileUtils.get_param_json(
-            "JobScheduler/backend/orders/" + order_id + "/param.json")
+         
+        self.jobs = JsonUtils.read_json(f"{PATH_FOLDERS_ORDER}/{order_id}/{FILE_PARAM_JSON}")
         self.current_job = self.jobs[0]['name']
 
     def get_job(self, name):
