@@ -1,4 +1,5 @@
 import logging
+from util.constants import PATH_LOG
 
 
 def setup_logger(log_name, log_file):
@@ -9,7 +10,8 @@ def setup_logger(log_name, log_file):
     try:
         # Crear el archivo de registro
         file_handler = logging.FileHandler(
-            'JobScheduler/backend/log/' + log_file + ".log")
+            f"{PATH_LOG}/{log_file}.log")
+
         file_handler.setLevel(logging.DEBUG)
 
         # Formateador del registro

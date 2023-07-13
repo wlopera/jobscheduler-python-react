@@ -81,45 +81,26 @@ Subir a vercel
   como tu archivo principal de Flask.
 
   - Arrancar proceso vercel:
-    $> vercel
-
+   D:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend>vercel
     Vercel CLI 31.0.2
-    ? Set up and deploy “D:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend”? [Y/n]
-    ? Set up and deploy “D:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend”? [Y/n]
-    y
-    Loading scopes…
-    ? Which scope do you want to deploy to?
+    ? Set up and deploy “D:\WorkSpace\WS_REACT_PRANICAL\JobScheduler\backend”? [Y/n] y
     ? Which scope do you want to deploy to? wlopera
-    Searching for existing projects…
-    ? Link to existing project? [y/N] N
     ? Link to existing project? [y/N] n
-    ? What’s your project’s name? (backend)
     ? What’s your project’s name? backend
-    Verifying project name…
     ? In which directory is your code located? ./
-    ? In which directory is your code located? ./
-    Setting up project
-    Uploading [--------------------] (0.0B/50.4KB)
-    Uploading [======--------------] (15.4KB/50.4KB)
-    Uploading [==========----------] (25.6KB/50.4KB)
-    Uploading [================----] (41.4KB/50.4KB)
-    Uploading [====================] (50.4KB/50.4KB)
-    Linked to wlopera/backend (created .vercel and added it to .gitignore)
-    Inspect: https://vercel.com/wlopera/backend/7bNjVt7PnywhGhJs5MYBmHoSAfd8 [3s]
-    https://backend-hthzpaqjz-wlopera.vercel.appQueued
-    Building
-    Completing
-    Production: https://backend-pi-fawn.vercel.app [13s]
-    Deployed to production. Run `vercel --prod` to overwrite later (https://vercel.link/2F).
-    To change the domain or build command, go to https://vercel.com/wlopera/backend/settings
+    🔗  Linked to wlopera/backend (created .vercel and added it to .gitignore)
+    🔍  Inspect: https://vercel.com/wlopera/backend/Bpm2xouvjPGmZjzf6vvn9Qknj4d9 [3s]
+    ✅  Production: https://backend-chi-jet.vercel.app [13s]
+    📝  Deployed to production. Run `vercel --prod` to overwrite later (https://vercel.link/2F).
+    💡  To change the domain or build command, go to https://vercel.com/wlopera/backend/settings
 
  Nota: https://vercel.com/wlopera/backend/7bNjVt7PnywhGhJs5MYBmHoSAfd8
        - Para ver detalles
 
-       https://backend-pi-fawn.vercel.app 
+       https://backend-chi-jet.vercel.app 
        - Para probarlo
 
-       https://backend-pi-fawn.vercel.app/_logs
+       https://backend-chi-jet.vercel.app/_logs
        - Para ver errores de compilación
 
 para actualizar proceso vercel:

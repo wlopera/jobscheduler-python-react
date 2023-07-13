@@ -1,6 +1,4 @@
 import json
-from flask import jsonify
-
 
 class JsonUtils:
     @staticmethod
